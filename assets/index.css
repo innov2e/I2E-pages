@@ -22,8 +22,8 @@
   --accent:#43B9AE; --accent-ink:#6FD0C6; --accent-soft:#17393A;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;padding:0 16px 64px}
-.wrap{max-width:880px;margin:0 auto}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;padding:0 0 64px}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px}
 a{color:var(--accent-ink);text-underline-offset:2px}
 a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
 h1,h2{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:-.005em}
@@ -33,7 +33,7 @@ p{margin:0}
 .eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 .lead{font-size:1.15rem;color:var(--ink-2);max-width:62ch}
 
-header{padding:56px 0 32px;border-bottom:1px solid var(--line);margin-bottom:32px;display:grid;gap:14px}
+header{padding:8px 0 32px;border-bottom:1px solid var(--line);margin-bottom:32px;display:grid;gap:14px}
 .crumb{font-family:var(--mono);font-size:.8rem}
 .crumb a{text-decoration:none}
 .crumb a:hover{text-decoration:underline}
