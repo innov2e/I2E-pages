@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TOPFramework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f3f5f4; --surface:#ffffff; --surface-2:#eef2f1;
+  --ink:#13212a; --ink-2:#46565f; --muted:#6f7d84; --line:#d6dedd; --grid:#e6ebea;
+  --accent:#0e6f7c; --accent-soft:#dfeff0;
+  --err:#ad2f2d; --err-soft:#fbeceb; --warn:#8a5a00; --warn-soft:#fbf2df; --ok:#1d7437; --ok-soft:#e5f3e8;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --neg:#e34948;
+  --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0e1518; --surface:#152025; --surface-2:#1b292f;
+    --ink:#e7eef0; --ink-2:#b4c1c6; --muted:#8b989d; --line:#2a3a41; --grid:#223137;
+    --accent:#56b8c4; --accent-soft:#163539;
+    --err:#f08a86; --err-soft:#3a1e1e; --warn:#e6b450; --warn-soft:#342811; --ok:#6ccf8a; --ok-soft:#173222;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --neg:#e66767;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0e1518; --surface:#152025; --surface-2:#1b292f;
+  --ink:#e7eef0; --ink-2:#b4c1c6; --muted:#8b989d; --line:#2a3a41; --grid:#223137;
+  --accent:#56b8c4; --accent-soft:#163539;
+  --err:#f08a86; --err-soft:#3a1e1e; --warn:#e6b450; --warn-soft:#342811; --ok:#6ccf8a; --ok-soft:#173222;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --neg:#e66767;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:20px;padding-block:32px 72px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.05}
+h1{font-size:clamp(34px,6vw,56px);font-weight:700;letter-spacing:-.01em}
+h2{font-size:clamp(26px,3.6vw,34px);font-weight:600}
+h3{font-size:20px;font-weight:600;letter-spacing:.01em}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.lead{font-size:17px;color:var(--ink-2);max-width:68ch}
+.note{display:inline-flex;gap:8px;align-items:center;font-size:13px;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:4px 10px}
+header.hero{display:grid;gap:16px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+
+/* Busbar navigation, drawn like a single-line diagram */
+.busbar{overflow-x:auto;margin-top:8px;padding-bottom:6px}
+.bus{display:flex;gap:0;min-width:760px;position:relative;padding-top:6px}
+.mv{flex:1 1 0;display:flex;flex-direction:column;gap:10px;padding-inline:4px}
+.mv[data-n="1"]{flex:1 1 0}.mv[data-n="2"]{flex:2 1 0}.mv[data-n="3"]{flex:3 1 0}
+.mv-name{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-left:2px solid var(--mv);padding-left:6px}
+.nodes{display:flex;justify-content:space-around;position:relative}
+.nodes::before{content:"";position:absolute;left:-4px;right:-4px;top:17px;height:3px;background:var(--mv)}
+.node{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:var(--ink);width:88px;text-align:center}
+.node b{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--surface);border:3px solid var(--mv);font-family:var(--mono);font-size:14px;position:relative;z-index:1}
+.node span{font-size:12px;line-height:1.25;color:var(--ink-2)}
+.node:hover b,.node:focus-visible b{background:var(--mv);color:#fff}
+.node:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
+
+section.block{padding-block:40px 8px;display:grid;gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:20px}
+.chart-title{font-weight:600;font-size:14px}
+.chart-sub{font-size:13px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.scroll{overflow-x:auto}
+svg text{font-family:var(--body)}
+
+/* Step sections */
+.step{padding-block:44px 8px;border-top:1px solid var(--line);margin-top:40px;display:grid;gap:18px;scroll-margin-top:12px}
+.step-head{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:end}
+.step-num{grid-row:span 2;font-family:var(--display);font-weight:700;font-size:64px;line-height:.85;color:var(--mv)}
+.step-mv{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.step-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){.step-grid{grid-template-columns:1fr}}
+.col{display:grid;gap:16px}
+.story{display:grid;gap:10px;max-width:68ch}
+.output{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px}
+.output .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.pill{border:1px solid var(--accent);color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:2px 10px;font-weight:500}
+
+.risk{border-radius:6px;padding:16px 18px;display:grid;gap:10px}
+.risk h3{font-size:18px;display:flex;gap:8px;align-items:center}
+.risk.err{background:var(--err-soft);border-left:4px solid var(--err)}
+.risk.err h3{color:var(--err)}
+.risk.obs{background:var(--warn-soft);border-left:4px solid var(--warn)}
+.risk.obs h3{color:var(--warn)}
+.risk ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.risk.err li{display:grid;grid-template-columns:18px 1fr;gap:6px;font-size:14px}
+.risk.err li::before{content:"✕";color:var(--err);font-weight:700}
+.obs-item{display:grid;gap:2px;font-size:14px;padding-top:8px;border-top:1px dashed color-mix(in srgb,var(--warn) 40%,transparent)}
+.obs-item:first-of-type{border-top:0;padding-top:0}
+.obs-item strong{font-weight:600}
+.obs-item em{font-style:normal;color:var(--ink-2)}
+.obs-item em::before{content:"→ ";color:var(--warn);font-weight:600}
+
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;font-size:12px;letter-spacing:.03em;color:var(--ink-2);background:var(--surface-2)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:4px;padding:1px 8px;white-space:nowrap}
+.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.c-hi{color:var(--err);background:var(--err-soft)}
+.c-md{color:var(--warn);background:var(--warn-soft)}
+.c-lo{color:var(--ok);background:var(--ok-soft)}
+.c-neu{color:var(--accent);background:var(--accent-soft)}
+
+/* HTML bar charts */
+.hbars{display:grid;gap:8px}
+.hb{display:grid;grid-template-columns:minmax(110px,34%) 1fr 56px;gap:10px;align-items:center;font-size:13px}
+.hb .track{height:14px;position:relative}
+.hb .fill{height:100%;border-radius:0 4px 4px 0;background:var(--s1)}
+.hb .v{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:12.5px}
+.hb[data-tip]{cursor:default}
+.hb:hover .fill{filter:brightness(1.08)}
+.div{display:grid;gap:10px}
+.dv{display:grid;grid-template-columns:minmax(100px,30%) 1fr 1fr;gap:0;align-items:center;font-size:13px}
+.dv .l{padding-right:10px}
+.dv .neg{display:flex;justify-content:flex-end;border-right:1px solid var(--ink-2);height:16px}
+.dv .pos{display:flex;height:16px}
+.dv .neg i{background:var(--neg);height:100%;border-radius:4px 0 0 4px;margin-right:1px}
+.dv .pos i{background:var(--s1);height:100%;border-radius:0 4px 4px 0;margin-left:1px}
+.dv-axis{display:grid;grid-template-columns:minmax(100px,30%) 1fr 1fr;font-size:11.5px;color:var(--muted)}
+.dv-axis span:nth-child(2){text-align:right;padding-right:8px}
+.dv-axis span:nth-child(3){padding-left:8px}
+.stack{display:flex;height:34px;gap:2px;border-radius:4px;overflow:hidden}
+.stack div{display:flex;align-items:center;padding-left:10px;color:#fff;font-weight:600;font-size:13px;font-family:var(--mono)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{border:1px solid var(--line);border-radius:6px;padding:12px 14px;background:var(--surface);display:grid;gap:2px}
+.kpi b{font-family:var(--display);font-size:30px;font-weight:600;line-height:1}
+.kpi span{font-size:12.5px;color:var(--ink-2)}
+.kpi small{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.waves{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.waves{grid-template-columns:1fr}}
+.wave{border:1px solid var(--line);border-top:4px solid var(--s1);border-radius:4px;padding:12px;display:grid;gap:6px;font-size:13px;background:var(--surface)}
+.wave b{font-family:var(--display);font-size:18px}
+.wave .gate{color:var(--ink-2)}
+.wave .gate::before{content:"Gate · ";font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase}
+
+#tip{position:fixed;pointer-events:none;z-index:10;background:var(--ink);color:var(--bg);font-size:12.5px;padding:6px 9px;border-radius:4px;max-width:260px;line-height:1.4;opacity:0;transition:opacity .12s}
+@media (prefers-reduced-motion:reduce){#tip{transition:none}}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);display:grid;gap:6px}
+</style>
+
+<style>
+.risk.q{background:var(--accent-soft);border-left:4px solid var(--accent)}
+.risk.q h3{color:var(--accent)}
+.risk.q li{display:grid;grid-template-columns:18px 1fr;gap:6px;font-size:14px}
+.risk.q li::before{content:"?";color:var(--accent);font-weight:700;font-family:var(--mono)}
+.principle{font-family:var(--display);font-size:22px;font-weight:500;line-height:1.2;border-left:4px solid var(--mv);padding:4px 0 4px 14px;color:var(--ink);max-width:60ch}
+.triad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.triad{grid-template-columns:1fr}}
+.dim{background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--d);border-radius:6px;padding:16px 18px;display:grid;gap:8px;align-content:start}
+.dim .letter{font-family:var(--display);font-weight:700;font-size:48px;line-height:.9;color:var(--d)}
+.dim h3{font-size:22px}
+.dim p{font-size:14px;color:var(--ink-2)}
+.fail{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.fail div{border:1px solid var(--line);border-radius:6px;padding:12px 14px;background:var(--surface);font-size:14px;display:grid;gap:4px}
+.fail b{font-family:var(--display);font-size:18px;font-weight:600}
+.matrix{border-collapse:separate;border-spacing:3px;width:100%;font-size:13px}
+.matrix th,.matrix td{border:0;padding:8px 10px;background:transparent}
+.matrix thead th{background:transparent;text-align:center;font-family:var(--display);font-size:18px;color:var(--ink)}
+.matrix tbody th{background:transparent;font-weight:500;color:var(--ink);font-size:13px;letter-spacing:0;white-space:nowrap}
+.cell{text-align:center;border-radius:4px;font-weight:600;font-size:12px}
+.matrix td.lv2{background:var(--s1);color:#fff}
+.matrix td.lv1{background:color-mix(in srgb,var(--s1) 28%,var(--surface));color:var(--ink)}
+.matrix td.lv0{background:var(--surface-2);color:var(--muted);font-weight:400}
+.hda{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.hda{grid-template-columns:1fr}}
+.hda div{border:1px solid var(--line);border-radius:6px;padding:12px 14px;background:var(--surface);display:grid;gap:4px;font-size:13.5px}
+.hda b{font-family:var(--display);font-size:20px;font-weight:600;color:var(--s3)}
+.levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:760px){.levels{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.levels div{border-radius:6px;padding:12px;background:var(--surface);border:1px solid var(--line);border-bottom:4px solid var(--s3);font-size:13px;display:grid;gap:4px}
+.levels b{font-size:14px}
+.five{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;counter-reset:f}
+@media (max-width:760px){.five{grid-template-columns:1fr}}
+.five div{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px;font-size:13px;display:grid;gap:4px}
+.five div::before{counter-increment:f;content:counter(f);font-family:var(--display);font-weight:700;font-size:28px;color:var(--s4);line-height:1}
+.uses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.uses{grid-template-columns:1fr}}
+.uses div{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px;display:grid;gap:6px;align-content:start}
+.uses b{font-family:var(--display);font-size:22px;font-weight:600}
+.uses span{font-size:14px;color:var(--ink-2)}
+.uses small{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div class="eyebrow">Metodo per l'introduzione dell'AI in azienda</div>
+  <h1>TOPFramework: capire, scegliere, costruire, eseguire, consolidare</h1>
+  <p class="lead">Un metodo manageriale che collega tecnologia, organizzazione e persone in una sequenza di nove step. Non chiede prima quali strumenti usare. Chiede quale impresa si vuole diventare, quali capacità costruire e quali dipendenze si è disposti ad assumere.</p>
+
+  <nav class="busbar" aria-label="Step del metodo">
+    <div class="bus">
+      <div class="mv" data-n="2" style="--mv:var(--s1)"><div class="mv-name">Capire</div><div class="nodes">
+        <a class="node" href="#s1"><b>1</b><span>Scouting</span></a>
+        <a class="node" href="#s2"><b>2</b><span>Disruption</span></a></div></div>
+      <div class="mv" data-n="2" style="--mv:var(--s2)"><div class="mv-name">Scegliere</div><div class="nodes">
+        <a class="node" href="#s3"><b>3</b><span>Posizionamento</span></a>
+        <a class="node" href="#s4"><b>4</b><span>Governance</span></a></div></div>
+      <div class="mv" data-n="3" style="--mv:var(--s3)"><div class="mv-name">Costruire</div><div class="nodes">
+        <a class="node" href="#s5"><b>5</b><span>AI Factory</span></a>
+        <a class="node" href="#s6"><b>6</b><span>Modello operativo</span></a>
+        <a class="node" href="#s7"><b>7</b><span>Persone</span></a></div></div>
+      <div class="mv" data-n="1" style="--mv:var(--s4)"><div class="mv-name">Eseguire</div><div class="nodes">
+        <a class="node" href="#s8"><b>8</b><span>iPOC e scaling</span></a></div></div>
+      <div class="mv" data-n="1" style="--mv:var(--s5)"><div class="mv-name">Consolidare</div><div class="nodes">
+        <a class="node" href="#s9"><b>9</b><span>Valore e dipendenze</span></a></div></div>
+    </div>
+  </nav>
+</header>
+
+<section class="block" aria-labelledby="t-why">
+  <h2 id="t-why">Perché serve un metodo</h2>
+  <p class="lead">Senza un metodo l'AI entra in azienda per accumulo. Un team prova un assistente, una funzione compra licenze, l'innovazione avvia un proof of concept, un fornitore propone una piattaforma. Ogni iniziativa può essere sensata; l'insieme produce tanta attività e poca direzione.</p>
+  <div class="triad">
+    <div class="dim" style="--d:var(--s1)"><span class="letter">T</span><h3>Technology</h3><p>Possibilità, architetture, modelli, dati, agenti, piattaforme e dipendenze tecnologiche.</p></div>
+    <div class="dim" style="--d:var(--s2)"><span class="letter">O</span><h3>Organization</h3><p>Processi, governance, modello operativo, responsabilità, execution, valore e resilienza.</p></div>
+    <div class="dim" style="--d:var(--s3)"><span class="letter">P</span><h3>People</h3><p>Competenze, leadership, cultura, giudizio umano, fiducia e capacità di apprendimento.</p></div>
+  </div>
+  <div class="card" style="display:grid;gap:12px">
+    <div class="chart-title">Dove fallisce una trasformazione AI</div>
+    <div class="fail">
+      <div><b>Senza scelta</b>La tecnologia non è collegata a una scelta strategica.</div>
+      <div><b>Senza ridisegno</b>L'organizzazione resta identica.</div>
+      <div><b>Senza persone</b>Le persone non vengono accompagnate.</div>
+      <div><b>Senza visibilità</b>Le dipendenze restano invisibili.</div>
+      <div><b>Senza misura</b>Il valore non viene misurato oltre il singolo caso d'uso.</div>
+    </div>
+  </div>
+  <div class="card" style="display:grid;gap:10px">
+    <div class="chart-title">L'ordine delle decisioni cambia l'esito</div>
+    <div class="scroll"><table>
+      <thead><tr><th>Se si parte da…</th><th>Il risultato tipico è…</th></tr></thead>
+      <tbody>
+        <tr><td>Gli strumenti</td><td>La strategia si adatta alla tecnologia disponibile</td></tr>
+        <tr><td>I casi d'uso</td><td>Si ottimizzano frammenti senza costruire capacità comune</td></tr>
+        <tr><td>La formazione generica</td><td>Cresce la familiarità individuale, non la maturità dell'organizzazione</td></tr>
+        <tr><td><strong>La scelta di posizionamento</strong></td><td><strong>Strumenti, casi d'uso e formazione seguono una direzione</strong></td></tr>
+      </tbody></table></div>
+  </div>
+</section>
+
+<section class="block" aria-labelledby="t-seq">
+  <h2 id="t-seq">La sequenza in nove step</h2>
+  <p class="lead">Ogni step produce un output manageriale che alimenta il successivo. Alcune attività possono sovrapporsi, ma la logica resta ferma: l'urgenza dell'esecuzione non cancella la qualità della scelta.</p>
+  <div class="card scroll"><table>
+    <thead><tr><th>Movimento</th><th>Step</th><th>Domanda guida</th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip" style="color:var(--s1);background:transparent;padding-left:0">Capire</span></td><td>1 · Technology Scouting &amp; Strategic Sensing</td><td>Quale nuova capacità sta diventando possibile?</td><td>AI Technology Radar</td></tr>
+      <tr><td><span class="chip" style="color:var(--s1);background:transparent;padding-left:0">Capire</span></td><td>2 · Disruption Analysis &amp; AI Supercycle Impact</td><td>Che cosa diventa più forte, più debole, più copiabile o più esposto?</td><td>AI Disruption Map</td></tr>
+      <tr><td><span class="chip" style="color:var(--s2);background:transparent;padding-left:0">Scegliere</span></td><td>3 · Strategic Positioning &amp; Ecosystem Role Design</td><td>Migliorare il modello esistente o riposizionarsi?</td><td>Strategic Positioning Canvas</td></tr>
+      <tr><td><span class="chip" style="color:var(--s2);background:transparent;padding-left:0">Scegliere</span></td><td>4 · CEO Commitment, Governance &amp; Strategic Accountability</td><td>Chi decide, con quali regole e soglie?</td><td>AI Governance Model</td></tr>
+      <tr><td><span class="chip" style="color:var(--s3);background:transparent;padding-left:0">Costruire</span></td><td>5 · Technical Roadmap &amp; AI Factory Architecture</td><td>Quali capacità tecniche rendono credibile la scelta?</td><td>AI Factory Blueprint</td></tr>
+      <tr><td><span class="chip" style="color:var(--s3);background:transparent;padding-left:0">Costruire</span></td><td>6 · Future Organization &amp; Operating Model Redesign</td><td>Come cambia il lavoro tra persone, dati e agenti?</td><td>Human-Data-Agent Operating Model</td></tr>
+      <tr><td><span class="chip" style="color:var(--s3);background:transparent;padding-left:0">Costruire</span></td><td>7 · People Readiness, Culture &amp; Learning Acceleration</td><td>Quali competenze rendono sostenibile il modello?</td><td>Role Evolution Map</td></tr>
+      <tr><td><span class="chip" style="color:var(--warn);background:transparent;padding-left:0">Eseguire</span></td><td>8 · Agile Execution, iPOC &amp; Controlled Scaling</td><td>Che cosa merita di essere industrializzato?</td><td>AI Use Case Portfolio</td></tr>
+      <tr><td><span class="chip" style="color:var(--s5);background:transparent;padding-left:0">Consolidare</span></td><td>9 · Value Capture, Resilience &amp; AI Dependency Management</td><td>Quanto valore e quale controllo?</td><td>AI Value &amp; Resilience Dashboard</td></tr>
+    </tbody></table></div>
+  <div class="card" style="display:grid;gap:12px">
+    <div><div class="chart-title">Quale dimensione lavora ogni step</div><div class="chart-sub">Lettura indicativa del peso di Technology, Organization e People in ciascuno step</div></div>
+    <div class="legend"><span><i style="background:var(--s1)"></i>Dimensione prevalente</span><span><i style="background:color-mix(in srgb,var(--s1) 28%,var(--surface))"></i>Dimensione coinvolta</span><span><i style="background:var(--surface-2);border:1px solid var(--line)"></i>Marginale</span></div>
+    <div class="scroll"><table class="matrix" id="matrix" style="min-width:420px"></table></div>
+  </div>
+</section>
+
+<!-- STEP 1 -->
+<article class="step" id="s1" style="--mv:var(--s1)">
+  <div class="step-head"><div class="step-num">1</div><div class="step-mv">Capire</div><h2>Technology Scouting &amp; Strategic Sensing</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <p class="principle">Lo scouting non produce un catalogo di tool: produce una lettura strategica delle tecnologie emergenti.</p>
+      <div class="story"><p>Un'organizzazione immatura reagisce a ogni novità come a un'urgenza. Un'organizzazione matura costruisce una capacità stabile di osservazione, che accompagna l'entusiasmo per le possibilità con la consapevolezza delle dipendenze.</p></div>
+      <div class="output"><span class="tag">Output</span><span class="pill">AI Technology Radar</span><span class="pill">Mappa delle dipendenze infrastrutturali</span></div>
+      <div class="card" style="display:grid;gap:10px">
+        <div class="chart-title">Le cinque aree da osservare</div>
+        <div class="scroll"><table>
+          <thead><tr><th>Area</th><th>Esempi</th></tr></thead>
+          <tbody>
+            <tr><td>Modelli fondazionali</td><td>Evoluzione di capacità, costi, licenze</td></tr>
+            <tr><td>Infrastrutture</td><td>Calcolo, cloud, edge, modelli locali</td></tr>
+            <tr><td>Architetture dati</td><td>RAG, knowledge graph, memoria organizzativa</td></tr>
+            <tr><td>Agenti software</td><td>Orchestrazione, workflow, integrazione con i sistemi aziendali</td></tr>
+            <tr><td>Standard e rischi</td><td>Protocolli, lock-in, sicurezza, resilienza</td></tr>
+          </tbody></table></div>
+        <p class="chart-sub">Il radar classifica ogni tecnologia per maturità, rilevanza, rischio, dipendenza e orizzonte temporale.</p>
+      </div>
+    </div>
+    <div class="col">
+      <div class="risk q"><h3>Domande per il vertice</h3><ul>
+        <li>Quale nuova capacità sta diventando possibile e che cosa cambia nel nostro modo di competere?</li>
+        <li>Da quali modelli, cloud, dati esterni e fornitori critici potremmo dipendere?</li>
+        <li>Quali competenze rare ci servirebbero?</li>
+      </ul></div>
+      <div class="risk err"><h3>Errori tipici</h3><ul>
+        <li>Scambiare il radar per una lista di vendor.</li>
+        <li>Inseguire l'ultimo annuncio di mercato.</li>
+        <li>Rimandare la lettura delle dipendenze a quando sono già contratti firmati.</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<!-- STEP 2 -->
+<article class="step" id="s2" style="--mv:var(--s1)">
+  <div class="step-head"><div class="step-num">2</div><div class="step-mv">Capire</div><h2>Disruption Analysis &amp; AI Supercycle Impact</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <p class="principle">Molte analisi AI cercano opportunità. Il metodo cerca insieme opportunità, vulnerabilità e dipendenze.</p>
+      <div class="story"><p>Una tecnologia è rilevante quando cambia il campo di gioco: costi, tempi, barriere all'ingresso, relazione con il cliente, struttura della filiera, valore dei dati, ruolo degli intermediari, aspettative di servizio.</p></div>
+      <div class="output"><span class="tag">Output</span><span class="pill">AI Disruption Map</span><span class="pill">Stress test del business model</span></div>
+      <div class="card" style="display:grid;gap:10px">
+        <div class="chart-title">Quattro livelli di analisi, dall'interno all'esterno</div>
+        <div class="scroll"><table>
+          <thead><tr><th>Livello</th><th>Domanda</th></tr></thead>
+          <tbody>
+            <tr><td>Processi interni</td><td>Dove l'AI riduce tempi, costi, errori o colli di bottiglia decisionali?</td></tr>
+            <tr><td>Modello operativo</td><td>Quali attività vanno ripensate? Quali decisioni restano umane, quali sono assistite, quali delegabili entro soglie?</td></tr>
+            <tr><td>Catena del valore</td><td>Quali attività possono essere assorbite da altri? Quali intermediari diventano meno necessari?</td></tr>
+            <tr><td>Ecosistema</td><td>Chi può diventare piattaforma, orchestrare la relazione con il cliente, controllare dati e interfacce?</td></tr>
+          </tbody></table></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="risk q"><h3>Domande per il vertice</h3><ul>
+        <li>Quali parti del business diventano più forti, più deboli, più copiabili o più esposte?</li>
+        <li>Dove l'AI può indebolire l'azienda, non solo migliorarla?</li>
+      </ul></div>
+      <div class="risk err"><h3>Errori tipici</h3><ul>
+        <li>Guardare solo le opportunità.</li>
+        <li>Fermarsi ai processi interni.</li>
+        <li>Trattare le vulnerabilità del business model come un tabù.</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<!-- STEP 3 -->
+<article class="step" id="s3" style="--mv:var(--s2)">
+  <div class="step-head"><div class="step-num">3</div><div class="step-mv">Scegliere · il cuore del metodo</div><h2>Strategic Positioning &amp; Ecosystem Role Design</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <p class="principle">Quando il posizionamento non viene scelto, lo determinano altri: vendor, concorrenti, clienti, progetti locali o inerzia.</p>
+      <div class="story"><p>Qui l'analisi diventa scelta. È una decisione di vertice, perché determina investimenti, architetture, competenze, partnership, governance, rischi e modello di cattura del valore. Gli archetipi servono a esplicitare l'ambizione e si possono combinare, purché le priorità siano chiare.</p></div>
+      <div class="output"><span class="tag">Output</span><span class="pill">Strategic Positioning Canvas</span><span class="pill">CEO Strategic Positioning Brief</span></div>
+      <div class="card" style="display:grid;gap:10px">
+        <div><div class="chart-title">Nove archetipi di posizionamento AI</div><div class="chart-sub">Strumenti di conversazione strategica, non etichette definitive</div></div>
+        <div class="hbars" id="arche"></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="risk q"><h3>Che cosa chiarisce il CEO Brief</h3><ul>
+        <li>Quale posizione l'impresa intende perseguire.</li>
+        <li>Quali asset rafforzare.</li>
+        <li>Quali dipendenze evitare o rendere reversibili.</li>
+        <li>Quali capacità costruire internamente e quali partnership sono strategiche.</li>
+        <li>Quali trade-off si accettano.</li>
+        <li>Quali ambizioni non sono prioritarie ora.</li>
+      </ul></div>
+      <div class="risk err"><h3>Errori tipici</h3><ul>
+        <li>Delegare la scelta all'IT, all'innovazione o ai fornitori.</li>
+        <li>Dichiarare tutto prioritario.</li>
+        <li>Un brief senza trade-off e senza elenco di ciò che non si farà.</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<!-- STEP 4 -->
+<article class="step" id="s4" style="--mv:var(--s2)">
+  <div class="step-head"><div class="step-num">4</div><div class="step-mv">Scegliere</div><h2>CEO Commitment, Governance &amp; Strategic Accountability</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <p class="principle">La delega operativa può aumentare; l'accountability manageriale non può essere delegata alla macchina.</p>
+      <div class="story"><p>La leadership smette di essere sponsorship generica e diventa responsabilità organizzata. L'AI Governance Board non è un comitato tecnico: include tecnologia, business, legal, compliance, cybersecurity, data governance, HR e funzioni operative, ed è collegato al CEO o a un mandato esplicito del vertice.</p></div>
+      <div class="output"><span class="tag">Output</span><span class="pill">AI Governance Model</span><span class="pill">AI Policy Framework</span></div>
+      <div class="card" style="display:grid;gap:10px">
+        <div class="chart-title">Le cinque responsabilità del Board</div>
+        <div class="scroll"><table>
+          <tbody>
+            <tr><td>1</td><td>Approvare le priorità del portafoglio AI</td></tr>
+            <tr><td>2</td><td>Definire policy su dati, modelli, agenti, sicurezza e responsabilità</td></tr>
+            <tr><td>3</td><td>Stabilire soglie di autonomia e meccanismi di escalation</td></tr>
+            <tr><td>4</td><td>Monitorare valore, costi, rischi e dipendenze</td></tr>
+            <tr><td>5</td><td>Assicurare continuità, reversibilità e coerenza con il posizionamento</td></tr>
+          </tbody></table></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="risk q"><h3>A che cosa risponde la policy</h3><ul>
+        <li>Chi può usare quali dati?</li>
+        <li>Quali sistemi AI sono autorizzati e quali agenti possono compiere azioni?</li>
+        <li>Quali decisioni richiedono human-in-the-loop? Chi è il Decision Owner?</li>
+        <li>Quali log conservare e quali fallback esistono se un modello o un vendor non è disponibile?</li>
+      </ul></div>
+      <div class="risk err"><h3>Errori tipici</h3><ul>
+        <li>Un comitato solo tecnico, senza mandato del vertice.</li>
+        <li>Una policy che diventa burocrazia.</li>
+        <li>Nessun Decision Owner nominato.</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<!-- STEP 5 -->
+<article class="step" id="s5" style="--mv:var(--s3)">
+  <div class="step-head"><div class="step-num">5</div><div class="step-mv">Costruire</div><h2>Technical Roadmap &amp; AI Factory Architecture</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <p class="principle">La roadmap tecnica non è la lista dei progetti: è la progettazione delle capacità che rendono credibile il posizionamento.</p>
+      <div class="story"><p>L'architettura non è neutrale. Un Efficiency Player ha bisogno di soluzioni rapide e misurabili; un Data &amp; Knowledge Asset Player investe in qualità dei dati, knowledge architecture e feedback loop; un Platform Player progetta API, standard e scalabilità; un Sovereign &amp; Resilient Operator presidia portabilità, fallback e strategia multi-modello. La AI Factory è la capacità industriale di progettare, sviluppare, testare, rilasciare, monitorare e migliorare soluzioni AI in modo continuo.</p></div>
+      <div class="output"><span class="tag">Output</span><span class="pill">AI Factory Blueprint</span><span class="pill">Business Continuity Architecture</span></div>
+      <div class="card" style="display:grid;gap:10px">
+        <div class="chart-title">I sette layer della AI Factory</div>
+        <div class="scroll"><table>
+          <thead><tr><th>Layer</th><th>Che cosa presidia</th></tr></thead>
+          <tbody>
+            <tr><td>Data &amp; Context</td><td>Dati, qualità, lineage, accessi, knowledge base</td></tr>
+            <tr><td>Model</td><td>Scelta dei modelli, registry, routing, versioning</td></tr>
+            <tr><td>Agent &amp; Workflow</td><td>Agenti, tool, workflow, integrazione applicativa</td></tr>
+            <tr><td>Evaluation</td><td>Test, benchmark, qualità degli output, robustezza</td></tr>
+            <tr><td>Security &amp; Governance</td><td>Policy, controlli, audit, privacy, prompt injection</td></tr>
+            <tr><td>Observability</td><td>Costi, latenza, drift, utilizzo, performance</td></tr>
+            <tr><td>Resilience</td><td>Fallback, exit plan, portabilità, continuità</td></tr>
+          </tbody></table></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="risk q"><h3>Domande per il vertice</h3><ul>
+        <li>Quali capacità tecniche servono al posizionamento scelto, e quali no?</li>
+        <li>Che cosa succede se il modello o il fornitore principale non è disponibile?</li>
+      </ul></div>
+      <div class="risk err"><h3>Errori tipici</h3><ul>
+        <li>Partire dall'architettura perché sembra la parte più concreta.</li>
+        <li>Investire sul modello e trascurare dati e valutazione.</li>
+        <li>Nessun exit plan.</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<!-- STEP 6 -->
+<article class="step" id="s6" style="--mv:var(--s3)">
+  <div class="step-head"><div class="step-num">6</div><div class="step-mv">Costruire</div><h2>Future Organization &amp; Operating Model Redesign</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <p class="principle">L'impresa aumentata non automatizza tutto: sa decidere cosa aumentare, cosa delegare, cosa supervisionare e cosa tenere sotto pieno controllo umano.</p>
+      <div class="story"><p>Il ridisegno non parte dall'organigramma, ma da come cambia il lavoro quando persone, dati e agenti collaborano in modo strutturale.</p></div>
+      <div class="output"><span class="tag">Output</span><span class="pill">Human-Data-Agent Operating Model</span><span class="pill">RACI evoluta</span></div>
+      <div class="hda">
+        <div><b>Human</b>Giudizio, responsabilità, relazione, interpretazione, eccezioni, indirizzo.</div>
+        <div><b>Data</b>Memoria organizzativa, contesto operativo, materia prima della capacità cognitiva.</div>
+        <div><b>Agent</b>Leggono, propongono, eseguono, monitorano e coordinano entro limiti definiti.</div>
+      </div>
+      <div class="card" style="display:grid;gap:10px">
+        <div class="chart-title">Tre livelli di decisione</div>
+        <div class="scroll"><table>
+          <thead><tr><th>Livello</th><th>Chi decide</th><th>Quando</th></tr></thead>
+          <tbody>
+            <tr><td><span class="chip c-hi">Umana</span></td><td>La persona</td><td>Giudizio, responsabilità, effetti rilevanti</td></tr>
+            <tr><td><span class="chip c-md">Assistita</span></td><td>La persona, su proposta dell'agente</td><td>Decisioni complesse con dati abbondanti</td></tr>
+            <tr><td><span class="chip c-lo">Delegata entro soglie</span></td><td>L'agente, con controlli ed escalation</td><td>Attività ripetibili, verificabili, a rischio contenuto</td></tr>
+          </tbody></table></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="risk q"><h3>Che cosa chiarisce lo step</h3><ul>
+        <li>Quali processi vanno ripensati e non solo automatizzati.</li>
+        <li>Quali decisioni restano umane, quali sono assistite, quali delegate entro soglie.</li>
+        <li>Quali ruoli cambiano e quali responsabilità nascono.</li>
+        <li>Quali controlli, escalation e presidi di accountability servono.</li>
+      </ul></div>
+      <div class="risk err"><h3>Errori tipici</h3><ul>
+        <li>Automatizzare il processo esistente senza ripensarlo.</li>
+        <li>Una RACI burocratica che non dice chi governa gli agenti.</li>
+        <li>Nessuno responsabile della cura dei dati.</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<!-- STEP 7 -->
+<article class="step" id="s7" style="--mv:var(--s3)">
+  <div class="step-head"><div class="step-num">7</div><div class="step-mv">Costruire</div><h2>People Readiness, Culture &amp; Learning Acceleration</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <p class="principle">Una persona può diventare più produttiva con l'AI senza che l'organizzazione diventi più matura.</p>
+      <div class="story"><p>La maturità nasce quando le competenze individuali sono collegate a ruoli, processi, governance, responsabilità e learning loop organizzativi. La formazione segue il posizionamento: un Data &amp; Knowledge Asset Player forma curatori di conoscenza ed esperti di contesto; un Orchestrator forma chi progetta workflow, controlli ed escalation; una traiettoria AI-native richiede manager capaci di guidare sistemi socio-tecnici.</p></div>
+      <div class="output"><span class="tag">Output</span><span class="pill">Role Evolution Map</span><span class="pill">Learning Organization Blueprint</span></div>
+      <div class="card" style="display:grid;gap:10px">
+        <div class="chart-title">Quattro livelli di competenza</div>
+        <div class="levels">
+          <div><b>Literacy diffusa</b>Usare l'AI in modo sicuro e consapevole.</div>
+          <div><b>Manageriali</b>Governare mandati, soglie, responsabilità e valore.</div>
+          <div><b>Specialistiche</b>Progettare dati, modelli, agenti, sicurezza e integrazione.</div>
+          <div><b>Business translation</b>Collegare dominio, processi, dati e sistemi intelligenti.</div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="risk q"><h3>Domanda per il vertice</h3><ul>
+        <li>Non solo quali competenze mancano oggi, ma quali renderanno sostenibile il modello operativo scelto.</li>
+      </ul></div>
+      <div class="risk err"><h3>Errori tipici</h3><ul>
+        <li>Ridurre tutto a corsi di AI literacy e prompt engineering.</li>
+        <li>Formare senza collegare le competenze ai ruoli.</li>
+        <li>Misurare la formazione e non l'adozione.</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<!-- STEP 8 -->
+<article class="step" id="s8" style="--mv:var(--s4)">
+  <div class="step-head"><div class="step-num">8</div><div class="step-mv">Eseguire</div><h2>Agile Execution, iPOC &amp; Controlled Scaling</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <p class="principle">Il PoC non è una vetrina: è un test serio di industrializzabilità.</p>
+      <div class="story"><p>L'AI richiede sperimentazione e cicli rapidi, ma governati. Altrimenti si accumulano demo convincenti e iniziative non scalabili. Il criterio non è la quantità di iniziative attive, ma la capacità che resta all'impresa dopo l'implementazione.</p></div>
+      <div class="output"><span class="tag">Output</span><span class="pill">AI Use Case Portfolio</span><span class="pill">Controlled Scaling Plan</span></div>
+      <div class="card" style="display:grid;gap:10px">
+        <div class="chart-title">Le cinque dimensioni verificate da un iPOC</div>
+        <div class="five">
+          <div>Valore di business</div>
+          <div>Qualità e disponibilità dei dati</div>
+          <div>Scalabilità tecnica</div>
+          <div>Sostenibilità operativa</div>
+          <div>Rischio, governance e dipendenze</div>
+        </div>
+      </div>
+      <div class="card" style="display:grid;gap:10px">
+        <div class="chart-title">Le cinque categorie del portafoglio</div>
+        <div class="scroll"><table>
+          <tbody>
+            <tr><td><span class="chip c-neu">Esplorative</span></td><td>Imparare su tecnologie o domini nuovi</td></tr>
+            <tr><td><span class="chip c-neu">Efficienza</span></td><td>Produttività e riduzione dei costi</td></tr>
+            <tr><td><span class="chip c-neu">Capability strategiche</span></td><td>Costruiscono il posizionamento scelto</td></tr>
+            <tr><td><span class="chip c-lo">Da industrializzare</span></td><td>Hanno superato l'iPOC e i gate di scaling</td></tr>
+            <tr><td><span class="chip c-hi">Da interrompere</span></td><td>Non contribuiscono o aumentano dipendenze critiche</td></tr>
+          </tbody></table></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="risk q"><h3>I criteri per ogni iniziativa</h3><ul>
+        <li>Contribuisce al posizionamento scelto?</li>
+        <li>Costruisce capacità riutilizzabili e Token Capital interno?</li>
+        <li>Riduce o aumenta dipendenze critiche?</li>
+        <li>Può essere monitorata, spiegata, sospesa o sostituita?</li>
+        <li>Produce valore misurabile?</li>
+      </ul></div>
+      <div class="risk err"><h3>Errori tipici</h3><ul>
+        <li>Scalare tutto ciò che funziona in piccolo.</li>
+        <li>Valutare un PoC solo sulla tecnica.</li>
+        <li>Non interrompere mai nulla.</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<!-- STEP 9 -->
+<article class="step" id="s9" style="--mv:var(--s5)">
+  <div class="step-head"><div class="step-num">9</div><div class="step-mv">Consolidare</div><h2>Value Capture, Resilience &amp; AI Dependency Management</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <p class="principle">Ogni beneficio AI genera una dipendenza. Il punto non è eliminarle, ma governarle.</p>
+      <div class="story"><p>Se l'AI è infrastruttura della conoscenza, il valore si legge anche in termini di apprendimento, controllo, resilienza e capacità strategica. Una dipendenza diventa pericolosa quando è invisibile, non misurata e non reversibile. La dashboard deve essere leggibile dal Board e dire quale controllo l'impresa mantiene mentre produce valore.</p></div>
+      <div class="output"><span class="tag">Output</span><span class="pill">AI Value &amp; Resilience Dashboard</span><span class="pill">AI Dependency Register</span></div>
+      <div class="card" style="display:grid;gap:10px">
+        <div class="chart-title">Sei dimensioni del valore AI</div>
+        <div class="scroll"><table>
+          <thead><tr><th>Dimensione</th><th>Che cosa misura</th></tr></thead>
+          <tbody>
+            <tr><td>Economico</td><td>Costi, ricavi, margini, produttività, ROI/ROIC</td></tr>
+            <tr><td>Operativo</td><td>Velocità, qualità, continuità, standardizzazione</td></tr>
+            <tr><td>Cognitivo</td><td>Riuso del know-how, qualità decisionale, apprendimento</td></tr>
+            <tr><td>Strategico</td><td>Differenziazione, posizionamento, nuove capacità</td></tr>
+            <tr><td>Ecosistemico</td><td>Partner, standard, fiducia, ruolo nella filiera</td></tr>
+            <tr><td>Resilienza</td><td>Portabilità, fallback, autonomia, gestione del lock-in</td></tr>
+          </tbody></table></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="risk q"><h3>Che cosa rende visibile il Dependency Register</h3><ul>
+        <li>Vendor e piattaforme critiche; modelli e alternative disponibili.</li>
+        <li>Dati e knowledge base essenziali; API, librerie, connettori.</li>
+        <li>Competenze chiave e processi dipendenti da sistemi AI.</li>
+        <li>Rischi di continuità; vincoli contrattuali, regolatori e geopolitici.</li>
+        <li>Possibilità di fallback, sostituzione o uscita.</li>
+      </ul></div>
+      <div class="risk err"><h3>Errori tipici</h3><ul>
+        <li>Misurare solo il ritorno economico immediato.</li>
+        <li>Una dashboard leggibile solo dai tecnici.</li>
+        <li>Scoprire le dipendenze quando un fornitore cambia condizioni.</li>
+      </ul></div>
+    </div>
+  </div>
+</article>
+
+<section class="block" aria-labelledby="t-use" style="border-top:1px solid var(--line);margin-top:40px">
+  <h2 id="t-use">Come si usa in azienda</h2>
+  <div class="uses">
+    <div><small>Modalità 1</small><b>Assessment</b><span>Dove si trova oggi l'impresa: tecnologie in uso, casi attivi, dipendenze già presenti, governance esistente, competenze mancanti, posizionamento implicito nelle scelte fatte.</span></div>
+    <div><small>Modalità 2</small><b>Decisione strategica</b><span>Aiuta vertice e management team a scegliere l'ambizione: un archetipo o una combinazione coerente di traiettorie.</span></div>
+    <div><small>Modalità 3</small><b>Roadmap</b><span>Trasforma la scelta in sequenza operativa: iniziative, architettura, ruoli, governance, competenze, metriche, funding, gate di rischio, scaling, resilienza.</span></div>
+  </div>
+  <p class="lead">Il metodo non sostituisce project management, agile delivery, data governance, cybersecurity, change management o compliance: li organizza dentro una logica di trasformazione.</p>
+  <div class="card scroll"><table>
+    <thead><tr><th></th><th>Roadmap AI tradizionale</th><th>TOPFramework</th></tr></thead>
+    <tbody>
+      <tr><td>Domanda di partenza</td><td>Quali progetti AI vogliamo realizzare?</td><td>Quale impresa vogliamo diventare grazie all'AI?</td></tr>
+      <tr><td>Punto di ingresso</td><td>Elenco di use case, owner, costi, benefici</td><td>Posizionamento e lettura delle dipendenze</td></tr>
+      <tr><td>Unità di valore</td><td>Il singolo progetto</td><td>La capacità che resta all'impresa</td></tr>
+      <tr><td>Dipendenze</td><td>Gestite quando emergono</td><td>Mappate dallo Step 1, governate allo Step 9</td></tr>
+      <tr><td>Organizzazione e persone</td><td>Change management a supporto</td><td>Progettate negli Step 6 e 7</td></tr>
+    </tbody></table></div>
+  <div class="card" style="display:grid;gap:12px">
+    <div class="chart-title">I tre rischi da cui protegge</div>
+    <div class="fail">
+      <div><b>Dispersione</b>Molti progetti, poca direzione.</div>
+      <div><b>Dipendenza inconsapevole</b>Benefici rapidi, controllo decrescente.</div>
+      <div><b>Trasformazione superficiale</b>Strumenti adottati senza ridisegno del modello operativo.</div>
+    </div>
+  </div>
+  <p class="principle" style="--mv:var(--accent)">Il TOPFramework non elimina la complessità. La rende discutibile, governabile e misurabile.</p>
+</section>
+
+<footer>
+  <span>Fonte: TOPFramework, documento di metodo. Le domande per il vertice sono tratte dal metodo; gli errori tipici, la matrice delle dimensioni e le descrizioni sintetiche di livelli decisionali e categorie di portafoglio sono una lettura di sintesi.</span>
+</footer>
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script>
+(function(){
+  const tip=document.getElementById("tip");
+  document.addEventListener("mousemove",e=>{
+    const t=e.target.closest("[data-tip]");
+    if(!t){tip.style.opacity=0;return}
+    tip.textContent=t.getAttribute("data-tip");
+    const w=tip.offsetWidth,h=tip.offsetHeight;
+    let x=e.clientX+14,y=e.clientY-h-10;
+    if(x+w>innerWidth-8)x=e.clientX-w-14; if(y<8)y=e.clientY+16;
+    tip.style.left=x+"px";tip.style.top=y+"px";tip.style.opacity=1;
+  });
+
+  /* T-O-P matrix: 2 = prevalente, 1 = coinvolta, 0 = marginale */
+  const rows=[["1 · Scouting",2,1,0],["2 · Disruption",1,2,0],["3 · Posizionamento",1,2,1],["4 · Governance",1,2,1],
+    ["5 · AI Factory",2,1,0],["6 · Modello operativo",1,2,1],["7 · Persone",0,1,2],["8 · iPOC e scaling",1,2,1],["9 · Valore e dipendenze",1,2,0]];
+  const lab=["marginale","coinvolta","prevalente"], dims=["Technology","Organization","People"];
+  document.getElementById("matrix").innerHTML=
+    `<thead><tr><th></th><th>T</th><th>O</th><th>P</th></tr></thead><tbody>`+
+    rows.map(r=>`<tr><th scope="row">${r[0]}</th>`+[1,2,3].map(i=>`<td class="cell lv${r[i]}" data-tip="${r[0]} — ${dims[i-1]}: ${lab[r[i]]}">${lab[r[i]]}</td>`).join("")+`</tr>`).join("")+`</tbody>`;
+
+  /* archetypes as a labelled spectrum */
+  const a=[["AI Efficiency Player","Efficienza, produttività, quick win"],["AI-Augmented Incumbent","Rafforzamento dei processi core"],
+    ["Data & Knowledge Asset Player","Valorizzazione del know-how proprietario"],["AI-Enabled Service Innovator","Nuovi servizi aumentati dall'AI"],
+    ["AI Process Orchestrator","Coordinamento di processi complessi"],["AI Platform Player","Piattaforma di servizi, dati o capacità"],
+    ["AI Ecosystem Orchestrator","Governo di un ecosistema multilaterale"],["AI-Native Challenger","Modello operativo ridisegnato AI-first"],
+    ["Sovereign & Resilient AI Operator","Controllo, portabilità e resilienza"]];
+  document.getElementById("arche").innerHTML=a.map((x,i)=>
+    `<div class="hb" style="grid-template-columns:minmax(150px,42%) 1fr" data-tip="${x[0]}: ${x[1]}"><span style="font-weight:500">${x[0]}</span><span style="color:var(--ink-2)">${x[1]}</span></div>`).join("")+
+    `<div class="chart-sub" style="margin-top:4px">La scelta può essere ibrida: per esempio Data &amp; Knowledge Asset Player per il know-how tecnico, Efficiency Player per le funzioni di supporto, Sovereign &amp; Resilient Operator per i processi critici.</div>`;
+})();
+</script>
+
+</body>
+</html>
