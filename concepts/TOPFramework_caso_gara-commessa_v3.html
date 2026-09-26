@@ -1,0 +1,1024 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Il caso Gara-Commessa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f3f5f4; --surface:#ffffff; --surface-2:#eef2f1;
+  --ink:#13212a; --ink-2:#46565f; --muted:#6f7d84; --line:#d6dedd; --grid:#e6ebea;
+  --accent:#0e6f7c; --accent-soft:#dfeff0;
+  --err:#ad2f2d; --err-soft:#fbeceb; --warn:#8a5a00; --warn-soft:#fbf2df; --ok:#1d7437; --ok-soft:#e5f3e8;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --neg:#e34948;
+  --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0e1518; --surface:#152025; --surface-2:#1b292f;
+    --ink:#e7eef0; --ink-2:#b4c1c6; --muted:#8b989d; --line:#2a3a41; --grid:#223137;
+    --accent:#56b8c4; --accent-soft:#163539;
+    --err:#f08a86; --err-soft:#3a1e1e; --warn:#e6b450; --warn-soft:#342811; --ok:#6ccf8a; --ok-soft:#173222;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --neg:#e66767;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0e1518; --surface:#152025; --surface-2:#1b292f;
+  --ink:#e7eef0; --ink-2:#b4c1c6; --muted:#8b989d; --line:#2a3a41; --grid:#223137;
+  --accent:#56b8c4; --accent-soft:#163539;
+  --err:#f08a86; --err-soft:#3a1e1e; --warn:#e6b450; --warn-soft:#342811; --ok:#6ccf8a; --ok-soft:#173222;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --neg:#e66767;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:20px;padding-block:32px 72px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.05}
+h1{font-size:clamp(34px,6vw,56px);font-weight:700;letter-spacing:-.01em}
+h2{font-size:clamp(26px,3.6vw,34px);font-weight:600}
+h3{font-size:20px;font-weight:600;letter-spacing:.01em}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.lead{font-size:17px;color:var(--ink-2);max-width:68ch}
+.note{display:inline-flex;gap:8px;align-items:center;font-size:13px;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:4px 10px}
+header.hero{display:grid;gap:16px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+
+/* Busbar navigation, drawn like a single-line diagram */
+.busbar{overflow-x:auto;margin-top:8px;padding-bottom:6px}
+.bus{display:flex;gap:0;min-width:760px;position:relative;padding-top:6px}
+.mv{flex:1 1 0;display:flex;flex-direction:column;gap:10px;padding-inline:4px}
+.mv[data-n="1"]{flex:1 1 0}.mv[data-n="2"]{flex:2 1 0}.mv[data-n="3"]{flex:3 1 0}
+.mv-name{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-left:2px solid var(--mv);padding-left:6px}
+.nodes{display:flex;justify-content:space-around;position:relative}
+.nodes::before{content:"";position:absolute;left:-4px;right:-4px;top:17px;height:3px;background:var(--mv)}
+.node{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:var(--ink);width:88px;text-align:center}
+.node b{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--surface);border:3px solid var(--mv);font-family:var(--mono);font-size:14px;position:relative;z-index:1}
+.node span{font-size:12px;line-height:1.25;color:var(--ink-2)}
+.node:hover b,.node:focus-visible b{background:var(--mv);color:#fff}
+.node:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
+
+section.block{padding-block:40px 8px;display:grid;gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:20px}
+.chart-title{font-weight:600;font-size:14px}
+.chart-sub{font-size:13px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.scroll{overflow-x:auto}
+svg text{font-family:var(--body)}
+
+/* Step sections */
+.step{padding-block:44px 8px;border-top:1px solid var(--line);margin-top:40px;display:grid;gap:18px;scroll-margin-top:12px}
+.step-head{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:end}
+.step-num{grid-row:span 2;font-family:var(--display);font-weight:700;font-size:64px;line-height:.85;color:var(--mv)}
+.step-mv{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.step-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){.step-grid{grid-template-columns:1fr}}
+.col{display:grid;gap:16px}
+.story{display:grid;gap:10px;max-width:68ch}
+.output{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px}
+.output .tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.pill{border:1px solid var(--accent);color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:2px 10px;font-weight:500}
+
+.risk{border-radius:6px;padding:16px 18px;display:grid;gap:10px}
+.risk h3{font-size:18px;display:flex;gap:8px;align-items:center}
+.risk.err{background:var(--err-soft);border-left:4px solid var(--err)}
+.risk.err h3{color:var(--err)}
+.risk.obs{background:var(--warn-soft);border-left:4px solid var(--warn)}
+.risk.obs h3{color:var(--warn)}
+.risk ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.risk.err li{display:grid;grid-template-columns:18px 1fr;gap:6px;font-size:14px}
+.risk.err li::before{content:"✕";color:var(--err);font-weight:700}
+.obs-item{display:grid;gap:2px;font-size:14px;padding-top:8px;border-top:1px dashed color-mix(in srgb,var(--warn) 40%,transparent)}
+.obs-item:first-of-type{border-top:0;padding-top:0}
+.obs-item strong{font-weight:600}
+.obs-item em{font-style:normal;color:var(--ink-2)}
+.obs-item em::before{content:"→ ";color:var(--warn);font-weight:600}
+
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;font-size:12px;letter-spacing:.03em;color:var(--ink-2);background:var(--surface-2)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:4px;padding:1px 8px;white-space:nowrap}
+.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.c-hi{color:var(--err);background:var(--err-soft)}
+.c-md{color:var(--warn);background:var(--warn-soft)}
+.c-lo{color:var(--ok);background:var(--ok-soft)}
+.c-neu{color:var(--accent);background:var(--accent-soft)}
+
+/* HTML bar charts */
+.hbars{display:grid;gap:8px}
+.hb{display:grid;grid-template-columns:minmax(110px,34%) 1fr 56px;gap:10px;align-items:center;font-size:13px}
+.hb .track{height:14px;position:relative}
+.hb .fill{height:100%;border-radius:0 4px 4px 0;background:var(--s1)}
+.hb .v{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:12.5px}
+.hb[data-tip]{cursor:default}
+.hb:hover .fill{filter:brightness(1.08)}
+.div{display:grid;gap:10px}
+.dv{display:grid;grid-template-columns:minmax(100px,30%) 1fr 1fr;gap:0;align-items:center;font-size:13px}
+.dv .l{padding-right:10px}
+.dv .neg{display:flex;justify-content:flex-end;border-right:1px solid var(--ink-2);height:16px}
+.dv .pos{display:flex;height:16px}
+.dv .neg i{background:var(--neg);height:100%;border-radius:4px 0 0 4px;margin-right:1px}
+.dv .pos i{background:var(--s1);height:100%;border-radius:0 4px 4px 0;margin-left:1px}
+.dv-axis{display:grid;grid-template-columns:minmax(100px,30%) 1fr 1fr;font-size:11.5px;color:var(--muted)}
+.dv-axis span:nth-child(2){text-align:right;padding-right:8px}
+.dv-axis span:nth-child(3){padding-left:8px}
+.stack{display:flex;height:34px;gap:2px;border-radius:4px;overflow:hidden}
+.stack div{display:flex;align-items:center;padding-left:10px;color:#fff;font-weight:600;font-size:13px;font-family:var(--mono)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{border:1px solid var(--line);border-radius:6px;padding:12px 14px;background:var(--surface);display:grid;gap:2px}
+.kpi b{font-family:var(--display);font-size:30px;font-weight:600;line-height:1}
+.kpi span{font-size:12.5px;color:var(--ink-2)}
+.kpi small{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.waves{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.waves{grid-template-columns:1fr}}
+.wave{border:1px solid var(--line);border-top:4px solid var(--s1);border-radius:4px;padding:12px;display:grid;gap:6px;font-size:13px;background:var(--surface)}
+.wave b{font-family:var(--display);font-size:18px}
+.wave .gate{color:var(--ink-2)}
+.wave .gate::before{content:"Gate · ";font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase}
+
+#tip{position:fixed;pointer-events:none;z-index:10;background:var(--ink);color:var(--bg);font-size:12.5px;padding:6px 9px;border-radius:4px;max-width:260px;line-height:1.4;opacity:0;transition:opacity .12s}
+@media (prefers-reduced-motion:reduce){#tip{transition:none}}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);display:grid;gap:6px}
+</style>
+
+<style>
+.intro-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.intro-grid{grid-template-columns:1fr}}
+.company{background:var(--surface);border:1px dashed var(--muted);border-radius:6px;padding:16px 18px;display:grid;gap:8px;font-size:14px}
+.company b.name{font-family:var(--display);font-size:22px;font-weight:600}
+.howto{display:grid;gap:8px;font-size:14px;color:var(--ink-2)}
+.howto ol{margin:0;padding-left:20px;display:grid;gap:4px}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:760px){.facts{grid-template-columns:1fr}}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;display:grid;gap:4px;font-size:13.5px;align-content:start}
+.fact small{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.build{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.build{grid-template-columns:1fr}}
+.steps-list{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 18px;display:grid;gap:8px}
+.steps-list h3{font-size:18px}
+.steps-list ol{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px}
+.check{background:var(--ok-soft);border-left:4px solid var(--ok);border-radius:6px;padding:14px 18px;display:grid;gap:8px}
+.check h3{font-size:18px;color:var(--ok)}
+.check ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:14px}
+.check li{display:grid;grid-template-columns:20px 1fr;gap:6px}
+.check li::before{content:"✓";color:var(--ok);font-weight:700}
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:4px;box-shadow:0 10px 28px -20px rgba(0,0,0,.35)}
+.sheet-head{display:flex;justify-content:space-between;align-items:baseline;gap:6px 16px;flex-wrap:wrap;padding:12px 18px;border-bottom:2px solid var(--mv)}
+.sheet-head b{font-family:var(--display);font-size:22px;font-weight:600}
+.sheet-head span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sheet-body{padding:16px 18px 18px;display:grid;gap:14px}
+.sheet-foot{padding:10px 18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 18px}
+.sheets{display:grid;gap:18px}
+.canvas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media (max-width:760px){.canvas{grid-template-columns:1fr}}
+.box{border:1px solid var(--line);border-radius:4px;padding:10px 12px;display:grid;gap:4px;font-size:13.5px;align-content:start;background:var(--bg)}
+.box small{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.box.wide{grid-column:1/-1}
+.box.hl{border-color:var(--mv);border-width:2px}
+.memo{max-width:72ch;display:grid;gap:10px;font-size:14.5px}
+.memo-meta{display:grid;grid-template-columns:90px 1fr;gap:2px 10px;font-size:13px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.memo-meta span:nth-child(odd){font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:2px}
+.memo h4{margin:6px 0 0;font-size:14px}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+.flow div{flex:1 1 130px;border:1px solid var(--line);border-radius:4px;padding:10px;font-size:13px;background:var(--bg);display:grid;gap:3px;position:relative}
+.flow div b{font-size:13.5px}
+.flow div.gate{border:2px solid var(--mv)}
+.flow div small{color:var(--muted)}
+.dots{font-family:var(--mono);letter-spacing:1px;color:var(--s1);white-space:nowrap}
+.dots i{color:var(--line);font-style:normal}
+.dumb{display:grid;gap:10px}
+.db{display:grid;grid-template-columns:minmax(120px,30%) 1fr 70px;gap:10px;align-items:center;font-size:13px}
+.db .trk{position:relative;height:18px}
+.db .trk::before{content:"";position:absolute;left:0;right:0;top:8px;height:2px;background:var(--grid)}
+.db .tk{position:absolute;top:4px;width:1px;height:10px;background:var(--line)}
+.db .seg{position:absolute;top:7px;height:4px;background:var(--s1);opacity:.35;border-radius:2px}
+.db .pt{position:absolute;top:2px;width:14px;height:14px;border-radius:50%;margin-left:-7px;border:2px solid var(--surface)}
+.db .v{font-family:var(--mono);font-size:12px;text-align:right}
+.raci td.c{text-align:center;font-family:var(--mono);font-weight:600}
+.raci td.R{color:var(--s1)} .raci td.A{color:var(--err)}
+.new{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:0 4px;margin-left:4px;vertical-align:1px}
+.chain{font-size:13.5px}
+.chain td:nth-child(2){font-weight:600}
+</style>
+<style>
+.brandbar{display:flex;justify-content:space-between;align-items:center;gap:12px 20px;flex-wrap:wrap}
+.brand{display:inline-block;border-radius:4px;line-height:0}
+.brand img{display:block;width:120px;height:auto}
+.brand:hover img{opacity:.85}
+.brand:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+@media (max-width:480px){.brand img{width:96px}}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .brand img{filter:brightness(0) invert(1);opacity:.92}}
+:root[data-theme="dark"] .brand img{filter:brightness(0) invert(1);opacity:.92}
+</style>
+<style>
+.ex{display:grid;gap:14px;margin-top:6px}
+.ex-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding-top:14px;border-top:1px dashed var(--line)}
+.ex-head h3{font-size:24px}
+.ex-head span{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div class="brandbar"><div class="eyebrow">TOPFramework · caso applicativo</div><a class="brand" href="https://topforgrowth.it/" target="_blank" rel="noopener" aria-label="TOPForGrowth: apri il sito" title="topforgrowth.it"><img src="data:image/png;base64,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" alt="TOPForGrowth" width="120" height="74"></a></div>
+  <h1>Dal capitolato al valore: il percorso in nove step</h1>
+  <p class="lead">Un costruttore europeo di tecnologie per la rete elettrica applica il TOPFramework al ciclo gara-commessa dei grandi progetti. Per ogni step: che cosa succede, quali errori evitare, quali ostacoli aspettarsi e gli output che lo step produce, compilati per il caso.</p>
+  <div><span class="note">Caso ipotetico: azienda, dati e numeri sono illustrativi</span></div>
+
+  <nav class="busbar" aria-label="Step del percorso">
+    <div class="bus">
+      <div class="mv" data-n="2" style="--mv:var(--s1)"><div class="mv-name">Capire</div><div class="nodes">
+        <a class="node" href="#s1"><b>1</b><span>Scouting</span></a>
+        <a class="node" href="#s2"><b>2</b><span>Disruption</span></a></div></div>
+      <div class="mv" data-n="2" style="--mv:var(--s2)"><div class="mv-name">Scegliere</div><div class="nodes">
+        <a class="node" href="#s3"><b>3</b><span>Posizionamento</span></a>
+        <a class="node" href="#s4"><b>4</b><span>Governance</span></a></div></div>
+      <div class="mv" data-n="3" style="--mv:var(--s3)"><div class="mv-name">Costruire</div><div class="nodes">
+        <a class="node" href="#s5"><b>5</b><span>AI Factory</span></a>
+        <a class="node" href="#s6"><b>6</b><span>Modello operativo</span></a>
+        <a class="node" href="#s7"><b>7</b><span>Persone</span></a></div></div>
+      <div class="mv" data-n="1" style="--mv:var(--s4)"><div class="mv-name">Eseguire</div><div class="nodes">
+        <a class="node" href="#s8"><b>8</b><span>iPOC e scaling</span></a></div></div>
+      <div class="mv" data-n="1" style="--mv:var(--s5)"><div class="mv-name">Consolidare</div><div class="nodes">
+        <a class="node" href="#s9"><b>9</b><span>Valore e dipendenze</span></a></div></div>
+    </div>
+  </nav>
+</header>
+
+<section class="block" aria-labelledby="t-ctx">
+  <h2 id="t-ctx">Il contesto</h2>
+  <div class="intro-grid">
+    <div class="howto">
+      <p>Il vertice chiede "un piano AI". Il metodo risponde prima a un'altra domanda: che ruolo vuole avere l'Azienda quando l'AI sarà una componente ordinaria del modo in cui clienti, concorrenti e partner preparano, valutano ed eseguono i progetti.</p>
+      <p>Il tema di business che attraversa il caso è il ciclo gara-commessa: capitolati di oltre 2.000 pagine, offerte che richiedono 6–10 settimane di lavoro senior, deviazioni non viste in offerta che emergono in esecuzione e riducono il margine, know-how concentrato in poche persone vicine alla pensione.</p>
+    </div>
+    <div class="company">
+      <small class="eyebrow">Azienda del caso (fittizia)</small>
+      <b class="name">L'Azienda</b>
+      <span>Costruttore europeo di tecnologie per la transizione energetica, circa 20.000 dipendenti. Tre linee di business: prodotti per la rete, grandi progetti chiavi in mano (sottostazioni, collegamenti in alta tensione), service di lungo periodo.</span>
+      <span>Punto di partenza: 32 iniziative AI nate in due anni, nessuna collegata a una scelta strategica.</span>
+    </div>
+  </div>
+</section>
+
+<section class="block" aria-labelledby="t-time">
+  <h2 id="t-time">Il percorso nel tempo</h2>
+  <p class="lead">Diciotto mesi, con step che si sovrappongono ma una logica che resta sequenziale: nessuna iniziativa viene industrializzata prima che posizionamento e governance siano decisi.</p>
+  <div class="card" style="display:grid;gap:12px">
+    <div><div class="chart-title">Pianificazione degli step, mesi 1–18</div><div class="chart-sub">Barre = periodo di lavoro attivo; lo Step 9 prosegue oltre il mese 18 come attività permanente</div></div>
+    <div class="legend" id="gantt-legend"></div>
+    <div class="scroll"><div id="gantt" style="min-width:640px"></div></div>
+  </div>
+</section>
+
+<!-- ========== STEP 1 ========== -->
+<article class="step" id="s1" style="--mv:var(--s1)">
+  <div class="step-head"><div class="step-num">1</div><div class="step-mv">Capire · mesi 1–2</div><h2>Technology Scouting &amp; Strategic Sensing</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <div class="story">
+        <p>Un gruppo di scouting (IT, ingegneria di offerta, sicurezza) lavora quattro settimane e sostituisce l'elenco di vendor con un radar ragionato. La domanda non è quale prodotto sia più interessante, ma quale capacità stia diventando possibile per il ciclo gara-commessa.</p>
+        <p>Già qui emergono le prime dipendenze: un unico fornitore di modelli via cloud pubblico, capitolati con dati riservati e talvolta soggetti a vincoli di export, tre sole persone in grado di valutare la qualità degli output.</p>
+      </div>
+      <div class="output"><span class="tag">Output</span><span class="pill">AI Technology Radar</span><span class="pill">Mappa delle dipendenze</span></div>
+    </div>
+    <div class="col">
+      <div class="risk err"><h3>Errori da evitare</h3><ul>
+        <li>Trasformare il radar in un catalogo di vendor e prodotti.</li>
+        <li>Affidare lo scouting solo all'IT, senza chi conosce gare e commesse.</li>
+        <li>Reagire a ogni annuncio di mercato come a un'urgenza.</li>
+        <li>Valutare le tecnologie senza chiedersi da chi e da che cosa si diventerà dipendenti.</li>
+      </ul></div>
+      <div class="risk obs"><h3>Ostacoli prevedibili</h3>
+        <div class="obs-item"><strong>Pressione dei fornitori con demo convincenti.</strong><em>Valutare ogni proposta sulle stesse cinque aree del radar, non sulla demo.</em></div>
+        <div class="obs-item"><strong>Uso di strumenti AI personali già diffuso e invisibile.</strong><em>Censimento anonimo degli strumenti in uso prima di disegnare il radar.</em></div>
+        <div class="obs-item"><strong>I senior non hanno tempo per lo scouting.</strong><em>Sessioni brevi e mirate sui casi reali, non riunioni generali.</em></div>
+      </div>
+    </div>
+  </div>
+  <div class="ex">
+    <div class="ex-head"><h3>Esempi di output</h3><span>Compilati per il caso</span></div>
+    <div class="sheets">
+      <div class="sheet">
+        <div class="sheet-head"><b>AI Technology Radar</b><span>L'Azienda · ciclo gara-commessa · versione 1</span></div>
+        <div class="sheet-body">
+          <div class="chart-sub">Anelli dall'interno verso l'esterno: Adottare, Sperimentare, Valutare, Osservare. I numeri rimandano alla tabella.</div>
+          <div class="scroll"><div id="radar" style="min-width:520px;max-width:680px;margin:0 auto"></div></div>
+          <div class="scroll"><table>
+            <thead><tr><th>#</th><th>Tecnologia</th><th>Area</th><th>Perché conta per il ciclo gara-commessa</th><th class="num">Maturità</th><th class="num">Rilevanza</th><th>Anello</th></tr></thead>
+            <tbody id="radar-table"></tbody></table></div>
+        </div>
+        <div class="sheet-foot"><span>Punteggi 1–5 assegnati dal gruppo di scouting</span><span>Prossima revisione: fine trimestre</span><span>Owner: coordinatore scouting (IT)</span></div>
+      </div>
+      <div class="sheet">
+        <div class="sheet-head"><b>Mappa delle dipendenze infrastrutturali</b><span>L'Azienda · allegato al radar</span></div>
+        <div class="sheet-body"><div class="scroll"><table>
+          <thead><tr><th>Tipo</th><th>Da chi o da che cosa</th><th>Situazione oggi</th><th>Rischio</th><th>Reversibilità</th></tr></thead>
+          <tbody>
+            <tr><td>Modelli</td><td>Un solo fornitore di modelli di frontiera</td><td>Usato da 9 iniziative su 32</td><td><span class="chip c-md">Medio</span></td><td>Media: prompt e test non portabili</td></tr>
+            <tr><td>Cloud</td><td>Cloud pubblico approvato dal gruppo</td><td>Contratto quadro in corso</td><td><span class="chip c-lo">Basso</span></td><td>Alta per dati interni</td></tr>
+            <tr><td>Dati dei clienti</td><td>Capitolati con informazioni riservate</td><td>Caricati anche su strumenti non approvati</td><td><span class="chip c-hi">Alto</span></td><td>Bassa: dato già uscito non rientra</td></tr>
+            <tr><td>Vincoli regolatori</td><td>Informazioni soggette a export control</td><td>Nessuna regola specifica per l'AI</td><td><span class="chip c-hi">Alto</span></td><td>Serve infrastruttura propria</td></tr>
+            <tr><td>Competenze</td><td>3 persone in grado di valutare gli output</td><td>Nessun back-up</td><td><span class="chip c-hi">Alto</span></td><td>Bassa nel breve</td></tr>
+            <tr><td>Standard</td><td>Protocolli di integrazione degli agenti</td><td>Non ancora stabili</td><td><span class="chip c-md">Medio</span></td><td>Da valutare</td></tr>
+          </tbody></table></div></div>
+        <div class="sheet-foot"><span>Consegnata allo Step 4 come base per la classificazione dei dati</span></div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ========== STEP 2 ========== -->
+<article class="step" id="s2" style="--mv:var(--s1)">
+  <div class="step-head"><div class="step-num">2</div><div class="step-mv">Capire · mesi 2–3</div><h2>Disruption Analysis &amp; AI Supercycle Impact</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <div class="story">
+        <p>Il radar viene portato sul piano competitivo. L'analisi cerca insieme opportunità e vulnerabilità su quattro livelli, dai processi interni all'ecosistema.</p>
+        <p>L'esito dello stress test è netto: la vulnerabilità principale non è la mancanza di strumenti, ma il know-how su gare e commesse disperso, non strutturato e legato a poche persone. Intanto le utility clienti usano già l'AI per confrontare le offerte.</p>
+      </div>
+      <div class="output"><span class="tag">Output</span><span class="pill">AI Disruption Map</span><span class="pill">Stress test del business model</span></div>
+    </div>
+    <div class="col">
+      <div class="risk err"><h3>Errori da evitare</h3><ul>
+        <li>Cercare solo opportunità e non chiedersi dove l'AI indebolisce l'azienda.</li>
+        <li>Fermarsi ai processi interni, ignorando catena del valore ed ecosistema.</li>
+        <li>Stimare impatti senza i dati storici di margine delle commesse.</li>
+      </ul></div>
+      <div class="risk obs"><h3>Ostacoli prevedibili</h3>
+        <div class="obs-item"><strong>Resistenza a nominare le vulnerabilità del modello di business.</strong><em>Mandato esplicito del vertice e facilitazione esterna del workshop.</em></div>
+        <div class="obs-item"><strong>Dati di margine sparsi tra ERP e fogli di calcolo.</strong><em>Campione di 20 commesse ricostruito a mano come base iniziale.</em></div>
+        <div class="obs-item"><strong>Ogni business unit difende la propria lettura.</strong><em>Una sola mappa condivisa, con le differenze dichiarate come note.</em></div>
+      </div>
+    </div>
+  </div>
+  <div class="ex">
+    <div class="ex-head"><h3>Esempi di output</h3><span>Compilati per il caso</span></div>
+    <div class="sheets">
+      <div class="sheet">
+        <div class="sheet-head"><b>AI Disruption Map</b><span>L'Azienda · workshop di direzione</span></div>
+        <div class="sheet-body">
+          <div class="legend"><span><i style="background:var(--neg)"></i>Esposizione</span><span><i style="background:var(--s1)"></i>Opportunità</span></div>
+          <div class="div" id="diverge"></div>
+          <div class="scroll"><table>
+            <thead><tr><th>Livello</th><th>Opportunità principale</th><th>Vulnerabilità principale</th></tr></thead>
+            <tbody>
+              <tr><td>Processi interni</td><td>Analisi del capitolato da settimane a giorni; meno requisiti mancati</td><td>Output errati su requisiti critici diventano penali in esecuzione</td></tr>
+              <tr><td>Modello operativo</td><td>I bid engineer passano dalla lettura integrale alla revisione delle eccezioni</td><td>Se il know-how non viene codificato, esce con i senior</td></tr>
+              <tr><td>Catena del valore</td><td>Più gare presidiate con lo stesso organico</td><td>Le utility usano l'AI per confrontare le offerte: più pressione su prezzo e deviazioni</td></tr>
+              <tr><td>Ecosistema</td><td>Il know-how su gare e commesse diventa un asset difficile da copiare</td><td>Piattaforme di gestione asset delle utility controllano i dati di campo del service</td></tr>
+            </tbody></table></div>
+        </div>
+        <div class="sheet-foot"><span>Punteggi 1–5 del gruppo di lavoro</span></div>
+      </div>
+      <div class="sheet">
+        <div class="sheet-head"><b>Stress test del business model</b><span>L'Azienda · orizzonte 36 mesi</span></div>
+        <div class="sheet-body"><div class="scroll"><table>
+          <thead><tr><th>Scenario di stress</th><th>Elemento colpito</th><th>Impatto</th><th>Orizzonte</th><th>Segnale da monitorare</th></tr></thead>
+          <tbody>
+            <tr><td>Le utility valutano offerte e deviazioni con strumenti AI</td><td>Prezzo e margine di negoziazione</td><td><span class="chip c-hi">Alto</span></td><td>12–24 mesi</td><td>Bandi che chiedono deviazioni in formato strutturato</td></tr>
+            <tr><td>Un concorrente dimezza i tempi di preparazione delle offerte</td><td>Numero di gare presidiate</td><td><span class="chip c-hi">Alto</span></td><td>12–24 mesi</td><td>Gare rinunciate per mancanza di tempo o di persone</td></tr>
+            <tr><td>Escono i bid engineer senior nei prossimi tre anni</td><td>Know-how di offerta</td><td><span class="chip c-hi">Alto</span></td><td>24–36 mesi</td><td>Pensionamenti previsti nell'area offerte</td></tr>
+            <tr><td>Le piattaforme di gestione asset delle utility diventano l'interfaccia del service</td><td>Relazione con il cliente del service</td><td><span class="chip c-md">Medio</span></td><td>24–36 mesi</td><td>Clienti che chiedono di caricare i dati su piattaforme di terzi</td></tr>
+            <tr><td>I contractor EPC internalizzano l'ingegneria di offerta con l'AI</td><td>Ruolo nei progetti chiavi in mano</td><td><span class="chip c-md">Medio</span></td><td>36 mesi</td><td>Gare EPC in cui l'Azienda è solo fornitore di componenti</td></tr>
+          </tbody></table></div></div>
+        <div class="sheet-foot"><span>Esito: la difesa più solida è il know-how su gare e commesse, oggi disperso e legato a poche persone</span></div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ========== STEP 3 ========== -->
+<article class="step" id="s3" style="--mv:var(--s2)">
+  <div class="step-head"><div class="step-num">3</div><div class="step-mv">Scegliere · mesi 3–4</div><h2>Strategic Positioning &amp; Ecosystem Role Design</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <div class="story">
+        <p>In due workshop il vertice sceglie un posizionamento ibrido con priorità esplicite. La scelta orienta tutto ciò che viene dopo: architettura, ruoli, formazione e portafoglio.</p>
+        <p>La posizione perseguita: rispondere alle gare più complesse in modo più rapido, più completo e con meno rischio non visto. Il ruolo di piattaforma verso terzi è dichiarato non prioritario per almeno 24 mesi.</p>
+      </div>
+      <div class="output"><span class="tag">Output</span><span class="pill">Strategic Positioning Canvas</span><span class="pill">CEO Positioning Brief</span></div>
+      <div class="card" style="display:grid;gap:12px">
+        <div><div class="chart-title">Ripartizione dell'investimento AI per archetipo</div><div class="chart-sub">Quota del budget del primo anno, in percentuale</div></div>
+        <div class="stack" id="stack"></div>
+        <div class="legend"><span><i style="background:var(--s1)"></i>Data &amp; Knowledge Asset Player · 55%</span><span><i style="background:var(--s2)"></i>Sovereign &amp; Resilient Operator · 25%</span><span><i style="background:var(--s3)"></i>Efficiency Player · 20%</span></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="risk err"><h3>Errori da evitare</h3><ul>
+        <li>Dichiarare tutti gli archetipi prioritari: quando tutto è prioritario, nulla lo è.</li>
+        <li>Delegare la scelta all'IT, all'innovazione o ai fornitori.</li>
+        <li>Scrivere un brief senza trade-off e senza un elenco di ciò che non si farà.</li>
+        <li>Copiare il posizionamento di un concorrente.</li>
+      </ul></div>
+      <div class="risk obs"><h3>Ostacoli prevedibili</h3>
+        <div class="obs-item"><strong>Una business unit spinge per un'ambizione diversa (per esempio il service verso la piattaforma).</strong><em>Registrarla come opzione futura con una data di revisione.</em></div>
+        <div class="obs-item"><strong>Ambizione dichiarata ma non finanziata.</strong><em>Il brief non si approva senza il budget che lo accompagna.</em></div>
+        <div class="obs-item"><strong>Tempo del vertice limitato.</strong><em>Due workshop preparati con la Disruption Map già condivisa.</em></div>
+      </div>
+    </div>
+  </div>
+  <div class="ex">
+    <div class="ex-head"><h3>Esempi di output</h3><span>Compilati per il caso</span></div>
+    <div class="sheets">
+      <div class="sheet">
+        <div class="sheet-head"><b>Strategic Positioning Canvas</b><span>L'Azienda · approvato dal vertice</span></div>
+        <div class="sheet-body">
+          <div class="scroll"><table>
+            <thead><tr><th>Archetipo</th><th>Scelta</th><th>Dove si applica</th></tr></thead>
+            <tbody>
+              <tr><td>Data &amp; Knowledge Asset Player</td><td><span class="chip c-neu">Primario</span></td><td>Ciclo gara-commessa: know-how tecnico e contrattuale</td></tr>
+              <tr><td>Sovereign &amp; Resilient AI Operator</td><td><span class="chip c-lo">Secondario</span></td><td>Dati dei clienti, infrastrutture critiche, export control</td></tr>
+              <tr><td>AI Efficiency Player</td><td><span class="chip c-lo">Secondario</span></td><td>Finance, procurement, amministrazione del personale</td></tr>
+              <tr><td>AI Platform Player</td><td><span class="chip c-hi">Non prioritario</span></td><td>Capacità AI offerte a clienti e partner: rinviato di 24 mesi</td></tr>
+              <tr><td>Altri cinque archetipi</td><td style="color:var(--muted)">Non considerati</td><td style="color:var(--muted)">—</td></tr>
+            </tbody></table></div>
+          <div class="canvas">
+            <div class="box wide hl"><small>Ambizione</small>Essere il fornitore che risponde alle gare più complesse in modo più rapido, più completo e con meno rischio non visto.</div>
+            <div class="box"><small>Asset da rafforzare</small>Storico di offerte e commesse degli ultimi 10 anni, lezioni apprese, conoscenza normativa per paese e cliente.</div>
+            <div class="box"><small>Dipendenze da rendere reversibili</small>Fornitore unico di modelli; dati critici su cloud pubblico.</div>
+            <div class="box"><small>Capacità da costruire internamente</small>Knowledge engineering, valutazione degli output, governo degli agenti.</div>
+            <div class="box"><small>Partnership strategiche</small>Fornitori cloud e di modelli con clausole di portabilità e uscita; un'università per il golden set.</div>
+            <div class="box"><small>Trade-off accettati</small>Sui dati critici rinunciamo a parte della velocità di adozione in cambio di controllo.</div>
+            <div class="box"><small>Non prioritario</small>Piattaforme per terzi; chatbot rivolti all'esterno; AI nel marketing oltre l'uso di base.</div>
+            <div class="box wide"><small>Come sapremo di essere sulla strada giusta</small>Tempo di preparazione dell'offerta; deviazioni scoperte solo in esecuzione; quota di offerte che riusano lezioni apprese.</div>
+          </div>
+        </div>
+      </div>
+      <div class="sheet">
+        <div class="sheet-head"><b>CEO Strategic Positioning Brief</b><span>Una pagina · firmato</span></div>
+        <div class="sheet-body"><div class="memo">
+          <div class="memo-meta"><span>Da</span><span>Chief Executive Officer</span><span>A</span><span>Management team, AI Governance Board</span><span>Oggetto</span><span>Il nostro posizionamento AI per i prossimi 24 mesi</span></div>
+          <p>Useremo l'AI per trasformare la conoscenza accumulata in dieci anni di gare e commesse in un asset strutturato dell'Azienda, a disposizione di chi prepara ogni nuova offerta.</p>
+          <h4>Che cosa faremo</h4>
+          <p>Costruiremo un repository unico di offerte, commesse e lezioni apprese e un agente che analizza i capitolati e prepara la compliance matrix. Nelle funzioni di supporto adotteremo soluzioni di mercato per l'efficienza.</p>
+          <h4>Che cosa non faremo</h4>
+          <p>Non offriremo piattaforme AI a clienti e partner nei prossimi 24 mesi e non investiremo in chatbot rivolti all'esterno. Le proposte in queste aree tornano alla revisione di fine anno.</p>
+          <h4>Da che cosa non vogliamo dipendere</h4>
+          <p>Da un solo fornitore di modelli e da ambienti che non controlliamo per i dati critici. Ogni progetto deve dimostrare di poter cambiare modello e i dati soggetti a export control resteranno su infrastruttura propria.</p>
+          <h4>Il prezzo che accettiamo</h4>
+          <p>Sui dati critici andremo più piano. Un requisito non visto in offerta costa più di una settimana di ritardo.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ========== STEP 4 ========== -->
+<article class="step" id="s4" style="--mv:var(--s2)">
+  <div class="step-head"><div class="step-num">4</div><div class="step-mv">Scegliere · mesi 4–5</div><h2>CEO Commitment, Governance &amp; Strategic Accountability</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <div class="story">
+        <p>Il CEO istituisce un AI Governance Board presieduto dal COO, con Head of Tendering, CIO, CISO, Legal &amp; Compliance, Data Governance, HR e le business unit. Si riunisce ogni mese e può approvare, fermare o rifinanziare le iniziative.</p>
+        <p>La policy si apre con un principio: l'agente velocizza l'analisi, la firma sull'offerta resta di una persona.</p>
+      </div>
+      <div class="output"><span class="tag">Output</span><span class="pill">AI Governance Model</span><span class="pill">AI Policy Framework</span></div>
+    </div>
+    <div class="col">
+      <div class="risk err"><h3>Errori da evitare</h3><ul>
+        <li>Un board solo tecnico, senza business e senza mandato del vertice.</li>
+        <li>Una policy di decine di pagine che nessuno legge.</li>
+        <li>Nessun Decision Owner nominato per processo e per offerta.</li>
+        <li>Divieti generalizzati che spingono verso strumenti non autorizzati.</li>
+      </ul></div>
+      <div class="risk obs"><h3>Ostacoli prevedibili</h3>
+        <div class="obs-item"><strong>Tempi lunghi di legal e compliance.</strong><em>Policy in due livelli: regole essenziali subito, dettagli in revisione trimestrale.</em></div>
+        <div class="obs-item"><strong>Conflitto tra IT e business sulla titolarità.</strong><em>La RACI assegna il processo al business e la piattaforma all'IT.</em></div>
+        <div class="obs-item"><strong>Requisiti normativi in evoluzione (per esempio l'AI Act europeo).</strong><em>Legal nel board e un registro dei sistemi AI in uso fin dall'inizio.</em></div>
+      </div>
+    </div>
+  </div>
+  <div class="ex">
+    <div class="ex-head"><h3>Esempi di output</h3><span>Compilati per il caso</span></div>
+    <div class="sheets">
+      <div class="sheet">
+        <div class="sheet-head"><b>AI Governance Model</b><span>L'Azienda · mandato del CEO</span></div>
+        <div class="sheet-body">
+          <div class="canvas">
+            <div class="box"><small>Presidente</small>COO, su mandato scritto del CEO</div>
+            <div class="box"><small>Membri</small>Head of Tendering, CIO, CISO, Legal &amp; Compliance, Data Governance, HR, un rappresentante per business unit</div>
+            <div class="box"><small>Cadenza</small>Mensile; straordinaria entro 48 ore per incidenti su dati o output</div>
+          </div>
+          <div class="chart-title">Percorso di una proposta AI</div>
+          <div class="flow">
+            <div><b>Proposta</b><small>Owner di business</small>Scheda di una pagina</div>
+            <div><b>Screening</b><small>AI Factory</small>Classe di dato, fattibilità, rischio</div>
+            <div class="gate"><b>Gate 1</b><small>Board</small>Coerenza con il posizionamento</div>
+            <div><b>iPOC</b><small>Team misto</small>8–12 settimane su gare reali</div>
+            <div class="gate"><b>Gate 2</b><small>Board</small>Scorecard a cinque dimensioni</div>
+            <div><b>Produzione</b><small>AI Factory</small>Monitoraggio e registro</div>
+          </div>
+          <div class="scroll"><table>
+            <thead><tr><th>Decisione</th><th>Chi decide</th><th>Escalation</th></tr></thead>
+            <tbody>
+              <tr><td>Avvio di un iPOC</td><td>Board (Gate 1)</td><td>CEO se oltre il budget annuo</td></tr>
+              <tr><td>Passaggio in produzione</td><td>Board (Gate 2)</td><td>CEO se l'output arriva al cliente</td></tr>
+              <tr><td>Uso di dati di classe 3</td><td>Board, con parere di Legal</td><td>CEO in caso di dubbio su export control</td></tr>
+              <tr><td>Nuovo fornitore di modelli</td><td>CIO con Legal</td><td>Board se tratta dati di classe 2 o 3</td></tr>
+              <tr><td>Sospensione di un sistema</td><td>Decision Owner o CISO</td><td>Board entro 48 ore</td></tr>
+            </tbody></table></div>
+        </div>
+      </div>
+      <div class="sheet">
+        <div class="sheet-head"><b>AI Policy Framework</b><span>Estratto · policy essenziale</span></div>
+        <div class="sheet-body">
+          <div class="scroll"><table>
+            <thead><tr><th>Classe di dato</th><th>Esempi</th><th>Ambiente autorizzato</th></tr></thead>
+            <tbody>
+              <tr><td>1 · Interno</td><td>Procedure, norme pubbliche, presentazioni</td><td>Piattaforma cloud approvata</td></tr>
+              <tr><td>2 · Riservato cliente</td><td>Capitolati, prezzi, offerte</td><td>Piattaforma cloud approvata, con log</td></tr>
+              <tr><td>3 · Critico</td><td>Progetti di infrastrutture critiche, dati soggetti a export control</td><td>Solo modelli su infrastruttura propria</td></tr>
+            </tbody></table></div>
+          <div class="scroll"><table>
+            <thead><tr><th>Domanda</th><th>Risposta dell'Azienda</th></tr></thead>
+            <tbody>
+              <tr><td>Quali sistemi sono autorizzati?</td><td>Solo quelli iscritti nel registro dei sistemi AI; ogni nuovo strumento passa dallo screening.</td></tr>
+              <tr><td>Quali agenti possono agire?</td><td>L'agente di analisi capitolato estrae e classifica requisiti e propone deviazioni. Non invia nulla al cliente e non modifica prezzi.</td></tr>
+              <tr><td>Dove serve human-in-the-loop?</td><td>Ogni requisito classificato critico è validato da un bid engineer; prezzo, rischio e go/no-go restano al Bid Review Board.</td></tr>
+              <tr><td>Chi è il Decision Owner?</td><td>Head of Tendering per il processo; Bid Manager per la singola offerta.</td></tr>
+              <tr><td>Quali log si conservano?</td><td>Documenti analizzati, output, correzioni umane; per la durata della commessa più il periodo di garanzia.</td></tr>
+              <tr><td>Che cosa succede se il modello non è disponibile?</td><td>Routing sul modello secondario qualificato; se nessun modello è disponibile, procedura manuale documentata.</td></tr>
+            </tbody></table></div>
+        </div>
+        <div class="sheet-foot"><span>Principio: la delega operativa può crescere, la firma sull'offerta resta di una persona</span></div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ========== STEP 5 ========== -->
+<article class="step" id="s5" style="--mv:var(--s3)">
+  <div class="step-head"><div class="step-num">5</div><div class="step-mv">Costruire · mesi 5–9</div><h2>Technical Roadmap &amp; AI Factory Architecture</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <div class="story">
+        <p>L'architettura deriva dal posizionamento. Essere Data &amp; Knowledge Asset Player sposta l'investimento su dati, contesto e valutazione, più che sul modello.</p>
+        <p>Il modello viene scelto per classe di dato: modello di frontiera in cloud per le classi 1–2, modello open-weight su infrastruttura propria per la classe 3. Un golden set di 40 capitolati storici, validato dai senior, fissa la soglia minima: 95% dei requisiti critici individuati.</p>
+      </div>
+      <div class="output"><span class="tag">Output</span><span class="pill">AI Factory Blueprint</span><span class="pill">Business Continuity Architecture</span></div>
+      <div class="card" style="display:grid;gap:12px">
+        <div><div class="chart-title">Budget AI Factory per layer, primo anno</div><div class="chart-sub">Quota percentuale; i layer di dati e valutazione assorbono oltre il 40%</div></div>
+        <div class="hbars" id="layers"></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="risk err"><h3>Errori da evitare</h3><ul>
+        <li>Disegnare l'architettura prima di aver scelto il posizionamento.</li>
+        <li>Concentrare il budget sul modello e trascurare dati e valutazione.</li>
+        <li>Andare in produzione senza un set di test che misuri la qualità.</li>
+        <li>Nessun piano di uscita dal fornitore principale.</li>
+      </ul></div>
+      <div class="risk obs"><h3>Ostacoli prevedibili</h3>
+        <div class="obs-item"><strong>Offerte storiche in formati eterogenei, spesso scansionate.</strong><em>Bonifica per priorità: prima le ultime tre annualità e le gare vinte.</em></div>
+        <div class="obs-item"><strong>Tempi di approvvigionamento dell'infrastruttura propria.</strong><em>Avviare subito l'acquisto; nel frattempo i dati di classe 3 restano fuori dal perimetro.</em></div>
+        <div class="obs-item"><strong>Istruzioni malevole nascoste nei documenti ricevuti.</strong><em>Filtri sui documenti in ingresso e test specifici nel set di valutazione.</em></div>
+      </div>
+    </div>
+  </div>
+  <div class="ex">
+    <div class="ex-head"><h3>Esempi di output</h3><span>Compilati per il caso</span></div>
+    <div class="sheets">
+      <div class="sheet">
+        <div class="sheet-head"><b>AI Factory Blueprint</b><span>L'Azienda · maturità attuale e obiettivo a 12 mesi</span></div>
+        <div class="sheet-body">
+          <div class="legend"><span><i style="background:var(--s2)"></i>Oggi</span><span><i style="background:var(--s1)"></i>Obiettivo a 12 mesi</span></div>
+          <div class="dumb" id="dumb"></div>
+          <div class="scroll"><table>
+            <thead><tr><th>Layer</th><th>Azione principale</th><th>Owner</th></tr></thead>
+            <tbody>
+              <tr><td>Data &amp; Context</td><td>Repository unico di offerte e commesse degli ultimi 10 anni; metadati per tipo impianto, cliente, paese, esito</td><td>Data Governance</td></tr>
+              <tr><td>Model</td><td>Routing per classe di dato: frontiera in cloud (1–2), open-weight su infrastruttura propria (3)</td><td>CIO</td></tr>
+              <tr><td>Agent &amp; Workflow</td><td>Agente di analisi capitolato con compliance matrix; integrazione in sola lettura con CRM ed ERP</td><td>AI Factory</td></tr>
+              <tr><td>Evaluation</td><td>Golden set di 40 capitolati validati dai senior; soglia 95% dei requisiti critici individuati</td><td>Head of Tendering</td></tr>
+              <tr><td>Security &amp; Governance</td><td>Accessi per progetto; filtri contro istruzioni nascoste nei documenti; audit trail</td><td>CISO</td></tr>
+              <tr><td>Observability</td><td>Costo per offerta, tasso di correzione umana, deriva della qualità</td><td>AI Factory</td></tr>
+              <tr><td>Resilience</td><td>Prompt e test portabili; golden set rieseguito ogni trimestre sul modello alternativo</td><td>CIO con Procurement</td></tr>
+            </tbody></table></div>
+        </div>
+      </div>
+      <div class="sheet">
+        <div class="sheet-head"><b>Business Continuity Architecture</b><span>Estratto · scenari di guasto</span></div>
+        <div class="sheet-body"><div class="scroll"><table>
+          <thead><tr><th>Scenario</th><th>Impatto</th><th>Fallback</th><th>Ripristino</th><th>Test</th></tr></thead>
+          <tbody>
+            <tr><td>Modello primario non disponibile</td><td>Analisi capitolati ferma</td><td>Routing sul modello secondario qualificato</td><td>24 ore</td><td>Esercitazione trimestrale</td></tr>
+            <tr><td>Nessun modello disponibile</td><td>Offerte in ritardo</td><td>Procedura manuale; tempo di consegna maggiorato già negoziabile in gara</td><td>Immediato</td><td>Annuale</td></tr>
+            <tr><td>Infrastruttura propria non disponibile</td><td>Dati di classe 3 non trattabili</td><td>Analisi manuale per quei progetti</td><td>Immediato</td><td>Semestrale</td></tr>
+            <tr><td>Repository corrotto o incompleto</td><td>Risposte errate</td><td>Ripristino dalla versione precedente</td><td>4 ore</td><td>Semestrale</td></tr>
+            <tr><td>Cambio delle condizioni del fornitore</td><td>Costi fuori budget</td><td>Migrazione con test portabili</td><td>60 giorni</td><td>Simulazione annuale</td></tr>
+          </tbody></table></div></div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ========== STEP 6 ========== -->
+<article class="step" id="s6" style="--mv:var(--s3)">
+  <div class="step-head"><div class="step-num">6</div><div class="step-mv">Costruire · mesi 6–10</div><h2>Future Organization &amp; Operating Model Redesign</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <div class="story">
+        <p>Il processo di offerta viene ripensato, non solo automatizzato. Il bid engineer passa dalla lettura integrale del capitolato alla revisione delle eccezioni. Nasce il ruolo di Knowledge Curator, che presidia la base di conoscenza.</p>
+      </div>
+      <div class="output"><span class="tag">Output</span><span class="pill">Human-Data-Agent Operating Model</span><span class="pill">RACI evoluta</span></div>
+    </div>
+    <div class="col">
+      <div class="risk err"><h3>Errori da evitare</h3><ul>
+        <li>Automatizzare il processo attuale invece di ripensarlo.</li>
+        <li>Ridurre troppo presto il controllo umano sui requisiti critici.</li>
+        <li>Creare ruoli nuovi solo sulla carta, senza persone e tempo dedicati.</li>
+        <li>Una RACI burocratica che non dice chi risponde degli effetti.</li>
+      </ul></div>
+      <div class="risk obs"><h3>Ostacoli prevedibili</h3>
+        <div class="obs-item"><strong>Timore dei bid engineer di perdere il proprio ruolo.</strong><em>Coinvolgerli nel disegno e mostrare che il loro giudizio diventa il controllo di qualità.</em></div>
+        <div class="obs-item"><strong>Fiducia eccessiva negli output dell'agente.</strong><em>Campionamento obbligatorio e metriche di correzione visibili al team.</em></div>
+        <div class="obs-item"><strong>Accordi con le rappresentanze sull'uso di strumenti che registrano l'attività.</strong><em>Coinvolgere HR e relazioni industriali prima dell'avvio, non dopo.</em></div>
+      </div>
+    </div>
+  </div>
+  <div class="ex">
+    <div class="ex-head"><h3>Esempi di output</h3><span>Compilati per il caso</span></div>
+    <div class="sheets">
+      <div class="sheet">
+        <div class="sheet-head"><b>Human-Data-Agent Operating Model</b><span>Processo: preparazione dell'offerta per un grande progetto</span></div>
+        <div class="sheet-body"><div class="scroll"><table>
+          <thead><tr><th>Attività</th><th>Persone</th><th>Dati</th><th>Agenti</th><th>Decisione</th></tr></thead>
+          <tbody>
+            <tr><td>Lettura e classificazione dei requisiti</td><td>Verificano a campione</td><td>Capitolato, norme, storico</td><td>Estraggono e classificano</td><td><span class="chip c-lo">Delegata</span></td></tr>
+            <tr><td>Requisiti critici</td><td>Bid engineer valida uno per uno</td><td>Golden set, lezioni apprese</td><td>Segnalano e motivano</td><td><span class="chip c-md">Assistita</span></td></tr>
+            <tr><td>Proposta di deviazioni tecniche</td><td>Valutano e decidono</td><td>Deviazioni passate ed esito</td><td>Propongono con motivazione e fonti</td><td><span class="chip c-md">Assistita</span></td></tr>
+            <tr><td>Stima del rischio contrattuale</td><td>Giudicano e negoziano</td><td>Clausole e margini di commesse passate</td><td>Segnalano clausole anomale</td><td><span class="chip c-md">Assistita</span></td></tr>
+            <tr><td>Prezzo e go/no-go</td><td>Bid Review Board decide</td><td>Dati economici</td><td>Nessun ruolo</td><td><span class="chip c-hi">Umana</span></td></tr>
+            <tr><td>Chiusura e lezioni apprese</td><td>Bid Manager conferma</td><td>Esito della gara</td><td>Aggiornano il repository</td><td><span class="chip c-lo">Delegata</span></td></tr>
+          </tbody></table></div></div>
+      </div>
+      <div class="sheet">
+        <div class="sheet-head"><b>RACI evoluta</b><span>Stesso processo · R esegue · A risponde · C consultato · I informato</span></div>
+        <div class="sheet-body"><div class="scroll"><table class="raci">
+          <thead><tr><th>Attività</th><th>Head of Tendering</th><th>Bid Manager</th><th>Bid engineer</th><th>Knowledge Curator<span class="new">nuovo</span></th><th>Agent Owner<span class="new">nuovo</span></th><th>Bid Review Board</th></tr></thead>
+          <tbody id="raci"></tbody></table></div></div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ========== STEP 7 ========== -->
+<article class="step" id="s7" style="--mv:var(--s3)">
+  <div class="step-head"><div class="step-num">7</div><div class="step-mv">Costruire · mesi 6–18</div><h2>People Readiness, Culture &amp; Learning Acceleration</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <div class="story">
+        <p>La formazione segue il posizionamento, non un catalogo generico. I senior engineer diventano esperti di contesto: codificano il know-how in regole, esempi e test. Ogni gara vinta o persa e ogni commessa chiusa alimentano la base di conoscenza.</p>
+      </div>
+      <div class="output"><span class="tag">Output</span><span class="pill">Role Evolution Map</span><span class="pill">Learning Organization Blueprint</span></div>
+      <div class="card" style="display:grid;gap:12px">
+        <div><div class="chart-title">Persone coinvolte per livello di competenza</div><div class="chart-sub">Area offerte e AI Factory, numero di persone</div></div>
+        <div class="hbars" id="people"></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="risk err"><h3>Errori da evitare</h3><ul>
+        <li>Lo stesso corso di prompting per tutti, scollegato dai ruoli.</li>
+        <li>Misurare le ore d'aula invece dell'adozione nel lavoro reale.</li>
+        <li>Formare prima che ruoli e processi siano definiti, e poi non riprendere.</li>
+        <li>Dimenticare i manager: sono loro a governare mandati e soglie.</li>
+      </ul></div>
+      <div class="risk obs"><h3>Ostacoli prevedibili</h3>
+        <div class="obs-item"><strong>Tempo sottratto alle gare in corso.</strong><em>Moduli brevi, esercitazioni su gare reali, calendario concordato con i bid manager.</em></div>
+        <div class="obs-item"><strong>Senior riluttanti a codificare il proprio know-how.</strong><em>Riconoscere il ruolo di esperto di contesto negli obiettivi e nella valutazione.</em></div>
+        <div class="obs-item"><strong>Ambienti di esercitazione diversi da quelli di lavoro.</strong><em>Ogni sessione chiude con un'attività da ripetere sugli strumenti aziendali.</em></div>
+      </div>
+    </div>
+  </div>
+  <div class="ex">
+    <div class="ex-head"><h3>Esempi di output</h3><span>Compilati per il caso</span></div>
+    <div class="sheets">
+      <div class="sheet">
+        <div class="sheet-head"><b>Role Evolution Map</b><span>L'Azienda · area offerte dei grandi progetti</span></div>
+        <div class="sheet-body"><div class="scroll"><table>
+          <thead><tr><th>Ruolo</th><th class="num">Persone</th><th>Oggi</th><th>Domani</th><th>Competenze nuove</th><th>Livello</th></tr></thead>
+          <tbody>
+            <tr><td>Bid engineer</td><td class="num">180</td><td>Legge integralmente il capitolato</td><td>Rivede eccezioni e requisiti critici, arricchisce il repository</td><td>Valutare output AI, riconoscere errori tipici</td><td>Literacy + business translation</td></tr>
+            <tr><td>Bid manager</td><td class="num">45</td><td>Coordina la produzione dell'offerta</td><td>Governa mandato e soglie dell'agente sulla propria offerta</td><td>Soglie, metriche di qualità, escalation</td><td>Manageriale</td></tr>
+            <tr><td>Senior engineer</td><td class="num">25</td><td>Detiene il know-how in modo tacito</td><td>Lo codifica come esperto di contesto e valida il golden set</td><td>Scrivere regole, esempi e casi di test</td><td>Business translation</td></tr>
+            <tr><td>Knowledge Curator</td><td class="num">4</td><td>Ruolo nuovo</td><td>Presidia qualità, metadati e aggiornamento della conoscenza</td><td>Modellazione della conoscenza, qualità del dato</td><td>Specialistico</td></tr>
+            <tr><td>Agent Owner e team AI Factory</td><td class="num">15</td><td>Sviluppo IT tradizionale</td><td>Progetta, valuta e monitora gli agenti</td><td>Valutazione, sicurezza, osservabilità</td><td>Specialistico</td></tr>
+            <tr><td>Altre funzioni di offerta</td><td class="num">130</td><td>Uso sporadico e non guidato</td><td>Uso conforme alla policy</td><td>Policy, classi di dato, rischi</td><td>Literacy</td></tr>
+          </tbody></table></div></div>
+      </div>
+      <div class="sheet">
+        <div class="sheet-head"><b>Learning Organization Blueprint</b><span>Piano per livello e meccanismi di apprendimento</span></div>
+        <div class="sheet-body">
+          <div class="scroll"><table>
+            <thead><tr><th>Livello</th><th>Formato</th><th>Durata</th><th>Come si misura</th></tr></thead>
+            <tbody>
+              <tr><td>Literacy diffusa</td><td>Modulo online più esercitazione su un capitolato reale</td><td>4 ore</td><td>Uso dei soli strumenti approvati; zero dati di classe 3 fuori perimetro</td></tr>
+              <tr><td>Manageriale</td><td>Laboratorio su soglie, escalation e scorecard</td><td>2 giornate</td><td>Soglie definite per ogni offerta sopra i 50 milioni</td></tr>
+              <tr><td>Specialistico</td><td>Percorso tecnico con affiancamento</td><td>10 giornate</td><td>Golden set mantenuto e rieseguito ogni trimestre</td></tr>
+              <tr><td>Business translation</td><td>Laboratorio di codifica del know-how con i senior</td><td>4 giornate</td><td>Regole e casi aggiunti al repository per mese</td></tr>
+            </tbody></table></div>
+          <div class="canvas">
+            <div class="box"><small>Meccanismo</small>Revisione mensile dei requisiti che l'agente ha mancato</div>
+            <div class="box"><small>Meccanismo</small>Post-mortem strutturato di ogni gara persa, entro 30 giorni</div>
+            <div class="box"><small>Meccanismo</small>Ogni deviazione emersa in esecuzione torna nel repository come lezione appresa</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ========== STEP 8 ========== -->
+<article class="step" id="s8" style="--mv:var(--s4)">
+  <div class="step-head"><div class="step-num">8</div><div class="step-mv">Eseguire · mesi 7–18</div><h2>Agile Execution, iPOC &amp; Controlled Scaling</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <div class="story">
+        <p>Le 32 iniziative esistenti vengono rivalutate con i criteri del metodo: contribuiscono al posizionamento? Costruiscono capacità riutilizzabili? Riducono o aumentano dipendenze critiche? Solo due vengono industrializzate.</p>
+        <p>L'iPOC sull'analisi del capitolato gira per 10 settimane su 12 gare reali, in parallelo al processo tradizionale.</p>
+      </div>
+      <div class="output"><span class="tag">Output</span><span class="pill">AI Use Case Portfolio</span><span class="pill">Controlled Scaling Plan</span></div>
+      <div class="card" style="display:grid;gap:12px">
+        <div><div class="chart-title">Destino delle 32 iniziative esistenti</div><div class="chart-sub">Numero di iniziative per decisione del Governance Board</div></div>
+        <div class="hbars" id="portfolio-bars"></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="risk err"><h3>Errori da evitare</h3><ul>
+        <li>Un PoC vetrina che misura solo se la tecnologia funziona.</li>
+        <li>Scalare tutto ciò che funziona in piccolo.</li>
+        <li>Non interrompere mai nulla: il portafoglio cresce, la direzione no.</li>
+        <li>Testare su dati puliti o sintetici che non somigliano alle gare reali.</li>
+      </ul></div>
+      <div class="risk obs"><h3>Ostacoli prevedibili</h3>
+        <div class="obs-item"><strong>Sponsor legati ai propri progetti da interrompere.</strong><em>Criteri di valutazione pubblici e decisione del board, non della singola funzione.</em></div>
+        <div class="obs-item"><strong>Doppio lavoro durante il parallelo con il processo tradizionale.</strong><em>Parallelo limitato nel tempo e riconosciuto nel carico dei team.</em></div>
+        <div class="obs-item"><strong>Pressione commerciale per saltare i gate.</strong><em>Il gate è una condizione di finanziamento della wave successiva.</em></div>
+      </div>
+    </div>
+  </div>
+  <div class="ex">
+    <div class="ex-head"><h3>Esempi di output</h3><span>Compilati per il caso</span></div>
+    <div class="sheets">
+      <div class="sheet">
+        <div class="sheet-head"><b>AI Use Case Portfolio</b><span>L'Azienda · revisione del mese 7 · ●●● forte · ○ debole</span></div>
+        <div class="sheet-body"><div class="scroll"><table>
+          <thead><tr><th>Iniziativa</th><th>Posizio&shy;namento</th><th>Capacità riusabili</th><th>Dipendenze</th><th>Monitorabile</th><th>Valore</th><th>Categoria</th><th>Decisione</th></tr></thead>
+          <tbody id="portfolio"></tbody></table></div></div>
+        <div class="sheet-foot"><span>Estratto: 6 iniziative su 32</span><span>Colonna Dipendenze: ●●● = le riduce · ○ = le aumenta</span></div>
+      </div>
+      <div class="sheet">
+        <div class="sheet-head"><b>Controlled Scaling Plan</b><span>Analisi del capitolato · con scorecard iPOC</span></div>
+        <div class="sheet-body">
+          <div class="scroll"><table>
+            <thead><tr><th>Dimensione iPOC</th><th>Soglia</th><th>Risultato su 12 gare</th><th>Esito</th></tr></thead>
+            <tbody>
+              <tr><td>Valore di business</td><td>Analisi iniziale sotto 1 settimana</td><td>Da 3 settimane a 4 giorni</td><td><span class="chip c-lo">Superato</span></td></tr>
+              <tr><td>Qualità dei dati</td><td>95% dei requisiti critici individuati</td><td>96% sul golden set</td><td><span class="chip c-lo">Superato</span></td></tr>
+              <tr><td>Scalabilità tecnica</td><td>Tempi e costi stabili fino a 2.500 pagine</td><td>Stabili fino a 3.000 pagine</td><td><span class="chip c-lo">Superato</span></td></tr>
+              <tr><td>Sostenibilità operativa</td><td>Uso stabile da 7 bid engineer su 10</td><td>8 su 10; serve un Knowledge Curator dedicato</td><td><span class="chip c-md">Con riserva</span></td></tr>
+              <tr><td>Rischio e dipendenze</td><td>Secondo modello qualificato; nessun dato di classe 3 fuori perimetro</td><td>Rispettato</td><td><span class="chip c-lo">Superato</span></td></tr>
+            </tbody></table></div>
+          <div class="waves">
+            <div class="wave"><b>Wave 1 · mesi 10–12</b><span>Business unit sottostazioni</span><span class="gate">95% requisiti critici, adozione oltre 70%, zero incidenti sui dati</span></div>
+            <div class="wave" style="border-top-color:var(--s2)"><b>Wave 2 · mesi 13–18</b><span>Altre business unit di progetto</span><span class="gate">Passaggio al modello secondario verificato in esercitazione</span></div>
+            <div class="wave" style="border-top-color:var(--s3)"><b>Wave 3 · dal mese 19</b><span>Collegamento con l'esecuzione della commessa</span><span class="gate">Deviazioni accettate trasferite al project manager</span></div>
+          </div>
+        </div>
+        <div class="sheet-foot"><span>Decisione Gate 2: si parte con la Wave 1 a condizione di nominare un Knowledge Curator dedicato</span></div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ========== STEP 9 ========== -->
+<article class="step" id="s9" style="--mv:var(--s5)">
+  <div class="step-head"><div class="step-num">9</div><div class="step-mv">Consolidare · dal mese 10, permanente</div><h2>Value Capture, Resilience &amp; AI Dependency Management</h2></div>
+  <div class="step-grid">
+    <div class="col">
+      <div class="story">
+        <p>Il Board riceve una dashboard che misura il valore su sei dimensioni e, accanto, il controllo mantenuto. Ogni beneficio genera una dipendenza: l'obiettivo non è eliminarle, ma renderle visibili e reversibili.</p>
+      </div>
+      <div class="output"><span class="tag">Output</span><span class="pill">AI Value &amp; Resilience Dashboard</span><span class="pill">AI Dependency Register</span></div>
+      <div class="card" style="display:grid;gap:10px">
+        <div><div class="chart-title">Tempo medio di preparazione di un'offerta</div><div class="chart-sub">Settimane, per trimestre dall'avvio del percorso</div></div>
+        <div class="scroll"><div id="line" style="min-width:480px"></div></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="risk err"><h3>Errori da evitare</h3><ul>
+        <li>Misurare solo il ritorno economico immediato.</li>
+        <li>Una dashboard per tecnici che il Board non riesce a leggere.</li>
+        <li>Compilare il registro delle dipendenze una volta e poi dimenticarlo.</li>
+        <li>Attribuire all'AI miglioramenti dovuti ad altri fattori.</li>
+      </ul></div>
+      <div class="risk obs"><h3>Ostacoli prevedibili</h3>
+        <div class="obs-item"><strong>Nessuna baseline misurata prima dell'avvio.</strong><em>Misurare i tempi di offerta già nei mesi 1–3, prima di ogni intervento.</em></div>
+        <div class="obs-item"><strong>Costi di utilizzo che crescono con l'adozione.</strong><em>Costo per offerta tra gli indicatori, con soglia di allarme.</em></div>
+        <div class="obs-item"><strong>Cambi di prezzi o condizioni del fornitore.</strong><em>Esercitazione semestrale di passaggio al modello alternativo.</em></div>
+      </div>
+    </div>
+  </div>
+  <div class="ex">
+    <div class="ex-head"><h3>Esempi di output</h3><span>Compilati per il caso</span></div>
+    <div class="sheets">
+      <div class="sheet">
+        <div class="sheet-head"><b>AI Value &amp; Resilience Dashboard</b><span>L'Azienda · 12 mesi dopo l'avvio della Wave 1</span></div>
+        <div class="sheet-body"><div class="scroll"><table>
+          <thead><tr><th>Dimensione</th><th>Indicatore</th><th class="num">Baseline</th><th class="num">Oggi</th><th class="num">Obiettivo</th><th>Stato</th></tr></thead>
+          <tbody>
+            <tr><td>Economico</td><td>Gare presidiate con lo stesso organico</td><td class="num">100</td><td class="num">120</td><td class="num">125</td><td><span class="chip c-lo">In linea</span></td></tr>
+            <tr><td>Operativo</td><td>Tempo medio di preparazione dell'offerta</td><td class="num">8 sett.</td><td class="num">5 sett.</td><td class="num">5 sett.</td><td><span class="chip c-lo">Raggiunto</span></td></tr>
+            <tr><td>Operativo</td><td>Deviazioni emerse in esecuzione, non viste in offerta</td><td class="num">100</td><td class="num">60</td><td class="num">50</td><td><span class="chip c-lo">In linea</span></td></tr>
+            <tr><td>Cognitivo</td><td>Offerte che riusano lezioni apprese strutturate</td><td class="num">10%</td><td class="num">85%</td><td class="num">90%</td><td><span class="chip c-lo">In linea</span></td></tr>
+            <tr><td>Strategico</td><td>Capacità interne operative (knowledge engineering, valutazione, governo agenti)</td><td class="num">0 su 3</td><td class="num">3 su 3</td><td class="num">3 su 3</td><td><span class="chip c-lo">Raggiunto</span></td></tr>
+            <tr><td>Ecosistemico</td><td>Utility che accettano la compliance matrix strutturata</td><td class="num">0 su 10</td><td class="num">4 su 10</td><td class="num">6 su 10</td><td><span class="chip c-md">Attenzione</span></td></tr>
+            <tr><td>Resilienza</td><td>Tempo di passaggio al modello alternativo, verificato</td><td class="num">non possibile</td><td class="num">2 giorni</td><td class="num">1 giorno</td><td><span class="chip c-md">Attenzione</span></td></tr>
+          </tbody></table></div></div>
+        <div class="sheet-foot"><span>Indici con baseline = 100</span><span>Per il Board: il valore operativo è raggiunto; resilienza e adozione da parte dei clienti sono i due punti aperti</span></div>
+      </div>
+      <div class="sheet">
+        <div class="sheet-head"><b>AI Dependency Register</b><span>Estratto · revisione trimestrale</span></div>
+        <div class="sheet-body"><div class="scroll"><table>
+          <thead><tr><th>ID</th><th>Elemento</th><th>Categoria</th><th>Processi che ne dipendono</th><th>Criticità</th><th>Alternativa</th><th>Tempo di sostituzione</th><th>Owner</th></tr></thead>
+          <tbody>
+            <tr><td>D-01</td><td>Repository offerte e commesse</td><td>Dati</td><td>Analisi capitolato, bozze di deviazioni</td><td><span class="chip c-hi">Alta</span></td><td>Versione precedente; procedura manuale</td><td>4 ore</td><td>Head of Tendering</td></tr>
+            <tr><td>D-02</td><td>Knowledge Curator e senior engineer</td><td>Competenze</td><td>Aggiornamento del repository, golden set</td><td><span class="chip c-hi">Alta</span></td><td>Piano di successione; affiancamento di due junior</td><td>6 mesi</td><td>HR</td></tr>
+            <tr><td>D-03</td><td>Vincoli di export e riservatezza</td><td>Regolatorio</td><td>Offerte su infrastrutture critiche</td><td><span class="chip c-hi">Alta</span></td><td>Classe 3 solo su infrastruttura propria</td><td>—</td><td>Legal &amp; Compliance</td></tr>
+            <tr><td>D-04</td><td>Modello di frontiera in cloud</td><td>Modello</td><td>Analisi capitolato (classi 1–2)</td><td><span class="chip c-md">Media</span></td><td>Secondo modello qualificato; test portabili</td><td>2 giorni</td><td>CIO</td></tr>
+            <tr><td>D-05</td><td>Infrastruttura di calcolo propria</td><td>Infrastruttura</td><td>Analisi capitolato (classe 3)</td><td><span class="chip c-md">Media</span></td><td>Analisi manuale</td><td>Immediato</td><td>CIO</td></tr>
+            <tr><td>D-06</td><td>Integrazione con CRM ed ERP</td><td>Software</td><td>Dati economici delle commesse</td><td><span class="chip c-lo">Bassa</span></td><td>Accesso in sola lettura, sostituibile</td><td>1 settimana</td><td>CIO</td></tr>
+          </tbody></table></div></div>
+        <div class="sheet-foot"><span>D-02 è la dipendenza meno visibile e più lenta da sostituire: portata al Board come rischio aperto</span></div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<section class="block" aria-labelledby="t-sum" style="border-top:1px solid var(--line);margin-top:40px">
+  <h2 id="t-sum">Sintesi: l'errore più costoso per ogni step</h2>
+  <p class="lead">Se si guarda un solo segnale per step, è questo. Quando compare, conviene fermarsi e tornare allo step precedente.</p>
+  <div class="card scroll"><table>
+    <thead><tr><th>Step</th><th>Errore più costoso</th><th>Segnale d'allarme</th></tr></thead>
+    <tbody>
+      <tr><td>1 · Scouting</td><td>Radar ridotto a catalogo di vendor</td><td>Il documento elenca prodotti ma nessuna dipendenza</td></tr>
+      <tr><td>2 · Disruption</td><td>Guardare solo le opportunità</td><td>Nessuna vulnerabilità nominata nella mappa</td></tr>
+      <tr><td>3 · Posizionamento</td><td>Tutto prioritario</td><td>Il brief non contiene un elenco di ciò che non si farà</td></tr>
+      <tr><td>4 · Governance</td><td>Board senza potere di decidere</td><td>Nessuna iniziativa fermata o rifinanziata in sei mesi</td></tr>
+      <tr><td>5 · AI Factory</td><td>Investire sul modello e non sui dati</td><td>Manca un set di test con soglie di qualità</td></tr>
+      <tr><td>6 · Modello operativo</td><td>Automatizzare senza ripensare</td><td>Il processo ha gli stessi passaggi di prima, solo più veloci</td></tr>
+      <tr><td>7 · Persone</td><td>Formazione generica</td><td>Si misurano ore d'aula, non adozione</td></tr>
+      <tr><td>8 · iPOC e scaling</td><td>Non interrompere nulla</td><td>Il portafoglio cresce a ogni trimestre</td></tr>
+      <tr><td>9 · Valore</td><td>Misurare solo il ROI</td><td>Il registro delle dipendenze non è aggiornato da mesi</td></tr>
+    </tbody></table></div>
+</section>
+
+<footer>
+  <span>Caso ipotetico costruito per illustrare il TOPFramework. Azienda, dati, tempi e valori sono illustrativi.</span>
+  <span>Struttura degli step e nomi degli output vengono dal documento di metodo. Errori, ostacoli ed esempi di output sono materiale didattico di supporto.</span>
+</footer>
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script>
+(function(){
+  const NS="http://www.w3.org/2000/svg";
+  const el=(t,a={},p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e};
+  const txt=(p,x,y,s,a={})=>{const t=el("text",Object.assign({x,y,fill:"var(--ink-2)","font-size":12},a),p);t.textContent=s;return t};
+  const tip=document.getElementById("tip");
+  document.addEventListener("mousemove",e=>{
+    const t=e.target.closest("[data-tip]");
+    if(!t){tip.style.opacity=0;return}
+    tip.textContent=t.getAttribute("data-tip");
+    const w=tip.offsetWidth,h=tip.offsetHeight;
+    let x=e.clientX+14,y=e.clientY-h-10;
+    if(x+w>innerWidth-8)x=e.clientX-w-14; if(y<8)y=e.clientY+16;
+    tip.style.left=x+"px";tip.style.top=y+"px";tip.style.opacity=1;
+  });
+
+  /* Gantt */
+  const mv={Capire:"--s1",Scegliere:"--s2",Costruire:"--s3",Eseguire:"--s4",Consolidare:"--s5"};
+  const lg=document.getElementById("gantt-legend");
+  for(const k in mv){lg.insertAdjacentHTML("beforeend",`<span><i style="background:var(${mv[k]})"></i>${k}</span>`)}
+  const steps=[["1 · Scouting","Capire",1,2],["2 · Disruption","Capire",2,3],["3 · Posizionamento","Scegliere",3,4],["4 · Governance","Scegliere",4,5],
+    ["5 · AI Factory","Costruire",5,9],["6 · Modello operativo","Costruire",6,10],["7 · Persone","Costruire",6,18],["8 · iPOC e scaling","Eseguire",7,18],["9 · Valore e dipendenze","Consolidare",10,18]];
+  (function(){
+    const W=900,L=170,R=16,T=26,rh=30,H=T+steps.length*rh+6;
+    const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,width:"100%",role:"img","aria-label":"Diagramma temporale dei nove step su 18 mesi"},document.getElementById("gantt"));
+    const x=m=>L+(m-1)*(W-L-R)/18;
+    for(let m=1;m<=19;m++){el("line",{x1:x(m),x2:x(m),y1:T-4,y2:H-4,stroke:"var(--grid)","stroke-width":1},svg);
+      if(m<=18&&(m===1||m%3===0))txt(svg,x(m)+(W-L-R)/36,16,"M"+m,{"text-anchor":"middle","font-size":11,fill:"var(--muted)"});}
+    steps.forEach((s,i)=>{const y=T+i*rh;txt(svg,0,y+rh/2+4,s[0],{fill:"var(--ink)","font-size":13});
+      const r=el("rect",{x:x(s[2])+1,y:y+6,width:x(s[3]+1)-x(s[2])-2,height:rh-12,rx:4,fill:`var(${mv[s[1]]})`},svg);
+      r.setAttribute("data-tip",`${s[0]} — ${s[1]}: mesi ${s[2]}–${s[3]}${s[0].startsWith("9")?" e oltre":""}`);});
+  })();
+
+  /* Ring radar */
+  const areas=["Modelli","Infrastrutture","Dati","Agenti","Standard e rischi"];
+  const rings=["Adottare","Sperimentare","Valutare","Osservare"];
+  const items=[
+    ["LLM di frontiera via cloud",0,0,"Sintesi e analisi di documenti lunghi",4,4],
+    ["Modelli open-weight su infrastruttura propria",0,2,"Trattare i dati critici e soggetti a export control",4,3],
+    ["Servizi AI del cloud già approvato",1,0,"Partire senza nuovi contratti",5,3],
+    ["Calcolo GPU su infrastruttura propria",1,2,"Presupposto per i dati di classe 3",3,3],
+    ["RAG su documentazione tecnica e storico offerte",2,0,"Ritrovare requisiti, soluzioni e lezioni apprese",4,5],
+    ["Knowledge graph di norme e specifiche",2,3,"Collegare requisiti, norme e componenti",3,3],
+    ["Agenti per l'analisi dei capitolati",3,1,"Estrazione dei requisiti e compliance matrix",3,5],
+    ["Protocolli di integrazione agenti–sistemi",4,3,"Collegare agenti a CRM, ERP e PLM",2,3],
+    ["Difese contro istruzioni nascoste nei documenti",4,1,"I capitolati di terzi sono un vettore di attacco",2,4],
+    ["Strumenti di valutazione dei modelli",4,1,"Misurare la qualità sul golden set",3,4]];
+  (function(){
+    const S=560,c=S/2,R=[70,130,190,240];
+    const svg=el("svg",{viewBox:`-120 -10 ${S+240} ${S+20}`,width:"100%",role:"img","aria-label":"Radar tecnologico con quattro anelli e cinque aree"},document.getElementById("radar"));
+    [...R].reverse().forEach((r,i)=>el("circle",{cx:c,cy:c,r,fill:i%2?"var(--surface)":"var(--bg)",stroke:"var(--line)"},svg));
+    const a0=-Math.PI/2, sw=2*Math.PI/5;
+    for(let k=0;k<5;k++){const a=a0+k*sw;el("line",{x1:c,y1:c,x2:c+R[3]*Math.cos(a),y2:c+R[3]*Math.sin(a),stroke:"var(--line)"},svg);
+      const am=a+sw/2,lx=c+(R[3]+26)*Math.cos(am),ly=c+(R[3]+26)*Math.sin(am);
+      txt(svg,lx,ly+4,areas[k],{"text-anchor":Math.abs(Math.cos(am))<.2?"middle":(Math.cos(am)>0?"start":"end"),fill:"var(--ink)","font-size":14,"font-weight":600});}
+    const count={};
+    items.forEach((it,i)=>{const key=it[1]+"-"+it[2];count[key]=(count[key]||0)+1;
+      const inner=it[2]?R[it[2]-1]:0, rr=(inner+R[it[2]])/2+(count[key]>1?14:0);
+      const am=a0+it[1]*sw+sw*(count[key]>1?0.68:0.38);
+      const x=c+rr*Math.cos(am),y=c+rr*Math.sin(am);
+      const g=el("g",{},svg);g.setAttribute("data-tip",`${i+1}. ${it[0]} — ${rings[it[2]]}`);
+      el("circle",{cx:x,cy:y,r:13,fill:"var(--s1)",stroke:"var(--surface)","stroke-width":2},g);
+      txt(g,x,y+5,String(i+1),{"text-anchor":"middle",fill:"#fff","font-size":13,"font-weight":600});});
+    const chip=["c-lo","c-neu","c-md","c-md"];
+    document.getElementById("radar-table").innerHTML=items.map((it,i)=>`<tr><td>${i+1}</td><td>${it[0]}</td><td>${areas[it[1]]}</td><td>${it[3]}</td><td class="num">${it[4]}</td><td class="num">${it[5]}</td><td><span class="chip ${chip[it[2]]}">${rings[it[2]]}</span></td></tr>`).join("");
+  })();
+
+  /* Diverging */
+  (function(){
+    const d=[["Processi interni",2,4],["Modello operativo",3,4],["Catena del valore",4,3],["Ecosistema",4,2]];
+    const box=document.getElementById("diverge");
+    box.insertAdjacentHTML("beforeend",`<div class="dv-axis"><span></span><span>← esposizione</span><span>opportunità →</span></div>`);
+    d.forEach(r=>box.insertAdjacentHTML("beforeend",`<div class="dv" data-tip="${r[0]}: esposizione ${r[1]}/5, opportunità ${r[2]}/5"><span class="l">${r[0]}</span><span class="neg"><i style="width:${r[1]*20}%"></i></span><span class="pos"><i style="width:${r[2]*20}%"></i></span></div>`));
+  })();
+
+  /* Stack */
+  document.getElementById("stack").innerHTML=[["Data & Knowledge Asset Player",55,"--s1"],["Sovereign & Resilient Operator",25,"--s2"],["Efficiency Player",20,"--s3"]]
+    .map(s=>`<div style="flex:${s[1]};background:var(${s[2]})" data-tip="${s[0]}: ${s[1]}% del budget">${s[1]}%</div>`).join("");
+
+  /* H bars */
+  function hbars(id,data,unit,max){const m=max||Math.max(...data.map(d=>d[1]));
+    document.getElementById(id).innerHTML=data.map(d=>`<div class="hb" data-tip="${d[0]}: ${d[1]}${unit}${d[2]?" — "+d[2]:""}"><span>${d[0]}</span><span class="track"><span class="fill" style="display:block;width:${Math.max(d[1]/m*100,1)}%"></span></span><span class="v">${d[1]}${unit}</span></div>`).join("");}
+  hbars("layers",[["Data & Context",28,"repository, metadati, bonifica"],["Evaluation",16,"golden set e test"],["Agent & Workflow",16],["Model",12],["Security & Governance",10],["Resilience",10,"fallback ed exit plan"],["Observability",8]],"%",30);
+  hbars("people",[["Literacy diffusa",400],["Manageriali",60],["Business translation",25],["Specialistiche",19]],"");
+  hbars("portfolio-bars",[["Interrompere",11],["Soluzione di mercato standard",9],["Esplorative",6],["iPOC",4],["Industrializzare",2]],"");
+
+  /* Dumbbell */
+  (function(){
+    const L=[["Data & Context",1,4],["Model",3,4],["Agent & Workflow",1,3],["Evaluation",1,4],["Security & Governance",2,4],["Observability",1,3],["Resilience",1,3]];
+    const pos=v=>(v-1)/4*100;
+    document.getElementById("dumb").innerHTML=`<div class="db" style="font-size:11px;color:var(--muted)"><span></span><span style="display:flex;justify-content:space-between"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></span><span></span></div>`+
+      L.map(l=>`<div class="db" data-tip="${l[0]}: oggi ${l[1]}, obiettivo ${l[2]}"><span>${l[0]}</span><span class="trk">${[1,2,3,4,5].map(v=>`<span class="tk" style="left:${pos(v)}%"></span>`).join("")}<span class="seg" style="left:${pos(l[1])}%;width:${pos(l[2])-pos(l[1])}%"></span><span class="pt" style="left:${pos(l[1])}%;background:var(--s2)"></span><span class="pt" style="left:${pos(l[2])}%;background:var(--s1)"></span></span><span class="v">${l[1]} → ${l[2]}</span></div>`).join("");
+  })();
+
+  /* RACI */
+  (function(){
+    const rows=[["Definire mandato e soglie dell'agente","A","C","C","C","R","I"],["Governare il comportamento dell'agente","A","I","I","C","R","I"],["Validare i requisiti critici","I","A","R","I","I","I"],["Curare repository e lezioni apprese","A","C","C","R","C","I"],["Decidere prezzo, rischio e go/no-go","C","R","C","I","I","A"],["Gestire le eccezioni oltre soglia","A","R","C","I","C","I"]];
+    document.getElementById("raci").innerHTML=rows.map(r=>`<tr><td>${r[0]}</td>`+r.slice(1).map(v=>`<td class="c ${v.startsWith("A")?"A":v==="R"?"R":""}">${v}</td>`).join("")+`</tr>`).join("");
+  })();
+
+  /* Portfolio */
+  (function(){
+    const dots=n=>"●".repeat(n)+`<i>${"○".repeat(3-n)}</i>`;
+    const rows=[["Analisi del capitolato e compliance matrix",3,3,2,3,3,"Capability strategica","c-lo","Industrializzare"],
+      ["Repository unico di offerte e commesse",3,3,3,2,2,"Capability strategica","c-lo","Industrializzare"],
+      ["Bozza di offerta tecnica da storico",3,2,2,2,2,"Capability strategica","c-neu","iPOC"],
+      ["Previsione del rischio di margine",2,2,2,1,3,"Esplorativa","c-md","Dopo bonifica dati"],
+      ["Assistente note spese in Finance",1,1,2,3,2,"Efficienza","c-neu","Soluzione standard"],
+      ["Chatbot generico del marketing",1,1,1,2,1,"—","c-hi","Interrompere"]];
+    document.getElementById("portfolio").innerHTML=rows.map(r=>`<tr><td>${r[0]}</td>${[1,2,3,4,5].map(i=>`<td><span class="dots">${dots(r[i])}</span></td>`).join("")}<td>${r[6]}</td><td><span class="chip ${r[7]}">${r[8]}</span></td></tr>`).join("");
+  })();
+
+  /* Line */
+  (function(){
+    const q=["Avvio","T1","T2","T3","T4","T5","T6"],v=[8.0,8.0,7.8,7.0,6.1,5.4,5.0];
+    const W=620,H=260,L=40,R=24,T=20,B=34;
+    const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,width:"100%",role:"img","aria-label":"Tempo medio di preparazione offerta da 8 a 5 settimane"},document.getElementById("line"));
+    const sx=i=>L+i*(W-L-R)/(q.length-1),sy=w=>T+(10-w)/10*(H-T-B);
+    [0,2,4,6,8,10].forEach(w=>{el("line",{x1:L,x2:W-R,y1:sy(w),y2:sy(w),stroke:"var(--grid)"},svg);txt(svg,L-8,sy(w)+4,w,{"text-anchor":"end","font-size":11,fill:"var(--muted)"})});
+    q.forEach((s,i)=>txt(svg,sx(i),H-10,s,{"text-anchor":"middle","font-size":11,fill:"var(--muted)"}));
+    [[3.33,"Wave 1"],[4.33,"Wave 2"]].forEach(w=>{const xx=L+w[0]*(W-L-R)/6;el("line",{x1:xx,x2:xx,y1:T,y2:H-B,stroke:"var(--muted)","stroke-dasharray":"3 4"},svg);txt(svg,xx+5,T+10,w[1],{"font-size":11,fill:"var(--muted)"})});
+    const pts=v.map((w,i)=>[sx(i),sy(w)]);
+    el("path",{d:"M"+pts.map(p=>p.join(",")).join(" L")+` L${sx(v.length-1)},${sy(0)} L${sx(0)},${sy(0)} Z`,fill:"var(--s1)","fill-opacity":.1},svg);
+    el("path",{d:"M"+pts.map(p=>p.join(",")).join(" L"),fill:"none",stroke:"var(--s1)","stroke-width":2.5,"stroke-linejoin":"round"},svg);
+    pts.forEach((p,i)=>{const c=el("circle",{cx:p[0],cy:p[1],r:i===pts.length-1?6:4.5,fill:"var(--s1)",stroke:"var(--surface)","stroke-width":2},svg);c.setAttribute("data-tip",`${q[i]}: ${v[i].toFixed(1).replace(".",",")} settimane`)});
+    txt(svg,pts[0][0]+6,pts[0][1]-10,"8,0 sett.",{"font-size":12,fill:"var(--ink)","font-weight":600});
+    txt(svg,pts[6][0]-4,pts[6][1]-12,"5,0 sett.",{"font-size":12,fill:"var(--ink)","font-weight":600,"text-anchor":"end"});
+  })();
+})();
+</script>
+
+</body>
+</html>
