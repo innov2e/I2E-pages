@@ -46,3 +46,23 @@ header{padding:56px 0 32px;border-bottom:1px solid var(--line);margin-bottom:32p
 .card .meta{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
 
 footer{margin-top:48px;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+
+/* Logo I2E: originale bianco, reso scuro sul tema chiaro. */
+.brand{display:inline-block;width:max-content;line-height:0}
+.brand img{height:40px;width:auto;filter:brightness(0);opacity:.82}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .brand img{filter:none;opacity:.92}
+}
+:root[data-theme="dark"] .brand img{filter:none;opacity:.92}
+
+/* Gruppo di voci con il logo del partner a fianco. */
+.family{display:grid;grid-template-columns:128px 1fr;gap:20px;align-items:start;padding:18px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px}
+.family-logo{width:100%;height:auto;position:sticky;top:16px}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .family-logo{filter:brightness(0) invert(1);opacity:.9}
+}
+:root[data-theme="dark"] .family-logo{filter:brightness(0) invert(1);opacity:.9}
+@media (max-width:600px){
+  .family{grid-template-columns:1fr;gap:14px;padding:14px}
+  .family-logo{width:104px;position:static}
+}
