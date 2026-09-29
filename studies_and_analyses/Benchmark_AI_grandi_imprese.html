@@ -207,9 +207,17 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
 @media (prefers-reduced-motion:no-preference){
   .bf,.cf{transition:filter .15s}
 }
+/* lingua */
+.theme-bar{gap:10px;align-items:center}
+.lang-seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.lang-seg button{border:0;background:transparent;padding:8px 12px;font-size:.8rem;font-family:var(--mono);color:var(--ink-2);cursor:pointer}
+.lang-seg button+button{border-left:1px solid var(--line)}
+.lang-seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.lang-seg button:hover:not([aria-pressed="true"]){color:var(--accent-ink)}
 </style>
 </head>
 <body>
+<div data-lang-pane="it">
 <nav class="toc" aria-label="Sezioni">
   <ol>
     <li><a href="#dati"><span class="n">01</span>I dati</a></li>
@@ -510,53 +518,397 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
 </section>
 
 </div>
+</div>
+
+<div data-lang-pane="en" lang="en" hidden>
+<nav class="toc" aria-label="Sections">
+  <ol>
+    <li><a href="#dati-en"><span class="n">01</span>The data</a></li>
+    <li><a href="#peer-en"><span class="n">02</span>The companies</a></li>
+    <li><a href="#finance-en"><span class="n">03</span>The Finance function</a></li>
+    <li><a href="#pattern-en"><span class="n">04</span>Who scales</a></li>
+    <li><a href="#ostacoli-en"><span class="n">05</span>Obstacles</a></li>
+    <li><a href="#implicazioni-en"><span class="n">06</span>Implications</a></li>
+    <li><a href="#fonti-en"><span class="n">07</span>Sources</a></li>
+  </ol>
+</nav>
+
+<div class="wrap">
+
+<header class="top">
+  <p class="eyebrow">Benchmark analysis · September 2026 · version 2</p>
+  <h1>The state of AI projects in large industrial companies</h1>
+  <p class="lead">How large energy and industrial companies launch, govern and bring artificial intelligence projects into production, with a deep dive on the Finance function.</p>
+  <div class="byline"><span>Data updated to September 2026</span><span>Public sources, with links and dates</span></div>
+  <div class="pillars-wrap">
+    <p class="thesis">GE Vernova's most advanced peers do not scale AI with technology alone. They combine four elements.</p>
+    <div class="pillars">
+      <div class="pillar">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 28V5"/><path d="M8 6h15l-3 5 3 5H8"/><path d="M5 28h8"/></svg>
+        <h3>Explicit sponsorship from the top</h3>
+        <p>A clear mandate from top management, covering products and internal processes.</p>
+      </div>
+      <div class="pillar">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3l10 4v8c0 7-4.5 11.5-10 14-5.5-2.5-10-7-10-14V7z"/><path d="M11 13h10M11 18h6"/></svg>
+        <h3>A secure internal generative AI platform</h3>
+        <p>Open to all employees, in place of public tools.</p>
+      </div>
+      <div class="pillar">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="7" r="3.5"/><circle cx="6" cy="24" r="3.5"/><circle cx="26" cy="24" r="3.5"/><path d="M14 10l-6 11M18 10l6 11M9.5 24h13"/></svg>
+        <h3>A network of champions in the functions</h3>
+        <p>People who collect needs and spread what works.</p>
+      </div>
+      <div class="pillar">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 12l13-6 13 6-13 6z"/><path d="M9 15v7c2 2 4.5 3 7 3s5-1 7-3v-7"/><path d="M29 12v8"/></svg>
+        <h3>Role-specific training</h3>
+        <p>Substantial programmes, beyond 5 hours, tailored to each person's work.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="quote">
+  <div>
+    <blockquote>«AI needs the electron to meet the moment»</blockquote>
+    <cite>Scott Strazik, CEO of GE Vernova, to <a href="https://www.semafor.com/article/02/05/2026/the-ceo-behind-ge-vernovas-power-surge" style="color:inherit">Semafor</a>, February 2026</cite>
+  </div>
+  <div class="split">
+    <div><div class="big">10%</div><div class="cap">of the order backlog linked to AI today</div></div>
+    <div><div class="big">⅓</div><div class="cap">of orders that AI could generate in the coming years</div></div>
+    <p class="note">A management estimate, so forward-looking. For an energy company AI matters twice: it grows demand and it changes how people work. This analysis covers the second front.</p>
+  </div>
+</div>
+
+<section id="dati-en">
+  <div class="sec-head">
+    <p class="eyebrow">01 · The big picture</p>
+    <h2>Adoption is now widespread, value is not</h2>
+    <p class="prose">Almost all large companies use AI, but only 6% get a significant impact on operating profit, and that share has not moved in a year. The bottleneck is organisational, not technological.</p>
+  </div>
+  <div class="tiles">
+    <div class="tile"><span class="v">88<small>%</small></span><span class="l">use AI in at least one function</span><span class="s">McKinsey · Nov 2025</span></div>
+    <div class="tile"><span class="v">44<small>%</small></span><span class="l">say AI is scaling across the enterprise (38% a year earlier)</span><span class="s">McKinsey · Aug 2026</span></div>
+    <div class="tile"><span class="v">6<small>%</small></span><span class="l">get a significant EBIT impact, a share unchanged since 2025</span><span class="s">McKinsey · Aug 2026</span></div>
+    <div class="tile flag"><span class="tag">Forecast</span><span class="v">40<small>%+</small></span><span class="l">of agentic AI projects cancelled by the end of 2027</span><span class="s">Gartner · Jun 2025</span></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <p class="ct">From use to value</p>
+      <p class="cs">Share of companies, in percent</p>
+      <div class="bars" data-max="100" id="c-funnel-en"></div>
+      <p class="src">Sources: McKinsey, The state of AI, November 2025 (use) and 25 August 2026 (scaling, impact, high performers). The editions use different samples.</p>
+    </div>
+    <div class="card">
+      <p class="ct">Training and leadership support drive use</p>
+      <p class="cs">Employees who use AI regularly, in percent</p>
+      <div class="legend"><span><i style="background:var(--base)"></i>Condition absent</span><span><i style="background:var(--accent)"></i>Condition present</span></div>
+      <div class="pairs" id="c-bcg-en"></div>
+      <p class="src">Source: BCG, AI at Work 2025, June 2025, 10,635 respondents.</p>
+    </div>
+  </div>
+  <p class="prose">Value comes when processes are redesigned, top management takes ownership and people receive substantial training. Among high performers, almost three in four say they have fundamentally redesigned their workflows (McKinsey 2026). Handing out licences is not enough.</p>
+</section>
+
+<section id="peer-en">
+  <div class="sec-head">
+    <p class="eyebrow">02 · The companies compared</p>
+    <h2>A centre that governs, functions that own the use cases</h2>
+    <p class="prose">The prevailing model gives a central core the platform, the rules and the risk, while the functions choose the problems, provide the data and answer for the results. Almost all started from a secure internal assistant, often to curb unauthorised use of public tools.</p>
+  </div>
+  <div class="tiles">
+    <div class="tile"><span class="v">460</span><span class="l">AI use cases in production at Siemens</span><span class="s">Fortune · Jul 2025</span></div>
+    <div class="tile"><span class="v">~100</span><span class="l">use cases in production at Schneider Electric, about half internal</span><span class="s">MIT Sloan · Mar 2026</span></div>
+    <div class="tile"><span class="v">24,000</span><span class="l">ABB employees trained on AI in 2025</span><span class="s">ABB · Apr 2026</span></div>
+    <div class="tile"><span class="v">1,000+</span><span class="l">Hitachi use cases distilled into about 200 reusable templates</span><span class="s">Microsoft · 2025</span></div>
+  </div>
+  <div class="affkey">
+    <p><strong>How close they are to GE Vernova's approach.</strong> We compared each company on four features of the way GE Vernova is launching AI. Each filled square marks a feature found in public sources.</p>
+    <ol class="crit"><li><i class="on"></i>Secure internal platform open to all</li><li><i class="on"></i>Network of champions across sites and functions</li><li><i class="on"></i>Central team with a structured use-case pipeline</li><li><i class="on"></i>Link to the lean system</li></ol>
+    <p>The closest are GE Aerospace, Siemens and Hitachi: an internal platform open to everyone, widespread champions and a centre that takes use cases all the way to production. The furthest are Saudi Aramco, which built its own language model, and Rolls-Royce, which started from governance rather than tools.</p>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Company</th><th>Closeness to GE Vernova's approach</th><th>How it started</th><th>Internal platform</th><th>People and reach</th><th>Reported results</th></tr></thead>
+      <tbody>
+        <tr class="t-hi"><td><a href="https://www.geaerospace.com/news/articles/ge-aerospace-created-ai-wingmate-six-weeks-can-you-say-next-level">GE Aerospace</a></td><td class="aff"><span class="pill hi">Very close</span><span class="dots" aria-label="3 of 4 criteria"><i class="on" title="Secure internal platform open to all: yes"></i><i class="" title="Network of champions across sites and functions: not disclosed"></i><i class="on" title="Central team with a structured use-case pipeline: yes"></i><i class="on" title="Link to the lean system: yes"></i></span><span class="why">Same lean roots: the internal platform was tied to the company's lean system</span></td><td>Response to unauthorised use of ChatGPT; platform built in six weeks</td><td>AI Wingmate on Azure OpenAI, with a module on the internal lean system</td><td>Open to <span class="num">52,000</span> employees</td><td>Over <span class="num">1 million</span> queries from <span class="num">14,000</span> active users in about 150 days; in May 2026 a generative app cut preliminary design studies for an engine from weeks to seconds (<a href="https://www.geaerospace.com/news/press-releases/ge-aerospace-completes-design-studies-hypersonic-ramjet-generative-ai">GE Aerospace</a>)</td></tr>
+        <tr class="t-hi"><td><a href="https://aws.amazon.com/solutions/case-studies/siemens-gpt-case-study/">Siemens</a></td><td class="aff"><span class="pill hi">Very close</span><span class="dots" aria-label="3 of 4 criteria"><i class="on" title="Secure internal platform open to all: yes"></i><i class="on" title="Network of champions across sites and functions: yes"></i><i class="on" title="Central team with a structured use-case pipeline: yes"></i><i class="" title="Link to the lean system: not disclosed"></i></span><span class="why">Central platform, champions who train colleagues, use cases managed through to production</span></td><td>Central IT Data &amp; AI team, strong bottom-up demand</td><td>SiemensGPT on AWS, multiple models, assistants built by employees</td><td><span class="num">150,000</span> registered users; internal champions who train colleagues</td><td><span class="num">460</span> use cases in production, over <span class="num">15,000</span> assistants built by employees</td></tr>
+        <tr class="t-hi"><td><a href="https://hitachidigital.com/news/hitachi-appoints-new-ai-ambassadors/">Hitachi</a></td><td class="aff"><span class="pill hi">Very close</span><span class="dots" aria-label="3 of 4 criteria"><i class="on" title="Secure internal platform open to all: yes"></i><i class="on" title="Network of champions across sites and functions: yes"></i><i class="on" title="Central team with a structured use-case pipeline: yes"></i><i class="" title="Link to the lean system: not disclosed"></i></span><span class="why">Network of ambassadors in the functions and a community that makes use cases reusable</span></td><td>Top-management initiative, agreements with Microsoft and Google Cloud (2024)</td><td>Group-wide internal assistant</td><td>Target of <span class="num">50,000</span> professionals; network of AI Ambassadors, including in sales</td><td>Over <span class="num">1,000</span> use cases, organised into about <span class="num">200</span> templates</td></tr>
+        <tr class="t-mid"><td><a href="https://sloanreview.mit.edu/article/how-schneider-electric-scales-ai-in-both-products-and-processes/">Schneider Electric</a></td><td class="aff"><span class="pill mid">Partly close</span><span class="dots" aria-label="2 of 4 criteria"><i class="on" title="Secure internal platform open to all: yes"></i><i class="" title="Network of champions across sites and functions: not disclosed"></i><i class="on" title="Central team with a structured use-case pipeline: yes"></i><i class="" title="Link to the lean system: not disclosed"></i></span><span class="why">Highly structured use-case pipeline, but led by a dedicated Chief AI Officer</span></td><td>Chief AI Officer and global AI Hub since 2021, with a mandate over products and internal processes</td><td>Jo-ChatGPT on Microsoft Azure OpenAI</td><td>Role-specific training</td><td><span class="num">About 100</span> use cases in production, about half internal</td></tr>
+        <tr class="t-mid"><td><a href="https://www.microsoft.com/en/customers/story/25505-totalenergies-agents">TotalEnergies</a></td><td class="aff"><span class="pill mid">Partly close</span><span class="dots" aria-label="2 of 4 criteria"><i class="on" title="Secure internal platform open to all: yes"></i><i class="" title="Network of champions across sites and functions: not disclosed"></i><i class="on" title="Central team with a structured use-case pipeline: yes"></i><i class="" title="Link to the lean system: not disclosed"></i></span><span class="why">Chose ready-made Microsoft tools instead of building its own platform; an internal committee validates agents</span></td><td>Secure assistant on internal data (August 2023), pilot with 300 people (September 2023), company-wide rollout (February 2024) (<a href="https://totalenergies.com/newsroom/totalenergies-unlocks-potential-generative-artificial-intelligence-its/?lang=eng">TotalEnergies</a>)</td><td>Microsoft 365 Copilot and Copilot Studio to build agents; from September 2026 a programme with Mistral AI worth over €100 million for models dedicated to exploration</td><td>Training for every employee in 2024; about one event a day during the rollout; a committee that assesses agents for value, feasibility, security and duplication</td><td><span class="num">30,000</span> licences; <span class="num">70%</span> of users use it every week; a procurement agent with potential savings of up to <span class="num">10%</span> on some categories (October 2025)</td></tr>
+        <tr class="t-mid"><td><a href="https://www.abb.com/global/en/company/stories/ai-in-the-workplace">ABB</a></td><td class="aff"><span class="pill mid">Partly close</span><span class="dots" aria-label="2 of 4 criteria"><i class="on" title="Secure internal platform open to all: yes"></i><i class="on" title="Network of champions across sites and functions: yes"></i><i class="" title="Central team with a structured use-case pipeline: not disclosed"></i><i class="" title="Link to the lean system: not disclosed"></i></span><span class="why">Main lever is mass training and community, less the use-case pipeline</span></td><td>Central tools, adoption driven by training and community</td><td>«Abby», over 15 models, custom agents</td><td><span class="num">24,000</span> employees trained in 2025</td><td><span class="num">35,000</span> users and <span class="num">400,000</span> conversations in 2025</td></tr>
+        <tr class="t-mid"><td><a href="https://www.fortune.com/2024/08/28/why-honeywell-betting-on-generative-ai">Honeywell</a></td><td class="aff"><span class="pill mid">Partly close</span><span class="dots" aria-label="2 of 4 criteria"><i class="on" title="Secure internal platform open to all: yes"></i><i class="" title="Network of champions across sites and functions: not disclosed"></i><i class="on" title="Central team with a structured use-case pipeline: yes"></i><i class="" title="Link to the lean system: not disclosed"></i></span><span class="why">Started from employee ideas, with digital leadership rather than a network of champions</span></td><td>Chief Digital Technology Officer; generative AI open to all</td><td>Enterprise tools, partnership with Google Cloud</td><td>Employee ideas prioritised by impact</td><td><span class="num">16</span> use cases in production (August 2024)</td></tr>
+        <tr class="t-lo"><td><a href="https://www.zawya.com/en/business/technology-and-telecom/aramco-launches-new-ai-model-innovative-rd-network-icf28sse">Saudi Aramco</a></td><td class="aff"><span class="pill lo">Different</span><span class="dots" aria-label="0 of 4 criteria"><i class="" title="Secure internal platform open to all: not disclosed"></i><i class="" title="Network of champions across sites and functions: not disclosed"></i><i class="" title="Central team with a structured use-case pipeline: not disclosed"></i><i class="" title="Link to the lean system: not disclosed"></i></span><span class="why">Built its own language model instead of a platform for all employees</span></td><td>In-house development of a proprietary model, unveiled at the LEAP conference in Riyadh (March 2024)</td><td>aramcoMETABRAIN, trained on «90 years of accumulated company data»</td><td>Not disclosed</td><td>Stated goal: productivity and growth; applications in project management, logistics and reserves calculation</td></tr>
+        <tr class="t-lo"><td><a href="https://www.rolls-royce.com/media/press-releases/2020/14-12-2020-trustworthy-artificial-intelligence-rolls-royce-publishes-pioneering-bias-control.aspx">Rolls-Royce</a></td><td class="aff"><span class="pill lo">Different</span><span class="dots" aria-label="0 of 4 criteria"><i class="" title="Secure internal platform open to all: not disclosed"></i><i class="" title="Network of champions across sites and functions: not disclosed"></i><i class="" title="Central team with a structured use-case pipeline: not disclosed"></i><i class="" title="Link to the lean system: not disclosed"></i></span><span class="why">Started from ethical governance, with no internal platform disclosed</span></td><td>Governance first: Aletheia Framework (December 2020)</td><td>Not disclosed</td><td>Quick initial check, in-depth review only for projects at risk</td><td>Governance proportionate to risk, not a brake</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="callout"><strong>A useful case for Finance.</strong> <a href="https://www.alteryx.com/resources/customer-story/siemens-energy">Siemens Energy</a> built an assistant that queries hundreds of thousands of pages of technical documentation, then extended it to finance by changing only the source data. A model built once can serve several functions.</p>
+  <div class="paths-wrap">
+    <div class="sec-head">
+      <h3 class="sub">Three routes to the platform</h3>
+      <p class="prose">The companies reviewed chose three different routes to give AI to their employees. None is better in absolute terms: time, cost and control over data differ.</p>
+    </div>
+    <div class="paths">
+      <div class="path">
+        <span class="pk">Buy</span>
+        <h3>Ready-made tools</h3>
+        <p>Assistants such as Microsoft 365 Copilot, rolled out in a few months and integrated with email and documents.</p>
+        <p class="pe"><b>Examples</b><a href="https://totalenergies.com/newsroom/totalenergies-unlocks-potential-generative-artificial-intelligence-its/?lang=eng">TotalEnergies</a> (February 2024), <a href="https://www.bp.com/press-and-publications/press-releases/bp-looks-to-leverage-power-of-generative-ai-with-copilot-for-microsoft-365">bp</a> (announced November 2023)</p>
+      </div>
+      <div class="path">
+        <span class="pk">Assemble</span>
+        <h3>An in-house platform on market models</h3>
+        <p>An internal assistant that uses several models from the major cloud providers, with the company's rules and data.</p>
+        <p class="pe"><b>Examples</b>Siemens, ABB, GE Aerospace, Schneider Electric</p>
+      </div>
+      <div class="path">
+        <span class="pk">Build</span>
+        <h3>A model trained on domain data</h3>
+        <p>An own or specialised language model, trained on decades of technical documents.</p>
+        <p class="pe"><b>Examples</b><a href="https://www.zawya.com/en/business/technology-and-telecom/aramco-launches-new-ai-model-innovative-rd-network-icf28sse">Saudi Aramco</a> (March 2024); <a href="https://www.nvidia.com/en-us/case-studies/shell-trains-custom-ai-chatbot-with-nemo/">Shell</a>, for research: 154,000 chemistry documents (August 2025)</p>
+      </div>
+    </div>
+    <p class="src">The routes are not mutually exclusive: TotalEnergies, which started from ready-made tools, launched a programme with Mistral AI in September 2026 to build its own exploration models (<a href="https://totalenergies.com/newsroom/totalenergies-annonce-un-partenariat-avec-mistral-en-vue-de-developper-des-modeles-de-frontiere-dintelligence-artificielle-dedies-a-lexploration-et-a-lingenierie-des-reservoirs-498514/?lang=eng">TotalEnergies</a>, 15 September 2026).</p>
+  </div>
+</section>
+
+<section id="finance-en">
+  <div class="sec-head">
+    <p class="eyebrow">03 · Deep dive</p>
+    <h2>AI in the Finance function</h2>
+    <p class="prose">Adoption in Finance has stalled at around 60% and the median return is 10%, half the typical target. The gap between those who get value and those who do not depends on method, not budget.</p>
+  </div>
+  <div class="tiles">
+    <div class="tile"><span class="v">59<small>%</small></span><span class="l">of Finance functions use AI</span><span class="s">Gartner · Nov 2025</span></div>
+    <div class="tile flag"><span class="v">7<small>%</small></span><span class="l">see a high or very high impact</span><span class="s">Gartner · Jun 2026</span></div>
+    <div class="tile"><span class="v">10<small>%</small></span><span class="l">median return on investment, against a typical target of 20%</span><span class="s">BCG · Jun 2025</span></div>
+    <div class="tile"><span class="v">45<small>%</small></span><span class="l">can quantify the return of their initiatives</span><span class="s">BCG · Jun 2025</span></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <p class="ct">Adoption in Finance has stalled</p>
+      <p class="cs">Finance functions using AI, in percent</p>
+      <div class="cols" id="c-adopt-en"></div>
+      <div class="colx"><span>2023</span><span>2024</span><span>2025</span></div>
+      <p class="src">Source: Gartner, AI in Finance Survey, 18 November 2025, 183 CFOs and Finance leaders. 91% report a low or moderate impact at first.</p>
+    </div>
+    <div class="card">
+      <p class="ct">Where it is used today</p>
+      <p class="cs">Most common use cases among adopters, in percent</p>
+      <div class="bars" data-max="100" id="c-uses-en"></div>
+      <p class="src">Source: Gartner, 18 November 2025. In cash application BCG reports over 90% of transactions with no manual intervention (April 2026).</p>
+    </div>
+    <div class="card">
+      <p class="ct">More productivity than decisions</p>
+      <p class="cs">Focus of Finance AI investments, in percent</p>
+      <div class="bars" data-max="100" id="c-orient-en"></div>
+      <p class="src">Source: Gartner, 20 July 2026, 204 Finance leaders. Boards look instead at growth and competitive advantage: Finance reports progress, the board sees little strategic impact.</p>
+    </div>
+    <div class="card">
+      <p class="ct">What raises the odds of success</p>
+      <p class="cs">Additional percentage points, Finance functions</p>
+      <div class="bars" data-max="10" id="c-practices-en"></div>
+      <p class="src">Source: BCG, How to Get ROI from AI in the Finance Function, 4 June 2025, over 280 Finance executives.</p>
+    </div>
+  </div>
+  <div class="card">
+    <p class="ct">What AI success in Finance depends on</p>
+    <p class="cs">Estimated weight of the factors, in percent</p>
+    <div class="stack" id="c-stack-en">
+      <div class="s1" style="flex:10" data-tip="AI models: about 10%">10%</div>
+      <div class="s2" style="flex:20" data-tip="Technology platform: about 20%">20%</div>
+      <div class="s3" style="flex:70" data-tip="Organisation, people and skills: about 70%">70%</div>
+    </div>
+    <div class="legend"><span><i style="background:var(--base)"></i>Models</span><span><i style="background:color-mix(in srgb,var(--accent) 55%,var(--base))"></i>Technology platform</span><span><i style="background:var(--accent)"></i>Organisation, people and skills</span></div>
+    <p class="src">Source: BCG, The CFO's AI Agenda, April 2026. BCG adds that AI in Finance fails «not because the models lack capability but because the data lacks context».</p>
+  </div>
+</section>
+
+<section id="pattern-en">
+  <div class="sec-head">
+    <p class="eyebrow">04 · What sets apart those who scale AI</p>
+    <h2>Seven recurring behaviours</h2>
+    <p class="prose">Companies that bring AI into production repeat the same behaviours, whatever their sector.</p>
+  </div>
+  <div class="plist">
+    <div class="pitem"><h3>Explicit mandate from the top</h3><p>Schneider Electric gives a Chief AI Officer both the customer offering and internal use. <q>Without the C-suite, everyone tries different things at a departmental and individual level</q> (<a href="https://www.salesforce.com/blog/ai-at-scale/">Salesforce</a>).</p></div>
+    <div class="pitem"><h3>A secure platform instead of a ban</h3><p>GE Aerospace, Siemens, ABB and Schneider turned a risk into adoption. 54% of employees would use unauthorised tools (BCG 2025).</p></div>
+    <div class="pitem"><h3>Use cases owned by the functions</h3><p>The centre governs platform and risk; the functions choose the problem, provide the data and answer for the results.</p></div>
+    <div class="pitem"><h3>Champions in the functions and reuse</h3><p>Hitachi appointed AI Ambassadors, including in sales. The network's value lies in spreading what works.</p></div>
+    <div class="pitem"><h3>Substantial, role-specific training</h3><p>Beyond 5 hours, with coaching and in-person sessions (BCG 2025). Schneider lists role-specific training among its lessons learned.</p></div>
+    <div class="pitem"><h3>Use cases designed to scale</h3><p>Schneider closes cases without data right away: <q>Our goal is not to have pilots and experiments</q>. Gartner suggests 3-5 use cases at a time: <q>If everything is a priority, nothing gets funded</q>. TotalEnergies puts every new agent through a committee that assesses value, feasibility, security and any duplicates.</p></div>
+    <div class="pitem"><h3>Governance proportionate to risk</h3><p>Rolls-Royce applies a quick check to all projects and an in-depth review only to the few with a possible ethical impact.</p></div>
+  </div>
+</section>
+
+<section id="ostacoli-en">
+  <div class="sec-head">
+    <p class="eyebrow">05 · Obstacles and risks</p>
+    <h2>Five obstacles that recur in almost every source</h2>
+  </div>
+  <div class="risks">
+    <div class="risk"><h3>Data quality and context</h3><p>The leading cause of early closure of use cases at Schneider and the first barrier Gartner cites for Finance, together with skills.</p></div>
+    <div class="risk"><h3>Experiments that stay experiments</h3><p>Almost two thirds of companies have not yet started to scale AI beyond experimentation (McKinsey 2025).</p></div>
+    <div class="risk"><h3>Return that is hard to measure</h3><p>Only 45% of Finance functions can quantify it. Even Siemens' CTO admits: «The question is, how much have we saved?».</p></div>
+    <div class="risk"><h3>Unauthorised use of public tools</h3><p>With the risk of exposing confidential data and financial information.</p></div>
+    <div class="risk"><h3>Inflated expectations about agents</h3><p>Gartner expects over 40% of agentic AI projects to be cancelled by 2027 and flags many products marketed as agents that are not.</p></div>
+  </div>
+</section>
+
+<section id="implicazioni-en">
+  <div class="sec-head">
+    <p class="eyebrow">06 · Implications</p>
+    <h2>What the benchmark suggests to a Finance leadership team</h2>
+    <p class="prose">Move from widespread use of tools to a governed, measured portfolio of use cases. The evidence points to six choices.</p>
+  </div>
+  <ol class="steps">
+    <li><div><h3>Few use cases at a time, chosen for value</h3><p>Three to five, each with a function owner and a baseline measure defined before starting.</p></div></li>
+    <li><div><h3>Balance productivity and decisions</h3><p>Alongside automating accounts payable, reconciliations and closing, invest in variance analysis, scenarios and forecasting: that is what the board recognises as strategic value.</p></div></li>
+    <li><div><h3>Data with context</h3><p>A harmonised chart of accounts, consistent hierarchies and shared driver definitions are the condition for models to give reliable answers.</p></div></li>
+    <li><div><h3>Controls built into the design</h3><p>Data lineage, activity logs and approval steps must be planned from the start, to preserve internal controls and compliance.</p></div></li>
+    <li><div><h3>Finance champions in the internal network</h3><p>One or two people per area who collect needs, share what works and drive reuse across sites and functions.</p></div></li>
+    <li><div><h3>Role-specific, documented skills</h3><p>From correct use of assistants to designing workflows with agents. <a href="https://digital-strategy.ec.europa.eu/en/faqs/ai-literacy-questions-answers">Article 4 of the AI Act</a>, applicable since 2 February 2025, requires a sufficient level of AI literacy among staff; for the Commission an internal record of initiatives is enough. The text is subject to European simplification proposals: check the version in force.</p></div></li>
+  </ol>
+</section>
+
+<section id="fonti-en">
+  <div class="sec-head">
+    <p class="eyebrow">07 · Sources</p>
+    <h2>Sources consulted</h2>
+    <p class="prose">Company data comes from press releases, corporate websites and news outlets; some from vendor case studies (AWS, Alteryx, Microsoft, NVIDIA). Forecasts and management estimates are flagged as such.</p>
+  </div>
+  <div class="sources">
+    <h3>Research and surveys</h3>
+    <ul>
+      <li><a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai">McKinsey, The state of AI</a> <span class="d">· 25 August 2026</span></li>
+      <li><a href="https://www.mckinsey.com/~/media/mckinsey/business%20functions/quantumblack/our%20insights/the%20state%20of%20ai/november%202025/the-state-of-ai-2025-agents-innovation_cmyk-v1.pdf">McKinsey, The state of AI in 2025</a> <span class="d">· November 2025</span></li>
+      <li><a href="https://web-assets.bcg.com/fd/0d/bcc5dfae4cbaa08c718b95b16cf5/ai-at-work-2025-slideshow-june-2025-edit-02.pdf">BCG, AI at Work 2025</a> <span class="d">· June 2025</span></li>
+      <li><a href="https://www.bcg.com/publications/2025/how-finance-leaders-can-get-roi-from-ai">BCG, How to Get ROI from AI in the Finance Function</a> <span class="d">· 4 June 2025</span></li>
+      <li><a href="https://www.bcg.com/publications/2026/the-cfos-ai-agenda-from-automation-to-advantage">BCG, The CFO's AI Agenda: From Automation to Advantage</a> <span class="d">· 30 April 2026</span></li>
+      <li><a href="https://www.gartner.com/en/newsroom/press-releases/2025-11-18-gartner-survey-shows-finance-ai-adoption-remains-steady-in-2025">Gartner, Finance AI Adoption Remains Steady in 2025</a> <span class="d">· 18 November 2025</span></li>
+      <li><a href="https://www.gartner.com/en/newsroom/press-releases/2026-06-08-gartner-says-cfos-need-structured-finance-ai-roadmaps">Gartner, CFOs Need Structured Finance AI Roadmaps</a> <span class="d">· 8 June 2026</span></li>
+      <li><a href="https://www.gartner.com/en/newsroom/press-releases/2026-07-20-gartner-survey-shows-45-percent-of-cfos-say-their-ai-investments-lean-towwards-productivity-while-20-percent-say-these-investments-lean-towards-decision-quality">Gartner, 45% of CFOs Say Their AI Investments Lean Toward Productivity</a> <span class="d">· 20 July 2026</span></li>
+      <li><a href="https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027">Gartner, Over 40% of Agentic AI Projects Will Be Canceled by End of 2027</a> <span class="d">· 25 June 2025</span></li>
+      <li><a href="https://digital-strategy.ec.europa.eu/en/faqs/ai-literacy-questions-answers">European Commission, AI literacy: questions and answers</a></li>
+    </ul>
+    <h3>Companies</h3>
+    <ul>
+      <li><a href="https://www.semafor.com/article/02/05/2026/the-ceo-behind-ge-vernovas-power-surge">Semafor, The CEO behind GE Vernova's power surge</a> <span class="d">· February 2026</span></li>
+      <li><a href="https://sloanreview.mit.edu/article/how-schneider-electric-scales-ai-in-both-products-and-processes/">MIT Sloan Management Review, How Schneider Electric Scales AI in Both Products and Processes</a> <span class="d">· 16 March 2026</span></li>
+      <li><a href="https://www.salesforce.com/blog/ai-at-scale/">Salesforce, AI at scale (Schneider Electric)</a></li>
+      <li><a href="https://aws.amazon.com/solutions/case-studies/siemens-gpt-case-study/">AWS, SiemensGPT case study</a></li>
+      <li><a href="https://fortune.com/2025/07/16/siemens-cto-says-ai-can-help-address-the-u-s-manufacturing-industrys-big-skills-gap">Fortune, Siemens CTO on AI</a> <span class="d">· 16 July 2025</span></li>
+      <li><a href="https://www.alteryx.com/resources/customer-story/siemens-energy">Alteryx, Siemens Energy customer story</a></li>
+      <li><a href="https://www.abb.com/global/en/company/stories/ai-in-the-workplace">ABB, AI in the workplace</a> <span class="d">· 22 April 2026</span></li>
+      <li><a href="https://hitachidigital.com/news/hitachi-appoints-new-ai-ambassadors/">Hitachi, new AI Ambassadors</a></li>
+      <li><a href="https://www.microsoft.com/en/customers/story/23738-hitachi-ltd-github-copilot">Microsoft, Hitachi customer story</a></li>
+      <li><a href="https://www.geaerospace.com/news/press-releases/ge-aerospace-launches-company-wide-generative-ai-platform-employees">GE Aerospace, company-wide generative AI platform</a> <span class="d">· 23 September 2024</span></li>
+      <li><a href="https://www.geaerospace.com/news/articles/ge-aerospace-created-ai-wingmate-six-weeks-can-you-say-next-level">GE Aerospace, AI Wingmate in six weeks</a></li>
+      <li><a href="https://www.fortune.com/2024/08/28/why-honeywell-betting-on-generative-ai">Fortune, Why Honeywell is betting on generative AI</a> <span class="d">· 28 August 2024</span></li>
+      <li><a href="https://totalenergies.com/newsroom/totalenergies-unlocks-potential-generative-artificial-intelligence-its/?lang=eng">TotalEnergies, generative AI for its employees</a> <span class="d">· 27 February 2024</span></li>
+      <li><a href="https://www.microsoft.com/en/customers/story/25505-totalenergies-agents">Microsoft, TotalEnergies: from Microsoft 365 Copilot to Copilot Studio</a> <span class="d">· 22 October 2025</span></li>
+      <li><a href="https://totalenergies.com/newsroom/totalenergies-annonce-un-partenariat-avec-mistral-en-vue-de-developper-des-modeles-de-frontiere-dintelligence-artificielle-dedies-a-lexploration-et-a-lingenierie-des-reservoirs-498514/?lang=eng">TotalEnergies, partnership with Mistral</a> <span class="d">· 15 September 2026</span></li>
+      <li><a href="https://www.bp.com/press-and-publications/press-releases/bp-looks-to-leverage-power-of-generative-ai-with-copilot-for-microsoft-365">bp, Copilot for Microsoft 365</a> <span class="d">· 15 November 2023</span></li>
+      <li><a href="https://www.zawya.com/en/business/technology-and-telecom/aramco-launches-new-ai-model-innovative-rd-network-icf28sse">Zawya, Aramco launches new AI model</a> <span class="d">· 4 March 2024</span></li>
+      <li><a href="https://www.nvidia.com/en-us/case-studies/shell-trains-custom-ai-chatbot-with-nemo/">NVIDIA, Shell trains custom AI chatbot with NeMo</a> <span class="d">· 13 August 2025</span></li>
+      <li><a href="https://www.geaerospace.com/news/press-releases/ge-aerospace-completes-design-studies-hypersonic-ramjet-generative-ai">GE Aerospace, design studies of hypersonic ramjet with generative AI</a> <span class="d">· 19 May 2026</span></li>
+      <li><a href="https://www.rolls-royce.com/media/press-releases/2020/14-12-2020-trustworthy-artificial-intelligence-rolls-royce-publishes-pioneering-bias-control.aspx">Rolls-Royce, Aletheia Framework</a> <span class="d">· 14 December 2020</span></li>
+    </ul>
+  </div>
+  <footer>
+    <span>Independent analysis by INNOV2E based exclusively on public sources. Survey data use different samples and methodologies and should be read as indications of trend.</span>
+  </footer>
+</section>
+
+</div>
+</div>
 <div id="tip" hidden></div>
 
 <script>
 (function(){
   const data = {
-    "c-funnel":[
-      ["Usa l'AI in almeno una funzione",88,"McKinsey, novembre 2025"],
-      ["Estende l'AI a tutta l'impresa",44,"McKinsey, agosto 2026 (38% nel 2025)"],
-      ["Attribuisce all'AI un impatto sull'EBIT",37,"McKinsey, agosto 2026"],
-      ["High performer: impatto rilevante sull'EBIT",6,"McKinsey, agosto 2026, invariato dal 2025"]
+    it:{
+      "c-funnel":[
+        ["Usa l'AI in almeno una funzione",88,"McKinsey, novembre 2025"],
+        ["Estende l'AI a tutta l'impresa",44,"McKinsey, agosto 2026 (38% nel 2025)"],
+        ["Attribuisce all'AI un impatto sull'EBIT",37,"McKinsey, agosto 2026"],
+        ["High performer: impatto rilevante sull'EBIT",6,"McKinsey, agosto 2026, invariato dal 2025"]
+      ],
+      "c-uses":[
+        ["Gestione della conoscenza",49,"Gartner, novembre 2025"],
+        ["Automazione del ciclo passivo",37,"Gartner, novembre 2025"],
+        ["Rilevamento di errori e anomalie",34,"Gartner, novembre 2025"]
+      ],
+      "c-orient":[
+        ["Produttività ed efficienza",45,"Gartner, luglio 2026"],
+        ["Qualità delle decisioni",20,"Gartner, luglio 2026"]
+      ],
+      "c-practices":[
+        ["Inserire l'AI in una trasformazione più ampia",7,"BCG, giugno 2025"],
+        ["Puntare al valore e a risultati rapidi",6,"BCG, giugno 2025"],
+        ["Procedere per passi mirati ed estendibili",6,"BCG, giugno 2025"],
+        ["Team dedicati, con IT e fornitori",5,"BCG, giugno 2025"]
+      ]
+    },
+    en:{
+      "c-funnel":[
+        ["Use AI in at least one function",88,"McKinsey, November 2025"],
+        ["Scale AI across the enterprise",44,"McKinsey, August 2026 (38% in 2025)"],
+        ["Attribute an EBIT impact to AI",37,"McKinsey, August 2026"],
+        ["High performers: significant EBIT impact",6,"McKinsey, August 2026, unchanged since 2025"]
+      ],
+      "c-uses":[
+        ["Knowledge management",49,"Gartner, November 2025"],
+        ["Accounts payable automation",37,"Gartner, November 2025"],
+        ["Error and anomaly detection",34,"Gartner, November 2025"]
+      ],
+      "c-orient":[
+        ["Productivity and efficiency",45,"Gartner, July 2026"],
+        ["Decision quality",20,"Gartner, July 2026"]
+      ],
+      "c-practices":[
+        ["Embed AI in a broader transformation",7,"BCG, June 2025"],
+        ["Focus on value and quick wins",6,"BCG, June 2025"],
+        ["Proceed in targeted, scalable steps",6,"BCG, June 2025"],
+        ["Dedicated teams, with IT and vendors",5,"BCG, June 2025"]
+      ]
+    }
+  };
+  const pairs = {
+    it:[
+      ["Ore di formazione ricevute",["Meno di 5 ore",67],["Più di 5 ore",79]],
+      ["Dipendenti operativi e sostegno del vertice",["Senza sostegno",41],["Con sostegno chiaro",82]]
     ],
-    "c-uses":[
-      ["Gestione della conoscenza",49,"Gartner, novembre 2025"],
-      ["Automazione del ciclo passivo",37,"Gartner, novembre 2025"],
-      ["Rilevamento di errori e anomalie",34,"Gartner, novembre 2025"]
-    ],
-    "c-orient":[
-      ["Produttività ed efficienza",45,"Gartner, luglio 2026"],
-      ["Qualità delle decisioni",20,"Gartner, luglio 2026"]
-    ],
-    "c-practices":[
-      ["Inserire l'AI in una trasformazione più ampia",7,"BCG, giugno 2025"],
-      ["Puntare al valore e a risultati rapidi",6,"BCG, giugno 2025"],
-      ["Procedere per passi mirati ed estendibili",6,"BCG, giugno 2025"],
-      ["Team dedicati, con IT e fornitori",5,"BCG, giugno 2025"]
+    en:[
+      ["Hours of training received",["Less than 5 hours",67],["More than 5 hours",79]],
+      ["Frontline employees and leadership support",["Without support",41],["With clear support",82]]
     ]
   };
-  function bars(id, unit){
-    const el=document.getElementById(id), max=+el.dataset.max;
-    el.innerHTML=data[id].map(([l,v,s])=>{
-      const val=unit==="pt"?"+"+v+" punti":v+"%";
-      return `<div class="bar" tabindex="0" data-tip="${l}: ${val}. ${s}"><span class="bl">${l}</span><span class="bt"><span class="bf" style="width:${v/max*82}%"></span><span class="bv">${val}</span></span></div>`;
-    }).join("");
-  }
-  bars("c-funnel"); bars("c-uses"); bars("c-orient"); bars("c-practices","pt");
-
-  const pairs=[
-    ["Ore di formazione ricevute",["Meno di 5 ore",67],["Più di 5 ore",79]],
-    ["Dipendenti operativi e sostegno del vertice",["Senza sostegno",41],["Con sostegno chiaro",82]]
-  ];
-  document.getElementById("c-bcg").innerHTML=pairs.map(([t,a,b])=>`<div class="pair"><p class="pl">${t}</p><div class="bars">
-    <div class="bar b" tabindex="0" data-tip="${t}, ${a[0].toLowerCase()}: ${a[1]}% usa l'AI regolarmente"><span class="bl">${a[0]}</span><span class="bt"><span class="bf" style="width:${a[1]*.8}%"></span><span class="bv">${a[1]}%</span></span></div>
-    <div class="bar" tabindex="0" data-tip="${t}, ${b[0].toLowerCase()}: ${b[1]}% usa l'AI regolarmente"><span class="bl">${b[0]}</span><span class="bt"><span class="bf" style="width:${b[1]*.8}%"></span><span class="bv">${b[1]}%</span></span></div>
-  </div></div>`).join("");
-
+  const txt = {
+    it:{pt:v=>"+"+v+" punti", reg:"usa l'AI regolarmente", adopt:(y,v)=>`${y}: ${v}% delle funzioni Finance usa l'AI (Gartner)`},
+    en:{pt:v=>"+"+v+" points", reg:"use AI regularly", adopt:(y,v)=>`${y}: ${v}% of Finance functions use AI (Gartner)`}
+  };
   const adopt=[["2023",37],["2024",58],["2025",59]];
-  document.getElementById("c-adopt").innerHTML=adopt.map(([y,v])=>`<div class="col" tabindex="0" data-tip="${y}: ${v}% delle funzioni Finance usa l'AI (Gartner)"><span class="cv">${v}%</span><span class="cf" style="height:${v*1.9}px"></span></div>`).join("");
+
+  function render(lang){
+    const sfx = lang==="it" ? "" : "-en", T = txt[lang];
+    function bars(id, unit){
+      const el=document.getElementById(id+sfx), max=+el.dataset.max;
+      el.innerHTML=data[lang][id].map(([l,v,s])=>{
+        const val=unit==="pt"?T.pt(v):v+"%";
+        return `<div class="bar" tabindex="0" data-tip="${l}: ${val}. ${s}"><span class="bl">${l}</span><span class="bt"><span class="bf" style="width:${v/max*82}%"></span><span class="bv">${val}</span></span></div>`;
+      }).join("");
+    }
+    bars("c-funnel"); bars("c-uses"); bars("c-orient"); bars("c-practices","pt");
+
+    document.getElementById("c-bcg"+sfx).innerHTML=pairs[lang].map(([t,a,b])=>`<div class="pair"><p class="pl">${t}</p><div class="bars">
+      <div class="bar b" tabindex="0" data-tip="${t}, ${a[0].toLowerCase()}: ${a[1]}% ${T.reg}"><span class="bl">${a[0]}</span><span class="bt"><span class="bf" style="width:${a[1]*.8}%"></span><span class="bv">${a[1]}%</span></span></div>
+      <div class="bar" tabindex="0" data-tip="${t}, ${b[0].toLowerCase()}: ${b[1]}% ${T.reg}"><span class="bl">${b[0]}</span><span class="bt"><span class="bf" style="width:${b[1]*.8}%"></span><span class="bv">${b[1]}%</span></span></div>
+    </div></div>`).join("");
+
+    document.getElementById("c-adopt"+sfx).innerHTML=adopt.map(([y,v])=>`<div class="col" tabindex="0" data-tip="${T.adopt(y,v)}"><span class="cv">${v}%</span><span class="cf" style="height:${v*1.9}px"></span></div>`).join("");
+  }
+  render("it"); render("en");
 
   const tip=document.getElementById("tip");
   function show(e,t){tip.textContent=t;tip.hidden=false;move(e)}
@@ -575,6 +927,64 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
     n.addEventListener("focus",e=>{const r=n.getBoundingClientRect();show({clientX:r.left+20,clientY:r.top,target:n},n.dataset.tip)});
     n.addEventListener("blur",()=>tip.hidden=true);
   });
+
+  /* Lingua: IT/EN. Priorità a ?lang=, poi alla scelta salvata, altrimenti italiano.
+     Le due versioni sono pannelli paralleli; gli id inglesi finiscono con "-en". */
+  const KEY="i2e-lang", root=document.documentElement;
+  const TITLES={it:"AI nelle grandi imprese industriali", en:"AI in large industrial companies"};
+  const panes=document.querySelectorAll("[data-lang-pane]");
+  let LANG="it";
+  function load(){ try { return localStorage.getItem(KEY); } catch(e){ return null; } }
+  function save(l){ try { localStorage.setItem(KEY,l); } catch(e){} }
+  const baseId=id=>id.replace(/-en$/,"");
+  const idFor=(id,l)=>l==="it"?baseId(id):baseId(id)+"-en";
+
+  /* Sezione in vista nel pannello attivo, per restare allo stesso punto dopo il cambio. */
+  function currentSection(){
+    const pane=document.querySelector(`[data-lang-pane="${LANG}"]`);
+    let cur=null;
+    pane.querySelectorAll("section[id]").forEach(s=>{ if(s.getBoundingClientRect().top<120) cur=s.id; });
+    return cur;
+  }
+  function syncButtons(){
+    document.querySelectorAll(".lang-seg [data-lang]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===LANG)));
+  }
+  function setLang(l, opts){
+    opts=opts||{};
+    const sec=opts.keepPlace?currentSection():null;
+    LANG=l;
+    panes.forEach(p=>{ p.hidden = p.dataset.langPane!==l; });
+    root.lang=l;
+    document.title=TITLES[l];
+    tip.hidden=true;
+    syncButtons();
+    if(opts.persist) save(l);
+    if(sec){ const t=document.getElementById(idFor(sec,l)); if(t) t.scrollIntoView(); }
+  }
+
+  let initial="it";
+  try { const q=new URLSearchParams(location.search).get("lang"); if(q==="it"||q==="en") initial=q; else { const s=load(); if(s==="it"||s==="en") initial=s; } } catch(e){}
+  setLang(initial);
+  if(location.hash){
+    const t=document.getElementById(idFor(location.hash.slice(1),LANG));
+    if(t) requestAnimationFrame(()=>t.scrollIntoView());
+  }
+
+  function mountToggle(){
+    const seg=document.createElement("div");
+    seg.className="lang-seg";
+    seg.setAttribute("role","group");
+    seg.setAttribute("aria-label","Lingua / Language");
+    seg.innerHTML='<button type="button" data-lang="it" aria-pressed="false">IT</button><button type="button" data-lang="en" aria-pressed="false">EN</button>';
+    seg.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{ if(b.dataset.lang!==LANG) setLang(b.dataset.lang,{persist:true,keepPlace:true}); }));
+    let bar=document.querySelector(".theme-bar");
+    if(!bar){ bar=document.createElement("div"); bar.className="theme-bar"; document.body.insertBefore(bar,document.body.firstChild); }
+    bar.insertBefore(seg,bar.firstChild);
+    syncButtons();
+  }
+  /* theme.js crea la barra al DOMContentLoaded: il bottone lingua si aggiunge subito dopo. */
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",mountToggle);
+  else mountToggle();
 })();
 </script>
 
