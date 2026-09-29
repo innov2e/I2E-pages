@@ -79,16 +79,6 @@ header.top{padding-block:48px 36px;display:grid;gap:18px}
 .byline{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.88rem;color:var(--muted)}
 .thesis{margin-top:8px;border-left:3px solid var(--accent);padding:4px 0 4px 18px;font-size:1.2rem;line-height:1.45}
 
-/* quote band */
-.quote{background:var(--ink);color:var(--bg);border-radius:6px;padding:32px 28px;display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:center}
-:root[data-theme="dark"] .quote{background:var(--surface-2);color:var(--ink)}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .quote{background:var(--surface-2);color:var(--ink)}}
-.quote blockquote{margin:0;font-family:var(--display);font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.1;font-weight:600}
-.quote cite{display:block;margin-top:12px;font-style:normal;font-size:.86rem;opacity:.75}
-.quote .split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.quote .big{font-family:var(--display);font-size:clamp(2.6rem,6vw,3.6rem);font-weight:700;line-height:1}
-.quote .cap{font-size:.84rem;opacity:.8;margin-top:6px;line-height:1.35}
-.quote .note{grid-column:1/-1;font-size:.8rem;opacity:.65;border-top:1px solid color-mix(in srgb,currentColor 25%,transparent);padding-top:10px}
 
 section{padding-block:56px 8px;display:grid;gap:22px;scroll-margin-top:52px}
 .sec-head{display:grid;gap:8px}
@@ -198,7 +188,6 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
 
 #tip{position:fixed;z-index:20;pointer-events:none;background:var(--ink);color:var(--bg);font-size:.8rem;line-height:1.35;padding:8px 10px;border-radius:4px;max-width:280px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
 @media (max-width:760px){
-  .quote{grid-template-columns:1fr;padding:24px 20px}
   .grid2{grid-template-columns:1fr}
   .risk{grid-template-columns:1fr;gap:4px}
   .bar{grid-template-columns:1fr;gap:4px}
@@ -238,7 +227,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
   <p class="lead">Come le grandi imprese dell'energia e dell'industria avviano, governano e portano in produzione i progetti di intelligenza artificiale, con un approfondimento sulla funzione Finance.</p>
   <div class="byline"><span>Dati aggiornati a settembre 2026</span><span>Fonti pubbliche, con link e data</span></div>
   <div class="pillars-wrap">
-    <p class="thesis">I peer più avanzati di GE Vernova non portano l'AI a regime con la sola tecnologia. Uniscono quattro elementi.</p>
+    <p class="thesis">I grandi player dell'energia e dell'industria non portano l'AI a regime con la sola tecnologia. Uniscono quattro elementi.</p>
     <div class="pillars">
       <div class="pillar">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 28V5"/><path d="M8 6h15l-3 5 3 5H8"/><path d="M5 28h8"/></svg>
@@ -264,17 +253,6 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
   </div>
 </header>
 
-<div class="quote">
-  <div>
-    <blockquote>«AI needs the electron to meet the moment»</blockquote>
-    <cite>Scott Strazik, CEO di GE Vernova, a <a href="https://www.semafor.com/article/02/05/2026/the-ceo-behind-ge-vernovas-power-surge" style="color:inherit">Semafor</a>, febbraio 2026</cite>
-  </div>
-  <div class="split">
-    <div><div class="big">10%</div><div class="cap">del portafoglio ordini legato oggi all'AI</div></div>
-    <div><div class="big">⅓</div><div class="cap">degli ordini che l'AI potrebbe generare nei prossimi anni</div></div>
-    <p class="note">Stima del vertice, quindi previsionale. Per un'impresa dell'energia l'AI conta due volte: fa crescere la domanda e cambia il modo di lavorare. Questa analisi riguarda il secondo fronte.</p>
-  </div>
-</div>
 
 <section id="dati">
   <div class="sec-head">
@@ -319,15 +297,14 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
     <div class="tile"><span class="v">1.000+</span><span class="l">casi d'uso Hitachi ridotti a circa 200 schede riutilizzabili</span><span class="s">Microsoft · 2025</span></div>
   </div>
   <div class="affkey">
-    <p><strong>Quanto somigliano all'approccio di GE Vernova.</strong> Abbiamo confrontato ogni impresa su quattro caratteristiche del modo in cui GE Vernova sta avviando l'AI. Ogni quadratino pieno indica una caratteristica presente nelle fonti pubbliche.</p>
+    <p><strong>Quanto somigliano al vostro approccio.</strong> Abbiamo confrontato ogni impresa su quattro caratteristiche del vostro modo di avviare l'AI. Ogni quadratino pieno indica una caratteristica presente nelle fonti pubbliche.</p>
     <ol class="crit"><li><i class="on"></i>Piattaforma interna sicura aperta a tutti</li><li><i class="on"></i>Rete di referenti nelle sedi e nelle funzioni</li><li><i class="on"></i>Team centrale con percorso strutturato dei casi d'uso</li><li><i class="on"></i>Legame con il sistema lean</li></ol>
-    <p>Le più vicine sono GE Aerospace, Siemens e Hitachi: piattaforma interna aperta a tutti, referenti diffusi e un centro che accompagna i casi d'uso fino alla produzione. Le più lontane sono Saudi Aramco, che ha costruito un proprio modello linguistico, e Rolls-Royce, che è partita dalla governance invece che dagli strumenti.</p>
+    <p>Le più vicine sono Siemens e Hitachi: piattaforma interna aperta a tutti, referenti diffusi e un centro che accompagna i casi d'uso fino alla produzione. Le più lontane sono Saudi Aramco, che ha costruito un proprio modello linguistico, e Rolls-Royce, che è partita dalla governance invece che dagli strumenti.</p>
   </div>
   <div class="tablewrap">
     <table>
-      <thead><tr><th>Impresa</th><th>Vicinanza all'approccio di GE Vernova</th><th>Come è partita</th><th>Piattaforma interna</th><th>Persone e diffusione</th><th>Risultati dichiarati</th></tr></thead>
+      <thead><tr><th>Impresa</th><th>Vicinanza</th><th>Come è partita</th><th>Piattaforma interna</th><th>Persone e diffusione</th><th>Risultati dichiarati</th></tr></thead>
       <tbody>
-        <tr class="t-hi"><td><a href="https://www.geaerospace.com/news/articles/ge-aerospace-created-ai-wingmate-six-weeks-can-you-say-next-level">GE Aerospace</a></td><td class="aff"><span class="pill hi">Molto vicina</span><span class="dots" aria-label="3 criteri su 4"><i class="on" title="Piattaforma interna sicura aperta a tutti: sì"></i><i class="" title="Rete di referenti nelle sedi e nelle funzioni: non dichiarato"></i><i class="on" title="Team centrale con percorso strutturato dei casi d'uso: sì"></i><i class="on" title="Legame con il sistema lean: sì"></i></span><span class="why">Stessa radice lean: la piattaforma interna è stata legata al sistema lean aziendale</span></td><td>Risposta all'uso non autorizzato di ChatGPT; piattaforma costruita in sei settimane</td><td>AI Wingmate su Azure OpenAI, con un modulo sul sistema lean interno</td><td>Aperta a <span class="num">52.000</span> dipendenti</td><td>Oltre <span class="num">1 milione</span> di richieste da <span class="num">14.000</span> utenti attivi in circa 150 giorni; nel maggio 2026 un'app generativa ha ridotto gli studi preliminari di progettazione di un motore da settimane a secondi (<a href="https://www.geaerospace.com/news/press-releases/ge-aerospace-completes-design-studies-hypersonic-ramjet-generative-ai">GE Aerospace</a>)</td></tr>
         <tr class="t-hi"><td><a href="https://aws.amazon.com/solutions/case-studies/siemens-gpt-case-study/">Siemens</a></td><td class="aff"><span class="pill hi">Molto vicina</span><span class="dots" aria-label="3 criteri su 4"><i class="on" title="Piattaforma interna sicura aperta a tutti: sì"></i><i class="on" title="Rete di referenti nelle sedi e nelle funzioni: sì"></i><i class="on" title="Team centrale con percorso strutturato dei casi d'uso: sì"></i><i class="" title="Legame con il sistema lean: non dichiarato"></i></span><span class="why">Piattaforma centrale, referenti che formano i colleghi, casi d'uso gestiti fino alla produzione</span></td><td>Team centrale IT Data &amp; AI, forte domanda dal basso</td><td>SiemensGPT su AWS, più modelli, assistenti creati dai dipendenti</td><td><span class="num">150.000</span> utenti registrati; referenti interni che formano i colleghi</td><td><span class="num">460</span> casi d'uso in produzione, oltre <span class="num">15.000</span> assistenti creati dai dipendenti</td></tr>
         <tr class="t-hi"><td><a href="https://hitachidigital.com/news/hitachi-appoints-new-ai-ambassadors/">Hitachi</a></td><td class="aff"><span class="pill hi">Molto vicina</span><span class="dots" aria-label="3 criteri su 4"><i class="on" title="Piattaforma interna sicura aperta a tutti: sì"></i><i class="on" title="Rete di referenti nelle sedi e nelle funzioni: sì"></i><i class="on" title="Team centrale con percorso strutturato dei casi d'uso: sì"></i><i class="" title="Legame con il sistema lean: non dichiarato"></i></span><span class="why">Rete di ambassador nelle funzioni e community che rende riutilizzabili i casi d'uso</span></td><td>Iniziativa del vertice, accordi con Microsoft e Google Cloud (2024)</td><td>Assistente interno di gruppo</td><td>Obiettivo <span class="num">50.000</span> professionisti; rete di AI Ambassadors, anche commerciali</td><td>Oltre <span class="num">1.000</span> casi d'uso, sistematizzati in circa <span class="num">200</span> schede</td></tr>
         <tr class="t-mid"><td><a href="https://sloanreview.mit.edu/article/how-schneider-electric-scales-ai-in-both-products-and-processes/">Schneider Electric</a></td><td class="aff"><span class="pill mid">Vicina in parte</span><span class="dots" aria-label="2 criteri su 4"><i class="on" title="Piattaforma interna sicura aperta a tutti: sì"></i><i class="" title="Rete di referenti nelle sedi e nelle funzioni: non dichiarato"></i><i class="on" title="Team centrale con percorso strutturato dei casi d'uso: sì"></i><i class="" title="Legame con il sistema lean: non dichiarato"></i></span><span class="why">Percorso dei casi d'uso molto strutturato, ma guidato da un Chief AI Officer dedicato</span></td><td>Chief AI Officer e AI Hub globale dal 2021, con mandato su prodotti e processi interni</td><td>Jo-ChatGPT su Microsoft Azure OpenAI</td><td>Formazione differenziata per ruolo</td><td><span class="num">Circa 100</span> casi d'uso in produzione, circa metà interni</td></tr>
@@ -356,7 +333,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
         <span class="pk">Assemblare</span>
         <h3>Una piattaforma propria su modelli di mercato</h3>
         <p>Un assistente interno che usa più modelli dei grandi fornitori cloud, con regole e dati dell'impresa.</p>
-        <p class="pe"><b>Esempi</b>Siemens, ABB, GE Aerospace, Schneider Electric</p>
+        <p class="pe"><b>Esempi</b>Siemens, ABB, Schneider Electric</p>
       </div>
       <div class="path">
         <span class="pk">Costruire</span>
@@ -429,7 +406,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
   </div>
   <div class="plist">
     <div class="pitem"><h3>Mandato esplicito dal vertice</h3><p>Schneider Electric affida a un Chief AI Officer sia l'offerta ai clienti sia l'uso interno. <q>Without the C-suite, everyone tries different things at a departmental and individual level</q> (<a href="https://www.salesforce.com/blog/ai-at-scale/">Salesforce</a>).</p></div>
-    <div class="pitem"><h3>Piattaforma sicura invece del divieto</h3><p>GE Aerospace, Siemens, ABB e Schneider hanno trasformato un rischio in adozione. Il 54% dei dipendenti userebbe strumenti non autorizzati (BCG 2025).</p></div>
+    <div class="pitem"><h3>Piattaforma sicura invece del divieto</h3><p>Siemens, ABB e Schneider hanno trasformato un rischio in adozione. Il 54% dei dipendenti userebbe strumenti non autorizzati (BCG 2025).</p></div>
     <div class="pitem"><h3>Casi d'uso posseduti dalle funzioni</h3><p>Il centro governa piattaforma e rischio; le funzioni scelgono il problema, forniscono i dati e rispondono dei risultati.</p></div>
     <div class="pitem"><h3>Referenti nelle funzioni e riuso</h3><p>Hitachi ha nominato AI Ambassadors anche tra i commerciali. Il valore della rete sta nel far circolare ciò che funziona.</p></div>
     <div class="pitem"><h3>Formazione sostanziale e diversa per ruolo</h3><p>Oltre le 5 ore, con affiancamento e sessioni in presenza (BCG 2025). Schneider indica la formazione differenziata tra le sue lezioni apprese.</p></div>
@@ -490,7 +467,6 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
     </ul>
     <h3>Imprese</h3>
     <ul>
-      <li><a href="https://www.semafor.com/article/02/05/2026/the-ceo-behind-ge-vernovas-power-surge">Semafor, The CEO behind GE Vernova's power surge</a> <span class="d">· febbraio 2026</span></li>
       <li><a href="https://sloanreview.mit.edu/article/how-schneider-electric-scales-ai-in-both-products-and-processes/">MIT Sloan Management Review, How Schneider Electric Scales AI in Both Products and Processes</a> <span class="d">· 16 marzo 2026</span></li>
       <li><a href="https://www.salesforce.com/blog/ai-at-scale/">Salesforce, AI at scale (Schneider Electric)</a></li>
       <li><a href="https://aws.amazon.com/solutions/case-studies/siemens-gpt-case-study/">AWS, SiemensGPT case study</a></li>
@@ -499,8 +475,6 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
       <li><a href="https://www.abb.com/global/en/company/stories/ai-in-the-workplace">ABB, AI in the workplace</a> <span class="d">· 22 aprile 2026</span></li>
       <li><a href="https://hitachidigital.com/news/hitachi-appoints-new-ai-ambassadors/">Hitachi, new AI Ambassadors</a></li>
       <li><a href="https://www.microsoft.com/en/customers/story/23738-hitachi-ltd-github-copilot">Microsoft, Hitachi customer story</a></li>
-      <li><a href="https://www.geaerospace.com/news/press-releases/ge-aerospace-launches-company-wide-generative-ai-platform-employees">GE Aerospace, company-wide generative AI platform</a> <span class="d">· 23 settembre 2024</span></li>
-      <li><a href="https://www.geaerospace.com/news/articles/ge-aerospace-created-ai-wingmate-six-weeks-can-you-say-next-level">GE Aerospace, AI Wingmate in six weeks</a></li>
       <li><a href="https://www.fortune.com/2024/08/28/why-honeywell-betting-on-generative-ai">Fortune, Why Honeywell is betting on generative AI</a> <span class="d">· 28 agosto 2024</span></li>
       <li><a href="https://totalenergies.com/newsroom/totalenergies-unlocks-potential-generative-artificial-intelligence-its/?lang=eng">TotalEnergies, generative AI for its employees</a> <span class="d">· 27 febbraio 2024</span></li>
       <li><a href="https://www.microsoft.com/en/customers/story/25505-totalenergies-agents">Microsoft, TotalEnergies: from Microsoft 365 Copilot to Copilot Studio</a> <span class="d">· 22 ottobre 2025</span></li>
@@ -508,7 +482,6 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
       <li><a href="https://www.bp.com/press-and-publications/press-releases/bp-looks-to-leverage-power-of-generative-ai-with-copilot-for-microsoft-365">bp, Copilot for Microsoft 365</a> <span class="d">· 15 novembre 2023</span></li>
       <li><a href="https://www.zawya.com/en/business/technology-and-telecom/aramco-launches-new-ai-model-innovative-rd-network-icf28sse">Zawya, Aramco launches new AI model</a> <span class="d">· 4 marzo 2024</span></li>
       <li><a href="https://www.nvidia.com/en-us/case-studies/shell-trains-custom-ai-chatbot-with-nemo/">NVIDIA, Shell trains custom AI chatbot with NeMo</a> <span class="d">· 13 agosto 2025</span></li>
-      <li><a href="https://www.geaerospace.com/news/press-releases/ge-aerospace-completes-design-studies-hypersonic-ramjet-generative-ai">GE Aerospace, design studies of hypersonic ramjet with generative AI</a> <span class="d">· 19 maggio 2026</span></li>
       <li><a href="https://www.rolls-royce.com/media/press-releases/2020/14-12-2020-trustworthy-artificial-intelligence-rolls-royce-publishes-pioneering-bias-control.aspx">Rolls-Royce, Aletheia Framework</a> <span class="d">· 14 dicembre 2020</span></li>
     </ul>
   </div>
@@ -541,7 +514,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
   <p class="lead">How large energy and industrial companies launch, govern and bring artificial intelligence projects into production, with a deep dive on the Finance function.</p>
   <div class="byline"><span>Data updated to September 2026</span><span>Public sources, with links and dates</span></div>
   <div class="pillars-wrap">
-    <p class="thesis">GE Vernova's most advanced peers do not scale AI with technology alone. They combine four elements.</p>
+    <p class="thesis">Leading energy and industrial players do not scale AI with technology alone. They combine four elements.</p>
     <div class="pillars">
       <div class="pillar">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 28V5"/><path d="M8 6h15l-3 5 3 5H8"/><path d="M5 28h8"/></svg>
@@ -567,17 +540,6 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
   </div>
 </header>
 
-<div class="quote">
-  <div>
-    <blockquote>«AI needs the electron to meet the moment»</blockquote>
-    <cite>Scott Strazik, CEO of GE Vernova, to <a href="https://www.semafor.com/article/02/05/2026/the-ceo-behind-ge-vernovas-power-surge" style="color:inherit">Semafor</a>, February 2026</cite>
-  </div>
-  <div class="split">
-    <div><div class="big">10%</div><div class="cap">of the order backlog linked to AI today</div></div>
-    <div><div class="big">⅓</div><div class="cap">of orders that AI could generate in the coming years</div></div>
-    <p class="note">A management estimate, so forward-looking. For an energy company AI matters twice: it grows demand and it changes how people work. This analysis covers the second front.</p>
-  </div>
-</div>
 
 <section id="dati-en">
   <div class="sec-head">
@@ -622,15 +584,14 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
     <div class="tile"><span class="v">1,000+</span><span class="l">Hitachi use cases distilled into about 200 reusable templates</span><span class="s">Microsoft · 2025</span></div>
   </div>
   <div class="affkey">
-    <p><strong>How close they are to GE Vernova's approach.</strong> We compared each company on four features of the way GE Vernova is launching AI. Each filled square marks a feature found in public sources.</p>
+    <p><strong>How close they are to your approach.</strong> We compared each company on four features of the way you are launching AI. Each filled square marks a feature found in public sources.</p>
     <ol class="crit"><li><i class="on"></i>Secure internal platform open to all</li><li><i class="on"></i>Network of champions across sites and functions</li><li><i class="on"></i>Central team with a structured use-case pipeline</li><li><i class="on"></i>Link to the lean system</li></ol>
-    <p>The closest are GE Aerospace, Siemens and Hitachi: an internal platform open to everyone, widespread champions and a centre that takes use cases all the way to production. The furthest are Saudi Aramco, which built its own language model, and Rolls-Royce, which started from governance rather than tools.</p>
+    <p>The closest are Siemens and Hitachi: an internal platform open to everyone, widespread champions and a centre that takes use cases all the way to production. The furthest are Saudi Aramco, which built its own language model, and Rolls-Royce, which started from governance rather than tools.</p>
   </div>
   <div class="tablewrap">
     <table>
-      <thead><tr><th>Company</th><th>Closeness to GE Vernova's approach</th><th>How it started</th><th>Internal platform</th><th>People and reach</th><th>Reported results</th></tr></thead>
+      <thead><tr><th>Company</th><th>Closeness</th><th>How it started</th><th>Internal platform</th><th>People and reach</th><th>Reported results</th></tr></thead>
       <tbody>
-        <tr class="t-hi"><td><a href="https://www.geaerospace.com/news/articles/ge-aerospace-created-ai-wingmate-six-weeks-can-you-say-next-level">GE Aerospace</a></td><td class="aff"><span class="pill hi">Very close</span><span class="dots" aria-label="3 of 4 criteria"><i class="on" title="Secure internal platform open to all: yes"></i><i class="" title="Network of champions across sites and functions: not disclosed"></i><i class="on" title="Central team with a structured use-case pipeline: yes"></i><i class="on" title="Link to the lean system: yes"></i></span><span class="why">Same lean roots: the internal platform was tied to the company's lean system</span></td><td>Response to unauthorised use of ChatGPT; platform built in six weeks</td><td>AI Wingmate on Azure OpenAI, with a module on the internal lean system</td><td>Open to <span class="num">52,000</span> employees</td><td>Over <span class="num">1 million</span> queries from <span class="num">14,000</span> active users in about 150 days; in May 2026 a generative app cut preliminary design studies for an engine from weeks to seconds (<a href="https://www.geaerospace.com/news/press-releases/ge-aerospace-completes-design-studies-hypersonic-ramjet-generative-ai">GE Aerospace</a>)</td></tr>
         <tr class="t-hi"><td><a href="https://aws.amazon.com/solutions/case-studies/siemens-gpt-case-study/">Siemens</a></td><td class="aff"><span class="pill hi">Very close</span><span class="dots" aria-label="3 of 4 criteria"><i class="on" title="Secure internal platform open to all: yes"></i><i class="on" title="Network of champions across sites and functions: yes"></i><i class="on" title="Central team with a structured use-case pipeline: yes"></i><i class="" title="Link to the lean system: not disclosed"></i></span><span class="why">Central platform, champions who train colleagues, use cases managed through to production</span></td><td>Central IT Data &amp; AI team, strong bottom-up demand</td><td>SiemensGPT on AWS, multiple models, assistants built by employees</td><td><span class="num">150,000</span> registered users; internal champions who train colleagues</td><td><span class="num">460</span> use cases in production, over <span class="num">15,000</span> assistants built by employees</td></tr>
         <tr class="t-hi"><td><a href="https://hitachidigital.com/news/hitachi-appoints-new-ai-ambassadors/">Hitachi</a></td><td class="aff"><span class="pill hi">Very close</span><span class="dots" aria-label="3 of 4 criteria"><i class="on" title="Secure internal platform open to all: yes"></i><i class="on" title="Network of champions across sites and functions: yes"></i><i class="on" title="Central team with a structured use-case pipeline: yes"></i><i class="" title="Link to the lean system: not disclosed"></i></span><span class="why">Network of ambassadors in the functions and a community that makes use cases reusable</span></td><td>Top-management initiative, agreements with Microsoft and Google Cloud (2024)</td><td>Group-wide internal assistant</td><td>Target of <span class="num">50,000</span> professionals; network of AI Ambassadors, including in sales</td><td>Over <span class="num">1,000</span> use cases, organised into about <span class="num">200</span> templates</td></tr>
         <tr class="t-mid"><td><a href="https://sloanreview.mit.edu/article/how-schneider-electric-scales-ai-in-both-products-and-processes/">Schneider Electric</a></td><td class="aff"><span class="pill mid">Partly close</span><span class="dots" aria-label="2 of 4 criteria"><i class="on" title="Secure internal platform open to all: yes"></i><i class="" title="Network of champions across sites and functions: not disclosed"></i><i class="on" title="Central team with a structured use-case pipeline: yes"></i><i class="" title="Link to the lean system: not disclosed"></i></span><span class="why">Highly structured use-case pipeline, but led by a dedicated Chief AI Officer</span></td><td>Chief AI Officer and global AI Hub since 2021, with a mandate over products and internal processes</td><td>Jo-ChatGPT on Microsoft Azure OpenAI</td><td>Role-specific training</td><td><span class="num">About 100</span> use cases in production, about half internal</td></tr>
@@ -659,7 +620,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
         <span class="pk">Assemble</span>
         <h3>An in-house platform on market models</h3>
         <p>An internal assistant that uses several models from the major cloud providers, with the company's rules and data.</p>
-        <p class="pe"><b>Examples</b>Siemens, ABB, GE Aerospace, Schneider Electric</p>
+        <p class="pe"><b>Examples</b>Siemens, ABB, Schneider Electric</p>
       </div>
       <div class="path">
         <span class="pk">Build</span>
@@ -732,7 +693,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
   </div>
   <div class="plist">
     <div class="pitem"><h3>Explicit mandate from the top</h3><p>Schneider Electric gives a Chief AI Officer both the customer offering and internal use. <q>Without the C-suite, everyone tries different things at a departmental and individual level</q> (<a href="https://www.salesforce.com/blog/ai-at-scale/">Salesforce</a>).</p></div>
-    <div class="pitem"><h3>A secure platform instead of a ban</h3><p>GE Aerospace, Siemens, ABB and Schneider turned a risk into adoption. 54% of employees would use unauthorised tools (BCG 2025).</p></div>
+    <div class="pitem"><h3>A secure platform instead of a ban</h3><p>Siemens, ABB and Schneider turned a risk into adoption. 54% of employees would use unauthorised tools (BCG 2025).</p></div>
     <div class="pitem"><h3>Use cases owned by the functions</h3><p>The centre governs platform and risk; the functions choose the problem, provide the data and answer for the results.</p></div>
     <div class="pitem"><h3>Champions in the functions and reuse</h3><p>Hitachi appointed AI Ambassadors, including in sales. The network's value lies in spreading what works.</p></div>
     <div class="pitem"><h3>Substantial, role-specific training</h3><p>Beyond 5 hours, with coaching and in-person sessions (BCG 2025). Schneider lists role-specific training among its lessons learned.</p></div>
@@ -793,7 +754,6 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
     </ul>
     <h3>Companies</h3>
     <ul>
-      <li><a href="https://www.semafor.com/article/02/05/2026/the-ceo-behind-ge-vernovas-power-surge">Semafor, The CEO behind GE Vernova's power surge</a> <span class="d">· February 2026</span></li>
       <li><a href="https://sloanreview.mit.edu/article/how-schneider-electric-scales-ai-in-both-products-and-processes/">MIT Sloan Management Review, How Schneider Electric Scales AI in Both Products and Processes</a> <span class="d">· 16 March 2026</span></li>
       <li><a href="https://www.salesforce.com/blog/ai-at-scale/">Salesforce, AI at scale (Schneider Electric)</a></li>
       <li><a href="https://aws.amazon.com/solutions/case-studies/siemens-gpt-case-study/">AWS, SiemensGPT case study</a></li>
@@ -802,8 +762,6 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
       <li><a href="https://www.abb.com/global/en/company/stories/ai-in-the-workplace">ABB, AI in the workplace</a> <span class="d">· 22 April 2026</span></li>
       <li><a href="https://hitachidigital.com/news/hitachi-appoints-new-ai-ambassadors/">Hitachi, new AI Ambassadors</a></li>
       <li><a href="https://www.microsoft.com/en/customers/story/23738-hitachi-ltd-github-copilot">Microsoft, Hitachi customer story</a></li>
-      <li><a href="https://www.geaerospace.com/news/press-releases/ge-aerospace-launches-company-wide-generative-ai-platform-employees">GE Aerospace, company-wide generative AI platform</a> <span class="d">· 23 September 2024</span></li>
-      <li><a href="https://www.geaerospace.com/news/articles/ge-aerospace-created-ai-wingmate-six-weeks-can-you-say-next-level">GE Aerospace, AI Wingmate in six weeks</a></li>
       <li><a href="https://www.fortune.com/2024/08/28/why-honeywell-betting-on-generative-ai">Fortune, Why Honeywell is betting on generative AI</a> <span class="d">· 28 August 2024</span></li>
       <li><a href="https://totalenergies.com/newsroom/totalenergies-unlocks-potential-generative-artificial-intelligence-its/?lang=eng">TotalEnergies, generative AI for its employees</a> <span class="d">· 27 February 2024</span></li>
       <li><a href="https://www.microsoft.com/en/customers/story/25505-totalenergies-agents">Microsoft, TotalEnergies: from Microsoft 365 Copilot to Copilot Studio</a> <span class="d">· 22 October 2025</span></li>
@@ -811,7 +769,6 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-si
       <li><a href="https://www.bp.com/press-and-publications/press-releases/bp-looks-to-leverage-power-of-generative-ai-with-copilot-for-microsoft-365">bp, Copilot for Microsoft 365</a> <span class="d">· 15 November 2023</span></li>
       <li><a href="https://www.zawya.com/en/business/technology-and-telecom/aramco-launches-new-ai-model-innovative-rd-network-icf28sse">Zawya, Aramco launches new AI model</a> <span class="d">· 4 March 2024</span></li>
       <li><a href="https://www.nvidia.com/en-us/case-studies/shell-trains-custom-ai-chatbot-with-nemo/">NVIDIA, Shell trains custom AI chatbot with NeMo</a> <span class="d">· 13 August 2025</span></li>
-      <li><a href="https://www.geaerospace.com/news/press-releases/ge-aerospace-completes-design-studies-hypersonic-ramjet-generative-ai">GE Aerospace, design studies of hypersonic ramjet with generative AI</a> <span class="d">· 19 May 2026</span></li>
       <li><a href="https://www.rolls-royce.com/media/press-releases/2020/14-12-2020-trustworthy-artificial-intelligence-rolls-royce-publishes-pioneering-bias-control.aspx">Rolls-Royce, Aletheia Framework</a> <span class="d">· 14 December 2020</span></li>
     </ul>
   </div>
