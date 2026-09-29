@@ -47,11 +47,17 @@ header{padding:8px 0 32px;border-bottom:1px solid var(--line);margin-bottom:32px
 
 /* Card senza link unico: le azioni sono pulsanti separati. */
 div.card:hover{border-color:var(--line);background:var(--surface)}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
-.btn{display:inline-block;padding:8px 16px;border:1px solid var(--accent);border-radius:8px;background:var(--accent);color:var(--surface);font-weight:500;text-decoration:none;transition:background .15s,color .15s}
-.btn:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
-.btn + .btn{background:transparent;color:var(--accent-ink)}
-.btn + .btn:hover{background:var(--accent-soft);color:var(--accent-ink)}
+.actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:10px}
+.action{display:grid;gap:8px;align-content:start;padding:14px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px}
+.card .note{font-size:.9rem;color:var(--ink-2)}
+.btn{display:block;padding:10px 16px;border:1px solid var(--accent);border-radius:8px;background:var(--accent);color:#fff;font-weight:500;text-align:center;text-decoration:none;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.15);transition:background .15s,border-color .15s,color .15s}
+.btn:hover{background:var(--accent-ink);border-color:var(--accent-ink);color:#fff}
+.btn-alt{background:var(--surface);color:var(--accent-ink)}
+.btn-alt:hover{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .btn:not(.btn-alt){color:var(--bg)}
+}
+:root[data-theme="dark"] .btn:not(.btn-alt){color:var(--bg)}
 
 footer{margin-top:48px;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
 
