@@ -67,12 +67,16 @@ footer{margin-top:48px;font-family:var(--mono);font-size:.75rem;color:var(--mute
 
 /* Gruppo di voci con il logo del partner a fianco. */
 .family{display:grid;grid-template-columns:128px 1fr;gap:20px;align-items:start;padding:18px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px}
-.family-logo{width:100%;height:auto;position:sticky;top:16px}
+.family-head{display:grid;gap:8px;position:sticky;top:16px}
+.family-logo{width:100%;height:auto}
+.family-tag{font-family:var(--mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:center}
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]) .family-logo{filter:brightness(0) invert(1);opacity:.9}
 }
 :root[data-theme="dark"] .family-logo{filter:brightness(0) invert(1);opacity:.9}
 @media (max-width:600px){
   .family{grid-template-columns:1fr;gap:14px;padding:14px}
-  .family-logo{width:104px;position:static}
+  .family-head{position:static;justify-items:start}
+  .family-logo{width:104px}
+  .family-tag{text-align:left}
 }
